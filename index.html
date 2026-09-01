@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learn Code — JS &amp; Python</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="auth-screen" class="screen">
+    <div class="auth-card">
+      <div class="logo">Learn Code</div>
+      <h1>JavaScript と Python を<br>インタラクティブに学ぼう</h1>
+      <p class="subtitle">短いレッスン → エディターで書く → 実行して確認 → 正解で次へ</p>
+      <div class="auth-tabs">
+        <button class="tab active" data-tab="login">ログイン</button>
+        <button class="tab" data-tab="register">新規登録</button>
+      </div>
+      <form id="login-form" class="auth-form">
+        <label>メールアドレス</label>
+        <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="username" />
+        <label>パスワード</label>
+        <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password" />
+        <p id="login-error" class="auth-error hidden"></p>
+        <button type="submit" class="btn primary">ログイン</button>
+        <p class="demo-hint">Admin: masashilandjob@gmail.com / 1111<br>新規の方は「新規登録」からアカウントを作成してください</p>
+      </form>
+      <form id="register-form" class="auth-form hidden">
+        <label>表示名</label>
+        <input type="text" id="reg-name" placeholder="あなたの名前" required maxlength="40" />
+        <label>メールアドレス</label>
+        <input type="email" id="reg-email" placeholder="you@example.com" required autocomplete="username" />
+        <label>パスワード（4文字以上）</label>
+        <input type="password" id="reg-password" placeholder="••••••••" required minlength="4" autocomplete="new-password" />
+        <label>パスワード（確認）</label>
+        <input type="password" id="reg-password2" placeholder="••••••••" required minlength="4" autocomplete="new-password" />
+        <p id="register-error" class="auth-error hidden"></p>
+        <button type="submit" class="btn primary">アカウント作成</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="app-screen" class="screen hidden">
+    <header class="app-header">
+      <div class="header-left">
+        <span class="logo-sm">Learn Code</span> <a href="playground.html" style="margin-left:0.75rem;font-size:0.8rem;color:#2563eb;text-decoration:none;">Playground</a>
+        <div class="lang-tabs">
+          <button class="lang-tab active" data-lang="js">JavaScript</button>
+          <button class="lang-tab" data-lang="py">Python</button>
+        </div>
+        <nav>
+          <button class="nav-btn active" data-view="lessons">レッスン</button>
+          <button class="nav-btn" data-view="progress">進捗</button>
+        </nav>
+      </div>
+      <div class="header-right">
+        <span id="user-name"></span>
+        <button id="logout-btn" class="btn ghost">ログアウト</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="lessons-view" class="view">
+        <div class="page-header">
+          <h2 id="lessons-heading">JavaScript レッスン</h2>
+          <p>順番に進めてください。正解すると次が開放されます。</p>
+        </div>
+        <div id="lesson-list" class="lesson-grid"></div>
+      </section>
+
+      <section id="progress-view" class="view hidden">
+        <div class="page-header"><h2>あなたの進捗</h2></div>
+        <div class="progress-card">
+          <div class="progress-bar-wrap"><div id="progress-bar" class="progress-bar"></div></div>
+          <p id="progress-text">0 / 0 完了</p>
+          <div id="completed-list"></div>
+        </div>
+      </section>
+
+      <section id="lesson-detail-view" class="view hidden">
+        <div class="lesson-layout">
+          <aside class="lesson-aside">
+            <div class="back-row"><button id="back-to-list">← 一覧に戻る</button></div>
+            <div id="lesson-number">LESSON 1</div>
+            <h2 id="lesson-title">タイトル</h2>
+            <div id="lesson-content" class="lesson-content"></div>
+            <div class="hints-section">
+              <button id="toggle-hints">ヒントを見る</button>
+              <div id="hints" class="hidden"></div>
+            </div>
+          </aside>
+          <div class="editor-panel">
+            <div class="editor-tabs">
+              <button class="editor-tab active" data-panel="code">Code</button>
+              <button class="editor-tab" data-panel="tests">Tests</button>
+              <button class="editor-tab" data-panel="console">Console</button>
+            </div>
+            <div id="code-panel" class="panel active">
+              <div class="editor-toolbar">
+                <button id="run-btn" class="btn primary small">▶ 判定 (Ctrl+Enter)</button>
+                <button id="reset-btn" class="btn ghost small">リセット</button>
+                <span style="font-size:0.75rem;color:#6b7280;margin-left:0.5rem;">Console は入力中に自動更新</span>
+                <span id="lang-badge" style="margin-left:auto;font-size:0.75rem;color:#6b7280;">JavaScript</span>
+              </div>
+              <div class="code-editor-wrap"><textarea id="code-editor" spellcheck="false"></textarea></div>
+            </div>
+            <div id="tests-panel" class="panel"><div id="tests-output" class="tests-output"></div></div>
+            <div id="console-panel" class="panel"><div id="console-output" class="console-output"></div></div>
+            <div class="result-bar">
+              <span id="result-message"></span>
+              <button id="next-lesson-btn" class="btn primary small hidden">次のレッスンへ →</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/lessons-data.js"></script>
+  <script src="js/lessons-python.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
