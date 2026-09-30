@@ -419,18 +419,29 @@ function openLesson(id) {
   $("#lesson-detail-view").classList.remove("hidden");
 
   $("#lesson-number").textContent = `LESSON ${lesson.id}`;
+  $("#lesson-language").textContent = currentLang === "py" ? "PYTHON" : "JAVASCRIPT";
   $("#lesson-title").textContent = lesson.title;
+  $("#lesson-description").textContent = lesson.description || "";
   $("#lesson-content").innerHTML = lesson.content;
+  const challenge = $("#lesson-content .challenge-box");
+  $("#lesson-task").replaceChildren();
+  $("#lesson-task-section").classList.toggle("hidden", !challenge);
+  if (challenge) $("#lesson-task").appendChild(challenge);
   $("#code-editor").value = lesson.starterCode;
+  renderCodeHighlight();
   $("#hints").innerHTML = (lesson.hints || []).map((h) => `<p>• ${escapeHtml(h)}</p>`).join("");
   $("#hints").classList.add("hidden");
   $("#toggle-hints").textContent = "ヒントを見る";
+  $("#toggle-hints").setAttribute("aria-expanded", "false");
   $("#result-message").textContent = "";
   $("#result-message").className = "";
   $("#next-lesson-btn").classList.add("hidden");
   $("#console-output").innerHTML = `<div class="info">入力すると、ここに console / print の結果がリアルタイム表示されます</div>`;
   $("#tests-output").innerHTML = "";
-  switchEditorTab("code");
+  $("#tests-count").textContent = "";
+  $("#preview-output").textContent = "実行結果がここに表示されます";
+  $("#editor-filename").textContent = currentLang === "py" ? "main.py" : "main.js";
+  switchEditorTab("console");
   scheduleLiveConsole();
 }
 
@@ -447,14 +458,19 @@ $("#toggle-hints").addEventListener("click", () => {
   const isHidden = hints.classList.contains("hidden");
   hints.classList.toggle("hidden");
   $("#toggle-hints").textContent = isHidden ? "ヒントを隠す" : "ヒントを見る";
+  $("#toggle-hints").setAttribute("aria-expanded", String(isHidden));
 });
 
 function switchEditorTab(name) {
-  $$(".panel").forEach((p) => p.classList.remove("active"));
+  $$(".output-section .panel").forEach((p) => p.classList.remove("active"));
   $$(".editor-tab").forEach((t) => t.classList.remove("active"));
   const panel = document.getElementById(name + "-panel");
   if (panel) panel.classList.add("active");
-  $$(`.editor-tab[data-panel="${name}"]`).forEach((t) => t.classList.add("active"));
+  $$(".editor-tab").forEach((t) => {
+    const active = t.dataset.panel === name;
+    t.classList.toggle("active", active);
+    t.setAttribute("aria-selected", String(active));
+  });
 }
 
 $$(".editor-tab").forEach((tab) => {
@@ -464,6 +480,68 @@ $$(".editor-tab").forEach((tab) => {
 // ========== LIVE CONSOLE (入力中に反映) ==========
 let liveTimer = null;
 let liveRunning = false;
+
+function syncPreview() {
+  const output = $("#console-output").textContent.trim();
+  $("#preview-output").textContent = output || "出力はありません";
+}
+
+function renderCodeHighlight() {
+  const editor = $("#code-editor");
+  const mirror = $("#code-highlight");
+  const code = editor.value;
+  const fragment = document.createDocumentFragment();
+  let plainStart = 0;
+  let i = 0;
+
+  while (i < code.length) {
+    let end = i;
+    const quote = code[i];
+    if (currentLang === "js" && code.startsWith("//", i)) {
+      end = code.indexOf("\n", i);
+      if (end === -1) end = code.length;
+    } else if (currentLang === "js" && code.startsWith("/*", i)) {
+      const close = code.indexOf("*/", i + 2);
+      end = close === -1 ? code.length : close + 2;
+    } else if (currentLang === "py" && quote === "#") {
+      end = code.indexOf("\n", i);
+      if (end === -1) end = code.length;
+    } else if (quote === "'" || quote === '"' || (currentLang === "js" && quote === "`")) {
+      const triple = currentLang === "py" && code.startsWith(quote.repeat(3), i);
+      const delimiter = triple ? quote.repeat(3) : quote;
+      end = i + delimiter.length;
+      while (end < code.length) {
+        if (code[end] === "\\") {
+          end = Math.min(end + 2, code.length);
+        } else if (code.startsWith(delimiter, end)) {
+          end += delimiter.length;
+          break;
+        } else if (!triple && quote !== "`" && code[end] === "\n") {
+          break;
+        } else {
+          end++;
+        }
+      }
+    }
+
+    if (end > i) {
+      if (plainStart < i) fragment.append(document.createTextNode(code.slice(plainStart, i)));
+      const span = document.createElement("span");
+      span.className = "syntax-green";
+      span.textContent = code.slice(i, end);
+      fragment.append(span);
+      i = end;
+      plainStart = i;
+    } else {
+      i++;
+    }
+  }
+  if (plainStart < code.length) fragment.append(document.createTextNode(code.slice(plainStart)));
+  fragment.append(document.createTextNode("\u200b"));
+  mirror.replaceChildren(fragment);
+  mirror.scrollTop = editor.scrollTop;
+  mirror.scrollLeft = editor.scrollLeft;
+}
 
 async function updateLiveConsole() {
   if (!currentLessonId) return;
@@ -500,6 +578,7 @@ async function updateLiveConsole() {
   } catch (e) {
     consoleEl.innerHTML = `<div class="error">${escapeHtml(e.message || String(e))}</div>`;
   } finally {
+    syncPreview();
     liveRunning = false;
   }
 }
@@ -515,7 +594,20 @@ function scheduleLiveConsole() {
 
 const codeEditorEl = $("#code-editor");
 if (codeEditorEl) {
-  codeEditorEl.addEventListener("input", scheduleLiveConsole);
+  codeEditorEl.addEventListener("input", () => {
+    renderCodeHighlight();
+    $("#result-message").textContent = "";
+    $("#result-message").className = "";
+    $("#tests-output").innerHTML = "";
+    $("#tests-count").textContent = "";
+    $("#next-lesson-btn").classList.add("hidden");
+    switchEditorTab("console");
+    scheduleLiveConsole();
+  });
+  codeEditorEl.addEventListener("scroll", () => {
+    $("#code-highlight").scrollTop = codeEditorEl.scrollTop;
+    $("#code-highlight").scrollLeft = codeEditorEl.scrollLeft;
+  });
   codeEditorEl.addEventListener("change", scheduleLiveConsole);
 }
 
@@ -639,9 +731,12 @@ async function runCode() {
       resultMsg.className = "error";
       $("#next-lesson-btn").classList.add("hidden");
       switchEditorTab("console");
+      syncPreview();
       return;
     }
   }
+
+  syncPreview();
 
   let allPassed = true;
   const testResults = [];
@@ -669,22 +764,10 @@ async function runCode() {
         ${t.errMsg ? `<div class="actual">Error: ${escapeHtml(t.errMsg)}</div>` : ""}
       </div>
     </div>`).join("");
-
-  for (let i = 0; i < passCount; i++) {
-    setTimeout(() => {
-      celebrateConfetti({
-        count: allPassed ? 80 : 50,
-        duration: 140,
-        spreadX: window.innerWidth * (0.25 + Math.random() * 0.5),
-        originY: -10
-      });
-    }, i * 250);
-  }
-  if (allPassed && passCount > 0) {
-    setTimeout(() => celebrateConfetti({ count: 160, duration: 180 }), passCount * 250 + 80);
-  }
+  $("#tests-count").textContent = `${passCount}/${lesson.tests.length}`;
 
   if (allPassed) {
+    if (passCount > 0) celebrateConfetti({ count: 160, duration: 180 });
     resultMsg.textContent = "🎉 全テスト通過！素晴らしい！";
     resultMsg.className = "success";
     getCompleted().add(lesson.id);
@@ -722,11 +805,15 @@ $("#reset-btn").addEventListener("click", () => {
   const lesson = getLessons().find((l) => l.id === currentLessonId);
   if (lesson) {
     $("#code-editor").value = lesson.starterCode;
+    renderCodeHighlight();
     $("#result-message").textContent = "";
     $("#result-message").className = "";
     $("#console-output").innerHTML = "";
     $("#tests-output").innerHTML = "";
+    $("#tests-count").textContent = "";
+    $("#preview-output").textContent = "実行結果がここに表示されます";
     $("#next-lesson-btn").classList.add("hidden");
+    switchEditorTab("console");
     scheduleLiveConsole();
   }
 });

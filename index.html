@@ -82,32 +82,51 @@
       <section id="lesson-detail-view" class="view hidden">
         <div class="lesson-layout">
           <aside class="lesson-aside">
-            <div class="back-row"><button id="back-to-list">← 一覧に戻る</button></div>
-            <div id="lesson-number">LESSON 1</div>
-            <h2 id="lesson-title">タイトル</h2>
-            <div id="lesson-content" class="lesson-content"></div>
-            <div class="hints-section">
-              <button id="toggle-hints">ヒントを見る</button>
-              <div id="hints" class="hidden"></div>
+            <div class="lesson-aside-scroll">
+              <div class="back-row"><button id="back-to-list">← レッスン一覧</button></div>
+              <div class="lesson-meta"><span id="lesson-number">LESSON 1</span><span id="lesson-language">JAVASCRIPT</span></div>
+              <h2 id="lesson-title">タイトル</h2>
+              <p id="lesson-description" class="lesson-description"></p>
+              <section id="lesson-task-section" class="lesson-task-section">
+                <div class="section-label"><span class="section-label-mark">01</span> DO THIS</div>
+                <div id="lesson-task"></div>
+              </section>
+              <section class="lesson-learn-section">
+                <div class="section-label"><span class="section-label-mark">02</span> LEARN</div>
+                <div id="lesson-content" class="lesson-content"></div>
+              </section>
+              <div class="hints-section">
+                <button id="toggle-hints" aria-expanded="false">ヒントを見る <span aria-hidden="true">↗</span></button>
+                <div id="hints" class="hidden"></div>
+              </div>
+            </div>
+            <div class="preview-panel" aria-live="polite">
+              <div class="preview-heading"><span>PREVIEW</span><span class="preview-indicator"></span></div>
+              <pre id="preview-output">実行結果がここに表示されます</pre>
             </div>
           </aside>
           <div class="editor-panel">
-            <div class="editor-tabs">
-              <button class="editor-tab active" data-panel="code">Code</button>
-              <button class="editor-tab" data-panel="tests">Tests</button>
-              <button class="editor-tab" data-panel="console">Console</button>
+            <div class="editor-topbar">
+              <div class="editor-file"><span class="file-icon">&lt;/&gt;</span><span id="editor-filename">main.js</span><span class="file-dirty" aria-hidden="true"></span></div>
+              <span id="lang-badge" class="editor-lang-badge">JavaScript</span>
             </div>
-            <div id="code-panel" class="panel active">
-              <div class="editor-toolbar">
-                <button id="run-btn" class="btn primary small">▶ 判定 (Ctrl+Enter)</button>
-                <button id="reset-btn" class="btn ghost small">リセット</button>
-                <span style="font-size:0.75rem;color:#6b7280;margin-left:0.5rem;">Console は入力中に自動更新</span>
-                <span id="lang-badge" style="margin-left:auto;font-size:0.75rem;color:#6b7280;">JavaScript</span>
+            <div class="editor-toolbar">
+              <div class="editor-toolbar-note"><span class="live-dot"></span> 入力中に出力を更新</div>
+              <div class="editor-actions"><button id="reset-btn" class="btn ghost small">リセット</button><button id="run-btn" class="btn primary small">▶ 実行して判定 <span class="shortcut">⌘ / Ctrl + Enter</span></button></div>
+            </div>
+            <div class="code-editor-wrap">
+              <pre id="code-highlight" class="code-highlight" aria-hidden="true"></pre>
+              <textarea id="code-editor" spellcheck="false" wrap="off" aria-label="コードエディター"></textarea>
+            </div>
+            <div class="output-section">
+              <div class="editor-tabs" role="tablist" aria-label="実行結果">
+                <button class="editor-tab active" data-panel="console" role="tab" aria-selected="true" aria-controls="console-panel">CONSOLE</button>
+                <button class="editor-tab" data-panel="tests" role="tab" aria-selected="false" aria-controls="tests-panel">TESTS <span id="tests-count"></span></button>
+                <span class="output-caption">OUTPUT</span>
               </div>
-              <div class="code-editor-wrap"><textarea id="code-editor" spellcheck="false"></textarea></div>
+              <div id="console-panel" class="panel active" role="tabpanel"><div id="console-output" class="console-output"></div></div>
+              <div id="tests-panel" class="panel" role="tabpanel"><div id="tests-output" class="tests-output"></div></div>
             </div>
-            <div id="tests-panel" class="panel"><div id="tests-output" class="tests-output"></div></div>
-            <div id="console-panel" class="panel"><div id="console-output" class="console-output"></div></div>
             <div class="result-bar">
               <span id="result-message"></span>
               <button id="next-lesson-btn" class="btn primary small hidden">次のレッスンへ →</button>
