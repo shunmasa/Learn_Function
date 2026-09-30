@@ -70,54 +70,9 @@ window.LEARN_FP_API = "https://learn-fp-api.<subdomain>.workers.dev";
 
 ---
 
-## 3. GitHub Pages に公開
 
-1. GitHub に新しいリポジトリを作る（例: `learn-fp`）
-2. このフォルダの中身を push
 
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/YOUR_USER/learn-fp.git
-git push -u origin main
-```
 
-3. GitHub → **Settings → Pages**
-   - Source: **Deploy from a branch**
-   - Branch: `main` / `/ (root)`
-4. 数分後: `https://YOUR_USER.github.io/learn-fp/`
-
-（リポジトリ名が `YOUR_USER.github.io` ならルートで公開されます）
-
----
-
-## 4. Admin アカウント
-
-| 項目 | 値 |
-|------|-----|
-| メール | `masashilandjob@gmail.com` |
-| パスワード | `1111` |
-
-Worker 初回アクセス時に Admin が自動作成されます。全レッスン開放。
-
----
-
-## API 一覧
-
-| Method | Path | 説明 |
-|--------|------|------|
-| GET | `/api/health` | 疎通確認 |
-| POST | `/api/register` | 新規登録 `{ name, email, password }` |
-| POST | `/api/login` | ログイン `{ email, password }` → `{ token, user }` |
-| POST | `/api/logout` | ログアウト（Bearer トークン） |
-| GET | `/api/me` | 現在のユーザー |
-| PUT | `/api/progress` | 進捗保存 `{ completed_js, completed_py, lang }` |
-
-パスワードは Worker 側で salt + SHA-256 ハッシュ保存です。
-
----
 
 ## ローカル確認
 
