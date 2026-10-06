@@ -366,6 +366,8 @@ function combatFrame(elapsed, reducedMotion = false) {
 
 const stage = document.getElementById('adventure');
 if (!stage) return;
+const transitionStage = document.getElementById('quest-transition');
+const transitionRunners = transitionStage ? transitionStage.querySelector('.transition-runners') : null;
 const hero = stage.querySelector('.hero');
 const world = stage.querySelector('.world');
 const runners = stage.querySelector('.runners');
@@ -383,6 +385,7 @@ const cue = stage.querySelector('.scroll-cue');
 const live = stage.querySelector('[data-quest-announcement]');
 const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let geometry = {top:0, distance:1, width:1, height:1};
+let transitionGeometry = {top:0, height:1, width:1};
 let rafId = 0, lastProgress = null, lastStatus = '', stopWalking = 0;
 let activeTime = 0, lastTick = window.performance.now(), previousActive = false, paused = false;
 let battle = {phase:'patrol'};
@@ -393,18 +396,82 @@ function measure() {
   geometry.width = hero.clientWidth;
   const available = document.documentElement.scrollHeight - window.innerHeight - geometry.top;
   geometry.distance = Math.max(1, Math.min(stage.offsetHeight - geometry.height, available));
+
+  if (transitionStage) {
+    const rect = transitionStage.getBoundingClientRect();
+    transitionGeometry.top = rect.top + window.scrollY;
+    transitionGeometry.height = transitionStage.offsetHeight || 1;
+    transitionGeometry.width = transitionStage.clientWidth || window.innerWidth;
+  }
+
 }
 function requestRender() {
   if (!rafId) rafId = window.requestAnimationFrame(render);
 }
+function renderQuestTransition() {
+  if (!transitionStage || !transitionRunners) return false;
+
+  const viewportTop = window.scrollY;
+  const viewportBottom = viewportTop + window.innerHeight;
+  const visible = viewportBottom > transitionGeometry.top
+    && viewportTop < transitionGeometry.top + transitionGeometry.height;
+
+  const unlocked = battle.phase === 'defeated';
+  transitionStage.classList.toggle('is-unlocked', unlocked);
+
+  if (!unlocked) {
+    transitionRunners.style.opacity = '0';
+    return visible;
+  }
+
+  /*
+   * Scroll progress through the card-free transition area.
+   * This is intentionally a simple translation, not a walking animation.
+   */
+  const travel = Math.max(1, transitionGeometry.height - Math.min(window.innerHeight * .55, 420));
+  const raw = (viewportTop - transitionGeometry.top + window.innerHeight * .18) / travel;
+  const p = clamp(raw, 0, 1);
+
+  // Grow QUEST CLEAR / 次の冒険へ as the user scrolls down.
+  const transitionMessage = transitionStage.querySelector('.transition-message');
+  if (transitionMessage) {
+    const messageScale = 1 + p * 1.0;
+    transitionMessage.style.setProperty('--message-scale', messageScale.toFixed(3));
+  }
+
+  const compact = transitionGeometry.width <= 680;
+  const spriteWidth = compact ? 230 : 345;
+  const spriteHeight = spriteWidth * 778 / 2021;
+
+  // In scene 2 the adventurers do not move downward.
+  // They appear and remain at the very bottom-center of the road.
+  const x = transitionGeometry.width / 2 - spriteWidth / 2;
+  const y = transitionGeometry.height - spriteHeight - (compact ? 12 : 18);
+
+  // Slightly larger because the foreground road is wider.
+  const scale = compact ? 1.08 : 1.12;
+
+  transitionRunners.style.opacity = '1';
+  transitionRunners.style.transform =
+    `translate3d(${x}px,${y}px,0) scale(${scale})`;
+
+  return visible;
+}
+
 function render(now = window.performance.now()) {
   rafId = 0;
   const visible = window.scrollY + window.innerHeight > geometry.top
     && window.scrollY < geometry.top + stage.offsetHeight;
+  const transitionVisibleNow = transitionStage
+    ? window.scrollY + window.innerHeight > transitionGeometry.top
+      && window.scrollY < transitionGeometry.top + transitionGeometry.height
+    : false;
   const active = visible && !document.hidden && !paused;
-  if (active && previousActive) activeTime += clamp(now - lastTick, 0, 120);
+  const timeActive = !document.hidden && !paused
+    && (active || (transitionVisibleNow && battle.phase === 'fighting'));
+  if (timeActive && previousActive) activeTime += clamp(now - lastTick, 0, 120);
   lastTick = now;
-  previousActive = active;
+  previousActive = timeActive;
   const frame = questFrame((window.scrollY - geometry.top) / geometry.distance,
     geometry.width, geometry.height, motion.matches);
   if (frame.progress < .84 && battle.phase !== 'patrol') battle = {phase:'patrol'};
@@ -498,7 +565,12 @@ function render(now = window.performance.now()) {
   }
   stage.classList.toggle('quest-complete', won);
   stage.classList.toggle('in-battle', battle.phase === 'fighting');
-  if (active) requestRender();
+
+  const transitionVisible = renderQuestTransition();
+  if (active || transitionVisible
+      || (battle.phase === 'fighting' && transitionVisibleNow)) {
+    requestRender();
+  }
 }
 pauseButton.addEventListener('click', () => {
   paused = !paused;

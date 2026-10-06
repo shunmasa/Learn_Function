@@ -73,7 +73,7 @@ h1 .last-line{font-size:.77em;white-space:nowrap;line-height:1.12}h1 .js{color:#
 
 /* Scroll-controlled adventure. The scene stays visible until the journey finishes. */
 .quest-scroll{--scene-height:clamp(580px,38.2vw,760px);--quest-distance:1400px;position:relative;height:calc(var(--scene-height) + var(--quest-distance))}
-.quest-scroll .hero{position:sticky;top:0;height:var(--scene-height);min-height:0;display:block}
+.quest-scroll .hero{position:sticky;top:0;height:var(--scene-height);min-height:0;display:block;border-bottom:15px solid #0b2748}
 .world{position:absolute;top:0;left:0;width:2033px;height:773px;transform-origin:0 0;will-change:transform;pointer-events:none}
 .world .landscape{inset:0;width:100%;height:100%;background-size:100% 100%;background-position:center}
 .runners{position:absolute;left:0;bottom:115px;width:350px;will-change:transform;z-index:2}
@@ -96,10 +96,10 @@ h1 .last-line{font-size:.77em;white-space:nowrap;line-height:1.12}h1 .js{color:#
 @media(prefers-reduced-motion:reduce){.is-walking .runner-sprite{animation:none}.world,.runners{will-change:auto}.world-coin>svg{filter:none}}
 
 
-.quest-scroll{--scene-height:min(clamp(580px,38.2vw,760px),100svh)}
+.quest-scroll{--scene-height:min(clamp(680px,calc(38.2vw + 100px),860px),100svh)}
 .quest-scroll .quest{position:absolute}
-@media(min-width:681px) and (max-width:1000px){.quest-scroll{--scene-height:min(600px,100svh)}.copy{padding-top:26px}.copy h1{font-size:clamp(50px,6vw,60px)}.copy .sub{font-size:14px}.copy .cta{margin-top:12px}.quest-scroll .quest{top:305px;bottom:auto;right:4%;width:300px;margin:0;padding:12px 17px}.quest .avatar{width:42px;height:42px}.quest .avatar svg{width:40px;height:40px;margin-top:3px}.quest .who{gap:12px}.quest .track{height:10px;margin-top:7px}.quest .task:first-child,.quest .task:last-child,.quest .verse{display:none}.quest .task{padding:4px 0;font-size:12px}.quest .task i,.quest .task svg{width:25px;height:25px}.quest>div[style]{margin-top:5px!important}}
-@media(max-width:680px){.quest-scroll{--scene-height:min(820px,100svh)}}
+@media(min-width:681px) and (max-width:1000px){.quest-scroll{--scene-height:min(700px,100svh)}.copy{padding-top:26px}.copy h1{font-size:clamp(50px,6vw,60px)}.copy .sub{font-size:14px}.copy .cta{margin-top:12px}.quest-scroll .quest{top:305px;bottom:auto;right:4%;width:300px;margin:0;padding:12px 17px}.quest .avatar{width:42px;height:42px}.quest .avatar svg{width:40px;height:40px;margin-top:3px}.quest .who{gap:12px}.quest .track{height:10px;margin-top:7px}.quest .task:first-child,.quest .task:last-child,.quest .verse{display:none}.quest .task{padding:4px 0;font-size:12px}.quest .task i,.quest .task svg{width:25px;height:25px}.quest>div[style]{margin-top:5px!important}}
+@media(max-width:680px){.quest-scroll{--scene-height:min(920px,100svh)}}
 
 
 /* The goblin patrol and dialogue run without scrolling; the final encounter has three strikes. */
@@ -233,4 +233,182 @@ h1 .last-line{font-size:.77em;white-space:nowrap;line-height:1.12}h1 .js{color:#
 footer{
   background:#081425;
   color:#d7e2f2;
+}
+
+/* =========================================================
+   QUEST TRANSITION
+   Goblin defeated -> the same two adventurers move downward
+   through a card-free area before the lesson browser.
+   ========================================================= */
+.quest-transition{
+  position:relative;
+  width:100%;
+  height:clamp(560px,56.25vw,940px);
+  overflow:hidden;
+  isolation:isolate;
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(255,255,255,.10) 0%,
+      rgba(255,255,255,.06) 12%,
+      rgba(255,255,255,.02) 22%,
+      rgba(255,255,255,0) 32%
+    ),
+    url("./assets/next-adventure-bg.png");
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
+  border-top:0;
+  border-bottom:1px solid rgba(20,66,111,.12);
+
+  /* Wait one second after QUEST CLEAR, then let scene 2 rise gently. */
+  opacity:0;
+  transform:translateY(70px);
+  transition:
+    transform .9s cubic-bezier(.22,.75,.25,1) 0s,
+    opacity .65s ease 0s;
+  will-change:transform,opacity;
+}
+
+.quest-transition.is-unlocked{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* PNG handles the entire landscape now. */
+.quest-transition::before,
+.quest-transition::after{
+  content:none;
+  display:none;
+}
+
+.transition-scenery{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+}
+
+.transition-runners{
+  position:absolute;
+  left:0;
+  top:0;
+  width:310px;
+  height:auto;
+  z-index:4;
+  opacity:0;
+  transform:translate3d(0,0,0);
+  transform-origin:center bottom;
+  will-change:transform,opacity;
+  filter:drop-shadow(0 8px 8px rgba(24,42,31,.22));
+}
+
+/* HTML text remains separate from the PNG so it can animate. */
+.transition-message{
+  --message-scale:1;
+  position:absolute;
+  z-index:5;
+  top:calc(36% - 50px);
+  left:50%;
+  transform:translateX(-50%) scale(var(--message-scale));
+  transform-origin:center top;
+  text-align:center;
+  color:#17365a;
+  opacity:0;
+  transition:opacity .25s ease;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.75),
+    0 4px 18px rgba(255,255,255,.4);
+  will-change:transform;
+}
+
+.transition-message span{
+  display:block;
+  font-size:clamp(11px,.9vw,15px);
+  font-weight:900;
+  letter-spacing:.24em;
+}
+
+.transition-message strong{
+  display:block;
+  margin-top:7px;
+  font-size:clamp(30px,3.5vw,58px);
+  letter-spacing:-.04em;
+  white-space:nowrap;
+}
+
+.quest-transition.is-unlocked .transition-message{
+  opacity:1;
+}
+
+.transition-next{
+  position:absolute;
+  z-index:5;
+  left:50%;
+  bottom:24px;
+  transform:translateX(-50%);
+  color:#17365a;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.18em;
+  opacity:.72;
+  text-shadow:0 1px 0 rgba(255,255,255,.7);
+}
+
+@media(max-width:900px){
+  .quest-transition{
+    height:clamp(470px,64vw,680px);
+    background-position:center center;
+  }
+
+  .transition-runners{
+    width:260px;
+  }
+}
+
+@media(max-width:680px){
+  .quest-transition{
+    height:430px;
+    background-position:center center;
+  }
+
+  .transition-runners{
+    width:205px;
+  }
+
+  .transition-message{
+    top:calc(32% - 50px);
+  }
+
+  .transition-message strong{
+    font-size:clamp(26px,8vw,38px);
+  }
+
+  .transition-next{
+    bottom:14px;
+    font-size:9px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .quest-transition{
+    transform:none;
+    transition:opacity .01s linear 0s;
+    will-change:auto;
+  }
+
+  .transition-runners,
+  .transition-message{
+    will-change:auto;
+  }
+}
+
+
+
+
+
+/* Cards remain clickable while the characters visually pass over them. */
+.landing-lesson-card{
+  position:relative;
+  z-index:3;
 }
