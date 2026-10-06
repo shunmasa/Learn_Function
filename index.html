@@ -1,147 +1,100 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Learn Code — JS &amp; Python</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<title>LearnJS &amp; Python | Brighter World Quest</title>
+<link href="./styles.css" rel="stylesheet"/>
 </head>
 <body>
-  <div id="auth-screen" class="screen">
-    <div class="auth-card">
-      <div class="logo">Learn Code</div>
-      <h1>JavaScript と Python を<br>インタラクティブに学ぼう</h1>
-      <p class="subtitle">短いレッスン → エディターで書く → 実行して確認 → 正解で次へ</p>
-      <div class="auth-tabs">
-        <button class="tab active" data-tab="login">ログイン</button>
-        <button class="tab" data-tab="register">新規登録</button>
-      </div>
-      <form id="login-form" class="auth-form">
-        <label>メールアドレス</label>
-        <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="username" />
-        <label>パスワード</label>
-        <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password" />
-        <p id="login-error" class="auth-error hidden"></p>
-        <button type="submit" class="btn primary">ログイン</button>
-        <p class="demo-hint">Admin: masashilandjob@gmail.com / 1111<br>新規の方は「新規登録」からアカウントを作成してください</p>
-      </form>
-      <form id="register-form" class="auth-form hidden">
-        <label>表示名</label>
-        <input type="text" id="reg-name" placeholder="あなたの名前" required maxlength="40" />
-        <label>メールアドレス</label>
-        <input type="email" id="reg-email" placeholder="you@example.com" required autocomplete="username" />
-        <label>パスワード（4文字以上）</label>
-        <input type="password" id="reg-password" placeholder="••••••••" required minlength="4" autocomplete="new-password" />
-        <label>パスワード（確認）</label>
-        <input type="password" id="reg-password2" placeholder="••••••••" required minlength="4" autocomplete="new-password" />
-        <p id="register-error" class="auth-error hidden"></p>
-        <button type="submit" class="btn primary">アカウント作成</button>
-      </form>
-    </div>
-  </div>
+<header class="site-header">
+<a aria-label="Learn Code ホーム" class="logo" href="#adventure">
+<svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M5 27 27 5V1H23L1 23Z" fill="#101b30"></path><path d="M6 21 24 3h1v3L8 24Z" fill="#d4f4ff"></path><path d="m10 19 4 4-3 3-5-5-3-3 3-3Z" fill="#f8ba32" stroke="#172137" stroke-width="1.5"></path><path d="m6 23-5 5 3 3 5-5" fill="#99541f" stroke="#172137" stroke-width="1.5"></path></svg>
+<span>Learn Code</span>
+</a>
+<a class="playground-link" href="./playground.html">Playground</a>
+<div aria-label="言語切り替え" class="header-language">
+<button class="header-lang active" data-header-lang="js" type="button">JavaScript</button>
+<button class="header-lang" data-header-lang="py" type="button">Python</button>
+</div>
+<nav aria-label="メインナビゲーション" class="app-header-nav">
+<a href="#lessons">レッスン</a>
+<a data-progress-link="" href="./learn.html?view=progress">進捗</a>
+</nav>
+<div class="auth-actions" data-auth-guest="">
+<button class="header-auth-link" data-open-auth="login" type="button">ログイン</button>
+<button class="btn green header-signup" data-open-auth="signup" type="button">サインアップ</button>
+</div>
+<div class="auth-actions user-actions" data-auth-user="" hidden="">
+<span class="header-user" data-user-name=""></span>
+<button class="header-auth-link" data-logout="" type="button">ログアウト</button>
+</div>
+</header>
+<section aria-label="スクロールでコインを集める冒険" class="quest-scroll" id="adventure"><div class="hero">
+<div aria-hidden="true" class="world"><div class="landscape"></div><div class="runners"><img alt="" class="runner-sprite" height="778" src="./assets/adventurers.png" width="2021"/><span class="sword-strike"><svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M5 27 27 5V1H23L1 23Z" fill="#101b30"></path><path d="M6 21 24 3h1v3L8 24Z" fill="#d4f4ff"></path><path d="m10 19 4 4-3 3-5-5-3-3 3-3Z" fill="#f8ba32" stroke="#172137" stroke-width="1.5"></path><path d="m6 23-5 5 3 3 5-5" fill="#99541f" stroke="#172137" stroke-width="1.5"></path></svg></span><span class="sword-slash"><svg aria-hidden="true" viewbox="0 0 160 160"><path d="M20 8Q132 50 130 140Q104 57 20 8Z" fill="#f2fcff"></path><path d="M30 8Q141 61 132 151" fill="none" stroke="#ffe993" stroke-width="7"></path></svg></span></div><span class="world-coin"><svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M11 2h10v3h4v4h3v14h-3v4h-4v3H11v-3H7v-4H4V9h3V5h4Z" fill="#df8400" stroke="#121d32" stroke-width="2"></path><path d="M12 5h8v3h4v15h-4v4h-8v-4H8V9h4Z" fill="#ffc526"></path><path d="M12 8h4v16h-4Z" fill="#fff398"></path><path d="M20 10h2v12h-2Z" fill="#f29400"></path></svg></span><span class="world-coin"><svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M11 2h10v3h4v4h3v14h-3v4h-4v3H11v-3H7v-4H4V9h3V5h4Z" fill="#df8400" stroke="#121d32" stroke-width="2"></path><path d="M12 5h8v3h4v15h-4v4h-8v-4H8V9h4Z" fill="#ffc526"></path><path d="M12 8h4v16h-4Z" fill="#fff398"></path><path d="M20 10h2v12h-2Z" fill="#f29400"></path></svg></span><span class="world-coin"><svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M11 2h10v3h4v4h3v14h-3v4h-4v3H11v-3H7v-4H4V9h3V5h4Z" fill="#df8400" stroke="#121d32" stroke-width="2"></path><path d="M12 5h8v3h4v15h-4v4h-8v-4H8V9h4Z" fill="#ffc526"></path><path d="M12 8h4v16h-4Z" fill="#fff398"></path><path d="M20 10h2v12h-2Z" fill="#f29400"></path></svg></span><div class="enemy-actor"><div class="enemy-hp"><span></span><span></span><span></span></div><div class="enemy-look"><img alt="" class="enemy-sprite" height="1138" src="./assets/goblin.png" width="1382"/></div><span class="enemy-puff">✦</span><span class="defeat-label">DEFEATED! +60 XP</span></div></div>
+<div class="copy">
+<div class="tag">CODE TODAY. A BRIGHTER TOMORROW.</div>
+<h1>Learn <span class="js">JavaScript</span><br/>&amp; <span class="py">Python</span><br/><span class="last-line">for a Brighter World.</span></h1>
+<p class="sub">本物のスキルを身につけ、本物の課題を解く。<br/>知恵に歩み、真理に立つ。</p>
+<div class="cta">
+<a class="btn" data-start-quest="" href="#adventure">クエストを始める →</a>
+<button class="trailer" type="button"><span class="play">▶</span>トレーラーを見る</button>
+</div>
+</div>
+<aside aria-label="進捗" class="quest">
+<div class="who">
+<div class="avatar"><svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M8 4h4V2h10v3h4v4h3v10h-3v8H7v-8H3V9h5Z" fill="#241a18"></path><path d="M9 5h4V3h8v3h4v3h2v9H6V9h3Z" fill="#874720"></path><path d="M9 7h5V5h6v3h5v4h-3v4H9Z" fill="#b66b32"></path><path d="M9 13h5v-2h5v2h4v11h-3v3H12v-3H9Z" fill="#ffc191"></path><path d="M13 15h2v6h-2Zm6 0h2v6h-2Z" fill="#192037"></path><path d="M11 22h2v2h-2Z" fill="#ed6a4b"></path><path d="M15 24h5v2h-5Z" fill="#f27055"></path><path d="M8 27h5v2h8v-2h4v5H8Z" fill="#2089ba"></path><path d="M6 27h5v5H6Z" fill="#e74747"></path><path d="M14 28h3v3h-3Z" fill="#f8cf4b"></path></svg></div>
+<div class="bar"><div class="top"><b>レベル 1</b><span data-xp="">120 / 300 XP</span></div><div class="track"><div aria-label="経験値" aria-valuemax="300" aria-valuemin="0" aria-valuenow="120" class="fill" role="progressbar"></div></div></div>
+</div>
+<div style="margin-top:10px">
+<div class="task"><i><svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M5 27 27 5V1H23L1 23Z" fill="#101b30"></path><path d="M6 21 24 3h1v3L8 24Z" fill="#d4f4ff"></path><path d="m10 19 4 4-3 3-5-5-3-3 3-3Z" fill="#f8ba32" stroke="#172137" stroke-width="1.5"></path><path d="m6 23-5 5 3 3 5-5" fill="#99541f" stroke="#172137" stroke-width="1.5"></path></svg></i>3つのレッスンを完了<em>1/3</em></div>
+<div class="task"><i><svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M11 2h10v3h4v4h3v14h-3v4h-4v3H11v-3H7v-4H4V9h3V5h4Z" fill="#df8400" stroke="#121d32" stroke-width="2"></path><path d="M12 5h8v3h4v15h-4v4h-8v-4H8V9h4Z" fill="#ffc526"></path><path d="M12 8h4v16h-4Z" fill="#fff398"></path><path d="M20 10h2v12h-2Z" fill="#f29400"></path></svg></i>コインを3枚集める<em data-quest-coins="">0/3</em></div>
+<div class="task"><i><svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M4 12V5h24v7h2v17H2V12Z" fill="#903c11" stroke="#0c172c" stroke-width="2"></path><path d="M4 5h24v9H4Z" fill="#ffb916"></path><path d="M4 17h24v9H4Z" fill="#b45a16"></path><path d="M5 4h3v24H5Zm19 0h3v24h-3ZM3 13h26v4H3Z" fill="#ffe749"></path><path d="M13 12h6v8h-6Z" fill="#ffdd4e" stroke="#5d2917" stroke-width="1.5"></path></svg></i>最初のバッジを獲得<em data-badge="">0/1</em></div>
+</div>
+<div class="verse"><p>「あなたがたの光を人々の前に輝かしなさい。」</p><small>マタイ 5:16</small></div>
+</aside>
+<div aria-hidden="true" class="enemy-comment">石がパンになるように、命じろ！</div><button aria-pressed="false" class="pause-enemy" data-pause-enemy="" type="button">演出を一時停止 Ⅱ</button>
+<div class="scroll-hud"><span class="coin-score"><svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M11 2h10v3h4v4h3v14h-3v4h-4v3H11v-3H7v-4H4V9h3V5h4Z" fill="#df8400" stroke="#121d32" stroke-width="2"></path><path d="M12 5h8v3h4v15h-4v4h-8v-4H8V9h4Z" fill="#ffc526"></path><path d="M12 8h4v16h-4Z" fill="#fff398"></path><path d="M20 10h2v12h-2Z" fill="#f29400"></path></svg><span data-coin-count="">0 / 3</span></span><span class="scroll-cue">スクロールで冒険する ↓</span></div><a class="skip-adventure" href="#lessons">レッスンへ ↓</a><span aria-atomic="true" aria-live="polite" class="sr-only" data-quest-announcement="" role="status"></span>
+</div></section>
+<section aria-labelledby="lessons-title" class="lesson-browser" id="lessons">
+<div class="lesson-browser-head">
+<div>
+<div class="section-kicker">LEARNING PATH</div>
+<h2 data-lessons-title="" id="lessons-title">JavaScript レッスン</h2>
+<p>レッスンを選んでコードを書いてみよう。未ログインの場合は、選択後にログインへ案内します。</p>
+</div>
+<div aria-label="レッスン言語" class="language-switch" role="tablist">
+<button aria-selected="true" class="language-tab active" data-lang-switch="js" role="tab" type="button">JavaScript</button>
+<button aria-selected="false" class="language-tab" data-lang-switch="py" role="tab" type="button">Python</button>
+</div>
+</div>
+<div aria-live="polite" class="landing-lesson-grid" id="landing-lesson-list"></div>
+</section>
+<footer>© LearnJS &amp; Python — サンプルページ</footer>
+<dialog aria-labelledby="dialog-title" class="dialog" id="preview-dialog"><button aria-label="閉じる" class="close-dialog" type="button">×</button><h2 id="dialog-title"></h2><div id="dialog-content"></div></dialog><div aria-live="polite" class="site-toast" hidden="" id="site-toast" role="status"></div><dialog aria-labelledby="auth-dialog-title" class="dialog auth-dialog" id="auth-dialog">
+<button aria-label="閉じる" class="close-dialog close-auth-dialog" type="button">×</button>
+<h2 id="auth-dialog-title">ログイン</h2>
+<p class="auth-lead" data-auth-lead="">続けるにはログインしてください。</p>
+<div aria-label="認証方法" class="auth-tabs" role="tablist">
+<button aria-selected="true" class="auth-tab active" data-auth-tab="login" role="tab" type="button">ログイン</button>
+<button aria-selected="false" class="auth-tab" data-auth-tab="signup" role="tab" type="button">サインアップ</button>
+</div>
+<form class="landing-auth-form" id="landing-login-form">
+<label>メールアドレス<input autocomplete="username" id="landing-login-email" required="" type="email"/></label>
+<label>パスワード<input autocomplete="current-password" id="landing-login-password" required="" type="password"/></label>
+<p class="auth-error" hidden="" id="landing-login-error"></p>
+<button class="btn auth-submit" type="submit">ログインして続ける</button>
+</form>
+<form class="landing-auth-form" hidden="" id="landing-signup-form">
+<label>表示名<input id="landing-signup-name" maxlength="40" required="" type="text"/></label>
+<label>メールアドレス<input autocomplete="username" id="landing-signup-email" required="" type="email"/></label>
+<label>パスワード（8文字以上）<input autocomplete="new-password" id="landing-signup-password" minlength="8" required="" type="password"/></label>
+<label>パスワード（確認）<input autocomplete="new-password" id="landing-signup-password2" minlength="8" required="" type="password"/></label>
+<p class="auth-error" hidden="" id="landing-signup-error"></p>
+<button class="btn auth-submit" type="submit">アカウントを作成</button>
+</form>
+</dialog>
 
-  <div id="app-screen" class="screen hidden">
-    <header class="app-header">
-      <div class="header-left">
-        <span class="logo-sm">Learn Code</span> <a href="playground.html" style="margin-left:0.75rem;font-size:0.8rem;color:#2563eb;text-decoration:none;">Playground</a>
-        <div class="lang-tabs">
-          <button class="lang-tab active" data-lang="js">JavaScript</button>
-          <button class="lang-tab" data-lang="py">Python</button>
-        </div>
-        <nav>
-          <button class="nav-btn active" data-view="lessons">レッスン</button>
-          <button class="nav-btn" data-view="progress">進捗</button>
-        </nav>
-      </div>
-      <div class="header-right">
-        <span id="user-name"></span>
-        <button id="logout-btn" class="btn ghost">ログアウト</button>
-      </div>
-    </header>
-
-    <main>
-      <section id="lessons-view" class="view">
-        <div class="page-header">
-          <h2 id="lessons-heading">JavaScript レッスン</h2>
-          <p>順番に進めてください。正解すると次が開放されます。</p>
-        </div>
-        <div id="lesson-list" class="lesson-grid"></div>
-      </section>
-
-      <section id="progress-view" class="view hidden">
-        <div class="page-header"><h2>あなたの進捗</h2></div>
-        <div class="progress-card">
-          <div class="progress-bar-wrap"><div id="progress-bar" class="progress-bar"></div></div>
-          <p id="progress-text">0 / 0 完了</p>
-          <div id="completed-list"></div>
-        </div>
-      </section>
-
-      <section id="lesson-detail-view" class="view hidden">
-        <div class="lesson-layout">
-          <aside class="lesson-aside">
-            <div class="lesson-aside-scroll">
-              <div class="back-row"><button id="back-to-list">← レッスン一覧</button></div>
-              <div class="lesson-meta"><span id="lesson-number">LESSON 1</span><span id="lesson-language">JAVASCRIPT</span></div>
-              <h2 id="lesson-title">タイトル</h2>
-              <p id="lesson-description" class="lesson-description"></p>
-              <section id="lesson-task-section" class="lesson-task-section">
-                <div class="section-label"><span class="section-label-mark">01</span> DO THIS</div>
-                <div id="lesson-task"></div>
-              </section>
-              <section class="lesson-learn-section">
-                <div class="section-label"><span class="section-label-mark">02</span> LEARN</div>
-                <div id="lesson-content" class="lesson-content"></div>
-              </section>
-              <div class="hints-section">
-                <button id="toggle-hints" aria-expanded="false">ヒントを見る <span aria-hidden="true">↗</span></button>
-                <div id="hints" class="hidden"></div>
-              </div>
-            </div>
-            <div class="preview-panel" aria-live="polite">
-              <div class="preview-heading"><span>PREVIEW</span><span class="preview-indicator"></span></div>
-              <pre id="preview-output">実行結果がここに表示されます</pre>
-            </div>
-          </aside>
-          <div class="editor-panel">
-            <div class="editor-topbar">
-              <div class="editor-file"><span class="file-icon">&lt;/&gt;</span><span id="editor-filename">main.js</span><span class="file-dirty" aria-hidden="true"></span></div>
-              <span id="lang-badge" class="editor-lang-badge">JavaScript</span>
-            </div>
-            <div class="editor-toolbar">
-              <div class="editor-toolbar-note"><span class="live-dot"></span> 入力中に出力を更新</div>
-              <div class="editor-actions"><button id="reset-btn" class="btn ghost small">リセット</button><button id="run-btn" class="btn primary small">▶ 実行して判定 <span class="shortcut">⌘ / Ctrl + Enter</span></button></div>
-            </div>
-            <div class="code-editor-wrap">
-              <pre id="code-highlight" class="code-highlight" aria-hidden="true"></pre>
-              <textarea id="code-editor" spellcheck="false" wrap="off" aria-label="コードエディター"></textarea>
-            </div>
-            <div class="output-section">
-              <div class="editor-tabs" role="tablist" aria-label="実行結果">
-                <button class="editor-tab active" data-panel="console" role="tab" aria-selected="true" aria-controls="console-panel">CONSOLE</button>
-                <button class="editor-tab" data-panel="tests" role="tab" aria-selected="false" aria-controls="tests-panel">TESTS <span id="tests-count"></span></button>
-                <span class="output-caption">OUTPUT</span>
-              </div>
-              <div id="console-panel" class="panel active" role="tabpanel"><div id="console-output" class="console-output"></div></div>
-              <div id="tests-panel" class="panel" role="tabpanel"><div id="tests-output" class="tests-output"></div></div>
-            </div>
-            <div class="result-bar">
-              <span id="result-message"></span>
-              <button id="next-lesson-btn" class="btn primary small hidden">次のレッスンへ →</button>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
-  <script src="js/config.js"></script>
-  <script src="js/lessons-data.js"></script>
-  <script src="js/lessons-python.js"></script>
-  <script src="js/app.js"></script>
-</body>
+<script src="./js/config.js"></script><script src="./js/lessons-data.js"></script><script src="./js/lessons-python.js"></script><script src="./main.js"></script></body>
 </html>

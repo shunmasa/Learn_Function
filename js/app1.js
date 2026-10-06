@@ -231,7 +231,6 @@ $("#login-form").addEventListener("submit", async (e) => {
       const data = await api("/api/login", { method: "POST", body: { email, password } });
       setSessionUser(data.user, data.token);
       showApp();
-      applyRequestedRoute();
       return;
     }
 
@@ -270,7 +269,6 @@ $("#register-form").addEventListener("submit", async (e) => {
       const data = await api("/api/register", { method: "POST", body: { name, email, password } });
       setSessionUser(data.user, data.token);
       showApp();
-      applyRequestedRoute();
       return;
     }
 
@@ -924,43 +922,11 @@ function updateProgress() {
   }
 }
 
-
-function applyRequestedRoute() {
-  const params = new URLSearchParams(window.location.search);
-  const requestedLang = params.get("lang");
-  if (requestedLang === "js" || requestedLang === "py") {
-    currentLang = requestedLang;
-    syncLangUI();
-    renderLessonList();
-    updateProgress();
-  }
-
-  if (params.get("view") === "progress") {
-    $$(".view").forEach((v) => v.classList.add("hidden"));
-    $("#progress-view").classList.remove("hidden");
-    $$(".nav-btn").forEach((b) => b.classList.toggle("active", b.dataset.view === "progress"));
-    updateProgress();
-    return;
-  }
-
-  const requestedLesson = Number(params.get("lesson"));
-  if (Number.isInteger(requestedLesson) && requestedLesson > 0) {
-    const exists = getLessons().some((lesson) => lesson.id === requestedLesson);
-    if (exists && isUnlocked(requestedLesson)) {
-      openLesson(requestedLesson);
-    }
-  }
-}
-
 // ========== INIT ==========
 (async function init() {
   try {
-    if (await loadUser()) {
-      showApp();
-      applyRequestedRoute();
-    } else {
-      showAuth();
-    }
+    if (await loadUser()) showApp();
+    else showAuth();
   } catch (e) {
     console.warn(e);
     showAuth();
