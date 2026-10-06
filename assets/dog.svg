@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-labelledby="title desc">
+  <title id="title">公園を走る犬</title>
+  <desc id="desc">青空の下、芝生の公園を元気に走る茶色い犬</desc>
+  <rect width="320" height="220" fill="#dff4ff"/>
+  <circle cx="260" cy="42" r="24" fill="#ffd85a"/>
+  <rect y="150" width="320" height="70" fill="#8fd36a"/>
+  <path d="M0 165 C45 145 85 160 125 150 C175 137 205 160 250 147 C280 139 300 147 320 143 V220 H0Z" fill="#74bf55"/>
+  <rect x="38" y="93" width="12" height="63" fill="#76543c"/>
+  <circle cx="44" cy="78" r="32" fill="#64b65e"/>
+  <circle cx="65" cy="88" r="25" fill="#75c76d"/>
+  <circle cx="25" cy="91" r="23" fill="#75c76d"/>
+
+  <g transform="translate(105 95)">
+    <ellipse cx="67" cy="58" rx="48" ry="28" fill="#b9723f"/>
+    <circle cx="115" cy="43" r="26" fill="#c8844a"/>
+    <path d="M99 22 L83 1 L107 10Z" fill="#8b5130"/>
+    <path d="M127 20 L145 3 L143 30Z" fill="#8b5130"/>
+    <ellipse cx="131" cy="50" rx="6" ry="5" fill="#2d241f"/>
+    <circle cx="117" cy="38" r="4" fill="#2d241f"/>
+    <path d="M18 54 Q-3 39 9 21" fill="none" stroke="#8b5130" stroke-width="10" stroke-linecap="round"/>
+    <path d="M45 76 L29 105" stroke="#8b5130" stroke-width="12" stroke-linecap="round"/>
+    <path d="M78 78 L67 108" stroke="#8b5130" stroke-width="12" stroke-linecap="round"/>
+    <path d="M96 70 L112 96" stroke="#8b5130" stroke-width="12" stroke-linecap="round"/>
+    <path d="M30 106 L16 108" stroke="#4d392c" stroke-width="8" stroke-linecap="round"/>
+    <path d="M67 108 L53 109" stroke="#4d392c" stroke-width="8" stroke-linecap="round"/>
+    <path d="M112 96 L126 97" stroke="#4d392c" stroke-width="8" stroke-linecap="round"/>
+    <path d="M48 48 Q63 39 78 48" fill="none" stroke="#5b98d8" stroke-width="8"/>
+    <circle cx="67" cy="48" r="5" fill="#f8d45b"/>
+  </g>
+
+  <path d="M175 183 q18 -12 36 0" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity=".7"/>
+  <path d="M207 194 q16 -9 30 1" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity=".6"/>
+</svg>

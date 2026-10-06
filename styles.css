@@ -142,4 +142,95 @@ h1 .last-line{font-size:.77em;white-space:nowrap;line-height:1.12}h1 .js{color:#
 .site-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:100;background:#112746;color:#fff;padding:11px 17px;border-radius:12px;box-shadow:0 10px 30px #071b3540;font-size:12px;font-weight:700}.site-toast[hidden]{display:none}
 
 @media(max-width:1100px){.site-header{flex-wrap:wrap;gap:8px 13px}.site-header .logo{margin-right:auto}.header-language{order:4}.app-header-nav{order:5}.playground-link{order:2}.auth-actions{order:3}.landing-lesson-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:680px){.site-header{position:relative;padding:10px 14px}.site-header .logo{font-size:19px}.site-header .logo svg{width:31px;height:31px}.playground-link{font-size:11px}.header-language{order:5;width:100%;display:grid;grid-template-columns:1fr 1fr}.app-header-nav{order:6;width:100%;justify-content:center;border-top:1px solid #e5edf6;padding-top:7px}.auth-actions{margin-left:0}.header-user{max-width:110px}.header-signup{padding:9px 11px!important;font-size:11px!important}.header-auth-link{font-size:11px}.lesson-browser{scroll-margin-top:18px;padding:39px 17px 50px}.lesson-browser-head{align-items:stretch;flex-direction:column;margin-bottom:21px}.language-switch{align-self:stretch;display:grid;grid-template-columns:1fr 1fr}.landing-lesson-grid{grid-template-columns:1fr;gap:11px}.landing-lesson-card{min-height:0;padding:18px}.lesson-browser h2{font-size:30px}}
+@media(max-width:680px){.site-header{position:relative;padding:10px 14px}.site-header .logo{font-size:19px}.site-header .logo svg{width:31px;height:31px}.playground-link{font-size:11px}.header-language{order:5;width:100%;display:grid;grid-template-columns:repeat(3,1fr)}.app-header-nav{order:6;width:100%;justify-content:center;border-top:1px solid #e5edf6;padding-top:7px}.auth-actions{margin-left:0}.header-user{max-width:110px}.header-signup{padding:9px 11px!important;font-size:11px!important}.header-auth-link{font-size:11px}.lesson-browser{scroll-margin-top:18px;padding:39px 17px 50px}.lesson-browser-head{align-items:stretch;flex-direction:column;margin-bottom:21px}.language-switch{align-self:stretch;display:grid;grid-template-columns:repeat(3,1fr)}.landing-lesson-grid{grid-template-columns:1fr;gap:11px}.landing-lesson-card{min-height:0;padding:18px}.lesson-browser h2{font-size:30px}}
+
+
+
+/* === Dungeon theme for the scrolled lesson browser section === */
+.lesson-browser{
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(7, 17, 32, .70) 0%, rgba(9, 19, 36, .78) 45%, rgba(8, 17, 31, .84) 100%),
+    url("./assets/hero-no-enemy.png") center center / cover no-repeat;
+  border-top: 1px solid rgba(230,237,246,.25);
+}
+
+.lesson-browser::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255,245,177,.18), transparent 26%),
+    radial-gradient(circle at 82% 20%, rgba(131,204,255,.12), transparent 28%);
+  pointer-events:none;
+}
+
+.lesson-browser > *{
+  position: relative;
+  z-index: 1;
+}
+
+.section-kicker{
+  color:#9bd2ff;
+}
+
+.lesson-browser h2{
+  color:#ffffff;
+  text-shadow:0 2px 10px rgba(0,0,0,.20);
+}
+
+.lesson-browser-head p{
+  color:#d8e5f6;
+}
+
+.language-switch{
+  background:rgba(233,241,251,.16);
+  border:1px solid rgba(216,228,243,.22);
+  backdrop-filter: blur(8px);
+}
+
+.language-tab{
+  color:#d8e6f8;
+}
+
+.language-tab.active{
+  background:rgba(255,255,255,.92);
+  color:#0d376e;
+  box-shadow:0 3px 10px rgba(37,74,119,.18);
+}
+
+.landing-lesson-card{
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(220,230,242,.28);
+  box-shadow:0 12px 28px rgba(0,0,0,.12);
+  backdrop-filter: blur(7px);
+}
+
+.landing-lesson-card:hover{
+  border-color:#a7c8ef;
+  box-shadow:0 18px 34px rgba(0,0,0,.18);
+}
+
+.landing-lesson-card.locked{
+  background:rgba(239,244,250,.82);
+  color:#6f7d94;
+}
+
+.landing-lesson-card.completed{
+  background:linear-gradient(180deg, rgba(251,255,252,.92), rgba(244,255,248,.88));
+  border-color:#99e1bb;
+}
+
+.lesson-description{
+  color:#596d8b;
+}
+
+.lesson-number{
+  color:#6ec3ff;
+}
+
+footer{
+  background:#081425;
+  color:#d7e2f2;
+}

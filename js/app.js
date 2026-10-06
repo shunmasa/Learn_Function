@@ -1,14 +1,16 @@
 // ========== STATE ==========
 let currentUser = null;
 let currentLessonId = null;
-let currentLang = "js"; // "js" | "py"
-let completedByLang = { js: new Set(), py: new Set() };
+let currentLang = "js"; // "html" | "js" | "py"
+let completedByLang = { html: new Set(), js: new Set(), py: new Set() };
 
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
 function getLessons() {
-  return currentLang === "py" ? LESSONS_PY : LESSONS_JS;
+  if (currentLang === "html") return LESSONS_HTML;
+  if (currentLang === "py") return LESSONS_PY;
+  return LESSONS_JS;
 }
 
 function getCompleted() {
@@ -77,9 +79,10 @@ function saveUsersMap(map) {
 }
 
 function applyUserProgress(user) {
+  completedByLang.html = new Set(user.completed_html || []);
   completedByLang.js = new Set(user.completed_js || user.completed || []);
   completedByLang.py = new Set(user.completed_py || []);
-  if (user.lang === "js" || user.lang === "py") currentLang = user.lang;
+  if (user.lang === "html" || user.lang === "js" || user.lang === "py") currentLang = user.lang;
 }
 
 function setSessionUser(user, token) {
@@ -87,6 +90,7 @@ function setSessionUser(user, token) {
     email: user.email,
     name: user.name,
     isAdmin: !!user.isAdmin,
+    completed_html: user.completed_html || [],
     completed_js: user.completed_js || [],
     completed_py: user.completed_py || [],
     lang: user.lang || "js",
@@ -100,6 +104,7 @@ function setSessionUser(user, token) {
       email: currentUser.email,
       name: currentUser.name,
       isAdmin: currentUser.isAdmin,
+      completed_html: [...completedByLang.html],
       completed_js: [...completedByLang.js],
       completed_py: [...completedByLang.py],
       lang: currentLang,
@@ -109,6 +114,7 @@ function setSessionUser(user, token) {
 
 async function persistCurrentUser() {
   if (!currentUser) return;
+  currentUser.completed_html = [...completedByLang.html];
   currentUser.completed_js = [...completedByLang.js];
   currentUser.completed_py = [...completedByLang.py];
   currentUser.lang = currentLang;
@@ -118,6 +124,7 @@ async function persistCurrentUser() {
       await api("/api/progress", {
         method: "PUT",
         body: {
+          completed_html: currentUser.completed_html,
           completed_js: currentUser.completed_js,
           completed_py: currentUser.completed_py,
           lang: currentLang,
@@ -135,6 +142,7 @@ async function persistCurrentUser() {
       name: currentUser.name,
       password: (map[email] && map[email].password) || currentUser.password || "",
       isAdmin: !!currentUser.isAdmin,
+      completed_html: currentUser.completed_html,
       completed_js: currentUser.completed_js,
       completed_py: currentUser.completed_py,
       lang: currentLang,
@@ -149,6 +157,7 @@ async function persistCurrentUser() {
       email: currentUser.email,
       name: currentUser.name,
       isAdmin: currentUser.isAdmin,
+      completed_html: currentUser.completed_html,
       completed_js: currentUser.completed_js,
       completed_py: currentUser.completed_py,
       lang: currentLang,
@@ -280,7 +289,7 @@ $("#register-form").addEventListener("submit", async (e) => {
       return;
     }
     map[email] = {
-      email, name, password, isAdmin: false, completed_js: [], completed_py: [],
+      email, name, password, isAdmin: false, completed_html: [], completed_js: [], completed_py: [],
     };
     saveUsersMap(map);
     setSessionUser(map[email], null);
@@ -298,7 +307,7 @@ $("#logout-btn").addEventListener("click", async () => {
     try { await api("/api/logout", { method: "POST" }); } catch (e) {}
   }
   currentUser = null;
-  completedByLang = { js: new Set(), py: new Set() };
+  completedByLang = { html: new Set(), js: new Set(), py: new Set() };
   localStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem("learnfp_user");
@@ -316,7 +325,7 @@ function syncLangUI() {
   $$(".lang-tab").forEach((t) => {
     t.classList.toggle("active", t.dataset.lang === currentLang);
   });
-  const label = currentLang === "py" ? "Python" : "JavaScript";
+  const label = currentLang === "html" ? "HTML" : currentLang === "py" ? "Python" : "JavaScript";
   const heading = $("#lessons-heading");
   if (heading) heading.textContent = label + " レッスン";
   const badge = $("#lang-badge");
@@ -391,7 +400,7 @@ function openLesson(id) {
   $("#lesson-detail-view").classList.remove("hidden");
 
   $("#lesson-number").textContent = `LESSON ${lesson.id}`;
-  $("#lesson-language").textContent = currentLang === "py" ? "PYTHON" : "JAVASCRIPT";
+  $("#lesson-language").textContent = currentLang === "html" ? "HTML" : currentLang === "py" ? "PYTHON" : "JAVASCRIPT";
   $("#lesson-title").textContent = lesson.title;
   $("#lesson-description").textContent = lesson.description || "";
   $("#lesson-content").innerHTML = lesson.content;
@@ -408,12 +417,28 @@ function openLesson(id) {
   $("#result-message").textContent = "";
   $("#result-message").className = "";
   $("#next-lesson-btn").classList.add("hidden");
-  $("#console-output").innerHTML = `<div class="info">入力すると、ここに console / print の結果がリアルタイム表示されます</div>`;
+  $("#console-output").innerHTML = currentLang === "html"
+    ? `<div class="info">HTML は VIEW タブにリアルタイム表示されます。</div>`
+    : `<div class="info">入力すると、ここに console / print の結果がリアルタイム表示されます</div>`;
   $("#tests-output").innerHTML = "";
   $("#tests-count").textContent = "";
   $("#preview-output").textContent = "実行結果がここに表示されます";
-  $("#editor-filename").textContent = currentLang === "py" ? "main.py" : "main.js";
-  switchEditorTab("console");
+  $("#editor-filename").textContent = currentLang === "html" ? "index.html" : currentLang === "py" ? "main.py" : "main.js";
+
+  const htmlMode = currentLang === "html";
+  const viewTab = $("#view-tab");
+  const viewPanel = $("#view-panel");
+  if (viewTab) viewTab.classList.toggle("hidden", !htmlMode);
+  if (viewPanel) viewPanel.classList.toggle("hidden", !htmlMode);
+  const previewPanel = $(".preview-panel");
+  if (previewPanel) previewPanel.classList.toggle("hidden", htmlMode);
+
+  if (htmlMode) {
+    renderHtmlPreview($("#code-editor").value);
+    switchEditorTab("view");
+  } else {
+    switchEditorTab("console");
+  }
   scheduleLiveConsole();
 }
 
@@ -558,7 +583,24 @@ async function runJavaScriptTest(testFn, code) {
 let liveTimer = null;
 let liveRunning = false;
 
+function renderHtmlPreview(code) {
+  const frame = $("#html-preview-frame");
+  if (!frame) return;
+
+  const csp = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src http: https: data:; style-src 'unsafe-inline'; font-src data:;">`;
+  const source = String(code || "");
+  const safeSource = /<head[\s>]/i.test(source)
+    ? source.replace(/<head([^>]*)>/i, `<head$1>${csp}`)
+    : csp + source;
+
+  frame.srcdoc = safeSource;
+}
+
 function syncPreview() {
+  if (currentLang === "html") {
+    renderHtmlPreview($("#code-editor").value);
+    return;
+  }
   const output = $("#console-output").textContent.trim();
   $("#preview-output").textContent = output || "出力はありません";
 }
@@ -629,7 +671,10 @@ async function updateLiveConsole() {
 
   liveRunning = true;
   try {
-    if (currentLang === "py") {
+    if (currentLang === "html") {
+      renderHtmlPreview(code);
+      consoleEl.innerHTML = `<div class="info">VIEW タブを更新しました。</div>`;
+    } else if (currentLang === "py") {
       const r = await runPython(code);
       if (r.error) {
         consoleEl.innerHTML =
@@ -661,7 +706,7 @@ async function updateLiveConsole() {
 function scheduleLiveConsole() {
   if (liveTimer) clearTimeout(liveTimer);
   // JS は短め、Python は少し長め（重いため）
-  const delay = currentLang === "py" ? 600 : 350;
+  const delay = currentLang === "html" ? 180 : currentLang === "py" ? 600 : 350;
   liveTimer = setTimeout(() => {
     updateLiveConsole();
   }, delay);
@@ -676,7 +721,7 @@ if (codeEditorEl) {
     $("#tests-output").innerHTML = "";
     $("#tests-count").textContent = "";
     $("#next-lesson-btn").classList.add("hidden");
-    switchEditorTab("console");
+    switchEditorTab(currentLang === "html" ? "view" : "console");
     scheduleLiveConsole();
   });
   codeEditorEl.addEventListener("scroll", () => {
@@ -768,7 +813,10 @@ async function runCode() {
   const testsEl = $("#tests-output");
   const resultMsg = $("#result-message");
 
-  if (currentLang === "py") {
+  if (currentLang === "html") {
+    renderHtmlPreview(code);
+    consoleEl.innerHTML = `<div class="info">HTML を VIEW タブに表示しました。</div>`;
+  } else if (currentLang === "py") {
     const r = await runPython(code);
     if (r.error) {
       consoleEl.innerHTML = `<div class="error">${escapeHtml(r.error)}</div>` +
@@ -835,11 +883,23 @@ async function runCode() {
   $("#tests-count").textContent = `${passCount}/${lesson.tests.length}`;
 
   if (allPassed) {
+    const completed = getCompleted();
+    const alreadyCompleted = completed.has(lesson.id);
+    const levelBefore = getPlayerLevel();
+
     if (passCount > 0) celebrateConfetti({ count: 160, duration: 180 });
-    resultMsg.textContent = "🎉 全テスト通過！素晴らしい！";
+    completed.add(lesson.id);
+
+    const levelAfter = getPlayerLevel();
+    if (!alreadyCompleted && levelAfter > levelBefore) {
+      celebrateConfetti({ count: 240, duration: 220 });
+      resultMsg.textContent = `🎉 LEVEL UP! Level ${levelAfter} になりました！`;
+    } else {
+      resultMsg.textContent = "🎉 全条件クリア！合格です！";
+    }
     resultMsg.className = "success";
-    getCompleted().add(lesson.id);
     saveUser();
+    updateProgress();
     $("#next-lesson-btn").classList.remove("hidden");
     switchEditorTab("tests");
     if (lesson.explanation) {
@@ -881,7 +941,8 @@ $("#reset-btn").addEventListener("click", () => {
     $("#tests-count").textContent = "";
     $("#preview-output").textContent = "実行結果がここに表示されます";
     $("#next-lesson-btn").classList.add("hidden");
-    switchEditorTab("console");
+    if (currentLang === "html") renderHtmlPreview($("#code-editor").value);
+    switchEditorTab(currentLang === "html" ? "view" : "console");
     scheduleLiveConsole();
   }
 });
@@ -906,14 +967,46 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+
+const LESSONS_PER_LEVEL = 10;
+
+function getTotalCompletedCount() {
+  return Object.values(completedByLang).reduce((total, set) => total + set.size, 0);
+}
+
+function getPlayerLevel() {
+  return 1 + Math.floor(getTotalCompletedCount() / LESSONS_PER_LEVEL);
+}
+
+function updatePlayerLevelUI() {
+  const totalCompleted = getTotalCompletedCount();
+  const level = getPlayerLevel();
+  const progressInLevel = totalCompleted % LESSONS_PER_LEVEL;
+  const pct = (progressInLevel / LESSONS_PER_LEVEL) * 100;
+  const remaining = LESSONS_PER_LEVEL - progressInLevel;
+
+  const levelEl = $("#player-level");
+  const levelTitle = $("#player-level-title");
+  const totalEl = $("#player-total-completed");
+  const bar = $("#level-progress-bar");
+  const text = $("#level-progress-text");
+
+  if (levelEl) levelEl.textContent = String(level);
+  if (levelTitle) levelTitle.textContent = `Level ${level}`;
+  if (totalEl) totalEl.textContent = `${totalCompleted} lessons completed`;
+  if (bar) bar.style.width = pct + "%";
+  if (text) text.textContent = `次のLevelまであと${remaining}レッスン`;
+}
+
 function updateProgress() {
+  updatePlayerLevelUI();
   const lessons = getLessons();
   const completed = getCompleted();
   const total = lessons.length;
   const done = lessons.filter((l) => completed.has(l.id)).length;
   const pct = total ? Math.round((done / total) * 100) : 0;
   $("#progress-bar").style.width = pct + "%";
-  const label = currentLang === "py" ? "Python" : "JavaScript";
+  const label = currentLang === "html" ? "HTML" : currentLang === "py" ? "Python" : "JavaScript";
   $("#progress-text").textContent = `${label}: ${done} / ${total} 完了 (${pct}%)`;
   const list = $("#completed-list");
   if (list) {
@@ -928,7 +1021,7 @@ function updateProgress() {
 function applyRequestedRoute() {
   const params = new URLSearchParams(window.location.search);
   const requestedLang = params.get("lang");
-  if (requestedLang === "js" || requestedLang === "py") {
+  if (requestedLang === "html" || requestedLang === "js" || requestedLang === "py") {
     currentLang = requestedLang;
     syncLangUI();
     renderLessonList();
@@ -956,6 +1049,10 @@ function applyRequestedRoute() {
 (async function init() {
   try {
     if (await loadUser()) {
+      const requestedLang = new URLSearchParams(window.location.search).get("lang");
+      if (requestedLang === "html" || requestedLang === "js" || requestedLang === "py") {
+        currentLang = requestedLang;
+      }
       showApp();
       applyRequestedRoute();
     } else {

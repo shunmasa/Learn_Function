@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-labelledby="title desc">
+  <title id="title">黄色い花</title>
+  <desc id="desc">青空と緑の野原に咲く明るい黄色い花</desc>
+  <rect width="320" height="220" fill="#dff4ff"/>
+  <rect y="145" width="320" height="75" fill="#8fd36a"/>
+  <circle cx="268" cy="42" r="23" fill="#ffd85a"/>
+  <g fill="#ffffff" opacity=".9">
+    <ellipse cx="64" cy="46" rx="32" ry="13"/>
+    <ellipse cx="89" cy="44" rx="25" ry="11"/>
+    <ellipse cx="203" cy="65" rx="28" ry="12"/>
+    <ellipse cx="225" cy="63" rx="22" ry="10"/>
+  </g>
+  <path d="M160 176 C157 140 161 110 160 86" fill="none" stroke="#3b9954" stroke-width="10" stroke-linecap="round"/>
+  <path d="M158 132 C133 120 121 127 111 140 C133 146 149 142 159 134Z" fill="#55ad5a"/>
+  <path d="M162 147 C181 132 198 135 210 148 C192 157 176 156 163 150Z" fill="#55ad5a"/>
+
+  <g transform="translate(160 80)">
+    <ellipse cx="0" cy="-29" rx="17" ry="27" fill="#ffd91f"/>
+    <ellipse cx="0" cy="29" rx="17" ry="27" fill="#ffd91f"/>
+    <ellipse cx="-29" cy="0" rx="27" ry="17" fill="#ffd91f"/>
+    <ellipse cx="29" cy="0" rx="27" ry="17" fill="#ffd91f"/>
+    <ellipse cx="-21" cy="-21" rx="20" ry="15" transform="rotate(45 -21 -21)" fill="#ffe64d"/>
+    <ellipse cx="21" cy="-21" rx="20" ry="15" transform="rotate(-45 21 -21)" fill="#ffe64d"/>
+    <ellipse cx="-21" cy="21" rx="20" ry="15" transform="rotate(-45 -21 21)" fill="#ffe64d"/>
+    <ellipse cx="21" cy="21" rx="20" ry="15" transform="rotate(45 21 21)" fill="#ffe64d"/>
+    <circle cx="0" cy="0" r="20" fill="#8a5a21"/>
+    <circle cx="-6" cy="-5" r="3" fill="#b98632"/>
+    <circle cx="7" cy="4" r="3" fill="#b98632"/>
+  </g>
+
+  <g fill="#f4f0ff" opacity=".8">
+    <circle cx="54" cy="164" r="4"/><circle cx="70" cy="178" r="3"/>
+    <circle cx="246" cy="170" r="4"/><circle cx="268" cy="182" r="3"/>
+  </g>
+</svg>

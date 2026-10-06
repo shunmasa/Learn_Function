@@ -1,0 +1,203 @@
+/*
+ * learn.html supplemental styles
+ *
+ * Lesson detail:
+ *   Keep the original white / normal lesson UI from css/style.css.
+ *
+ * Progress page:
+ *   Hide the application header and show only the back button.
+ */
+
+/* === Progress page: no application header, only a back button === */
+#app-screen:has(#progress-view:not(.hidden)) .app-header {
+  display: none;
+}
+
+#app-screen:has(#progress-view:not(.hidden)) main {
+  max-width: 980px;
+  padding-top: 2rem;
+}
+
+.progress-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 1.4rem;
+  color: #2563eb;
+  font-size: 0.9rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.progress-back:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  #app-screen:has(#progress-view:not(.hidden)) main {
+    padding: 1.1rem;
+  }
+
+  .progress-back {
+    margin-bottom: 1rem;
+  }
+}
+
+/* === HTML lesson VIEW panel === */
+#view-panel {
+  background: #ffffff;
+}
+
+.html-preview-frame {
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+  border: 0;
+  background: #ffffff;
+}
+
+.html-demo-result {
+  margin: 0.9rem 0 1.1rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid #dfe5ee;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f2937;
+}
+
+.html-demo-result h1,
+.html-demo-result h2,
+.html-demo-result h3 {
+  color: #1f2937;
+  margin-top: 0.45rem;
+  margin-bottom: 0.45rem;
+}
+
+.html-demo-result table {
+  border-collapse: collapse;
+}
+
+.html-demo-result th,
+.html-demo-result td {
+  border: 1px solid #cfd7e3;
+  padding: 0.35rem 0.55rem;
+}
+
+/* === Learn logo link === */
+.logo-sm {
+  text-decoration: none;
+}
+
+.logo-sm:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* === RPG level summary on Progress page === */
+.player-level-card {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-bottom: 1rem;
+  padding: 1.2rem 1.35rem;
+  border: 1px solid #dfe5ee;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.player-level-badge {
+  flex: 0 0 82px;
+  width: 82px;
+  height: 82px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  background: linear-gradient(145deg, #382586, #684be6);
+  color: #fff;
+  box-shadow: 0 7px 18px rgba(71, 49, 165, .18);
+}
+
+.player-level-badge span {
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  opacity: .8;
+}
+
+.player-level-badge strong {
+  margin-top: -.1rem;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.player-level-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.player-level-row {
+  display: flex;
+  justify-content: space-between;
+  gap: .8rem;
+  align-items: baseline;
+}
+
+#player-level-title {
+  font-size: 1rem;
+}
+
+#player-total-completed {
+  color: #6b7280;
+  font-size: .78rem;
+}
+
+.level-progress-wrap {
+  height: 9px;
+  margin: .6rem 0 .45rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e8eaf0;
+}
+
+.level-progress-bar {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #6d5df1, #9a83ff);
+  transition: width .3s ease;
+}
+
+#level-progress-text {
+  margin: 0;
+  color: #6b7280;
+  font-size: .8rem;
+}
+
+@media (max-width: 600px) {
+  .player-level-card {
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .player-level-badge {
+    flex-basis: 64px;
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+  }
+
+  .player-level-badge strong {
+    font-size: 1.55rem;
+  }
+
+  .player-level-row {
+    display: block;
+  }
+
+  #player-total-completed {
+    display: block;
+    margin-top: .2rem;
+  }
+}

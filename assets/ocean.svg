@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-labelledby="title desc">
+  <title id="title">青い海</title>
+  <desc id="desc">青空の下に広がる青い海と白い波</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8ed7ff"/>
+      <stop offset="1" stop-color="#e9f8ff"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#39aee8"/>
+      <stop offset=".55" stop-color="#1287ca"/>
+      <stop offset="1" stop-color="#0867a7"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="120" fill="url(#sky)"/>
+  <rect y="120" width="320" height="100" fill="url(#sea)"/>
+  <circle cx="260" cy="45" r="25" fill="#ffe26b"/>
+  <g fill="#ffffff" opacity=".92">
+    <ellipse cx="60" cy="50" rx="34" ry="13"/>
+    <ellipse cx="87" cy="48" rx="24" ry="10"/>
+    <ellipse cx="160" cy="70" rx="29" ry="11"/>
+    <ellipse cx="183" cy="68" rx="21" ry="9"/>
+  </g>
+  <path d="M0 128 C38 116 60 137 98 126 C134 116 161 139 196 127 C235 113 262 137 320 123"
+        fill="none" stroke="#d8f7ff" stroke-width="5" opacity=".9"/>
+  <path d="M0 160 C35 147 66 170 105 157 C147 144 178 171 219 157 C257 144 283 162 320 153"
+        fill="none" stroke="#8ee8ff" stroke-width="4" opacity=".75"/>
+  <path d="M0 194 C45 179 75 204 117 190 C154 178 185 204 230 188 C263 176 291 193 320 184"
+        fill="none" stroke="#d6f7ff" stroke-width="4" opacity=".85"/>
+  <path d="M18 211 Q51 186 86 211Z" fill="#d9c293"/>
+  <path d="M238 218 Q271 184 309 218Z" fill="#cbb489"/>
+</svg>

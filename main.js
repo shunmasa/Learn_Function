@@ -209,12 +209,16 @@ function showToast(message) {
 }
 
 function lessonSource() {
-  return landingLang === 'py' ? (typeof LESSONS_PY !== 'undefined' ? LESSONS_PY : []) : (typeof LESSONS_JS !== 'undefined' ? LESSONS_JS : []);
+  if (landingLang === 'html') return typeof LESSONS_HTML !== 'undefined' ? LESSONS_HTML : [];
+  if (landingLang === 'py') return typeof LESSONS_PY !== 'undefined' ? LESSONS_PY : [];
+  return typeof LESSONS_JS !== 'undefined' ? LESSONS_JS : [];
 }
 
 function completedForLanguage() {
   if (!landingUser) return new Set();
-  return new Set(landingLang === 'py' ? (landingUser.completed_py || []) : (landingUser.completed_js || []));
+  if (landingLang === 'html') return new Set(landingUser.completed_html || []);
+  if (landingLang === 'py') return new Set(landingUser.completed_py || []);
+  return new Set(landingUser.completed_js || []);
 }
 
 function lessonUnlocked(id, completed) {
@@ -227,7 +231,7 @@ function renderLandingLessons() {
   const list = document.getElementById('landing-lesson-list');
   const title = document.querySelector('[data-lessons-title]');
   if (!list || !title) return;
-  title.textContent = (landingLang === 'py' ? 'Python' : 'JavaScript') + ' レッスン';
+  title.textContent = (landingLang === 'html' ? 'HTML' : landingLang === 'py' ? 'Python' : 'JavaScript') + ' レッスン';
   const lessons = lessonSource();
   const completed = completedForLanguage();
   list.replaceChildren();
@@ -266,7 +270,7 @@ function escapeLandingHtml(value) {
 }
 
 function setLandingLanguage(lang, shouldScroll = false) {
-  if (lang !== 'js' && lang !== 'py') return;
+  if (lang !== 'html' && lang !== 'js' && lang !== 'py') return;
   landingLang = lang;
   document.querySelectorAll('[data-lang-switch]').forEach(button => {
     const active = button.dataset.langSwitch === lang;
@@ -515,7 +519,7 @@ motion.addEventListener('change', requestRender);
 document.querySelectorAll('[data-start-quest]').forEach(link => link.addEventListener('click', event => {
   event.preventDefault();
   measure();
-  window.scrollTo({top:geometry.top + geometry.distance * .14, behavior:motion.matches ? 'auto' : 'smooth'});
+  window.scrollTo({top:geometry.top + geometry.distance, behavior:motion.matches ? 'auto' : 'smooth'});
 }));
 measure();
 render();
