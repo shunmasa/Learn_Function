@@ -449,7 +449,7 @@ function renderQuestTransition() {
   const y = transitionGeometry.height - spriteHeight - (compact ? 12 : 18);
 
   // Slightly larger because the foreground road is wider.
-  const scale = compact ? 1.08 : 1.12;
+　const scale = 1.25;
 
   transitionRunners.style.opacity = '1';
   transitionRunners.style.transform =

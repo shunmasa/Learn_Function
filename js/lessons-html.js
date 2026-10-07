@@ -1,7 +1,4 @@
-
-
-
-// HTML course — 10 progressive practice lessons
+// HTML course — 10 progressive practice lessons + 2 projects
 // Examples and practice assignments intentionally use different text/content.
 
 function htmlLessonDocument(code) {
@@ -322,8 +319,143 @@ const LESSONS_HTML = [
     hints: ["imgは3つ", "それぞれaltの文章が違います"]
   },
 
+
   {
     id: 6,
+    title: "プロジェクト1: 自己紹介ページ",
+    description: "Lesson 1〜5の内容を組み合わせて1ページ作る",
+    content: `
+      <p><strong>プロジェクト:</strong> Lesson 1〜5 で学んだ内容を使って、自己紹介ページを1枚完成させましょう。</p>
+
+      <h3>ページの設計図</h3>
+      <pre>ページ全体
+├ title「わたしの自己紹介」
+├ h1「わたしの自己紹介」
+├ h2「わたしについて」 → p(strong / br / em)
+├ h2「好きな場所」 → img + p
+└ a「友だちのページ」</pre>
+
+      <h3>合格条件</h3>
+      <ul class="lesson-requirements">
+        <li><code>&lt;!DOCTYPE html&gt;</code> と <code>lang="ja"</code> を使う</li>
+        <li><code>title</code> は「わたしの自己紹介」</li>
+        <li><code>h1</code> は「わたしの自己紹介」の1つだけ</li>
+        <li><code>h2</code> は「わたしについて」「好きな場所」</li>
+        <li>「わたしについて」の文章は自由。<code>p</code> の中に <code>strong</code>、<code>br</code>、<code>em</code> のどれか1つを使う</li>
+        <li><code>assets/ocean.svg</code> の画像を使い、<code>alt</code> は「青い海」</li>
+        <li><code>a</code> で <code>https://www.example.com</code> へのリンク「サンプルサイトへ」を作る</li>
+      </ul>
+
+      <div class="challenge-box">
+        Lesson 1〜5 の内容だけを使います。上から1つずつ作って、テストを確認しましょう。
+      </div>
+    `,
+    starterCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+
+</head>
+<body>
+
+</body>
+</html>`,
+    solution: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <title>わたしの自己紹介</title>
+</head>
+<body>
+  <h1>わたしの自己紹介</h1>
+
+  <h2>わたしについて</h2>
+  <p>
+    こんにちは。<strong>Masa</strong>です。<br>
+    <em>よろしくお願いします。</em>
+  </p>
+
+  <h2>好きな場所</h2>
+  <img src="assets/ocean.svg" alt="青い海">
+  <p>わたしは海が好きです。</p>
+
+  <a href="https://www.example.com">サンプルサイトへ</a>
+</body>
+</html>`,
+    explanation: `<p>Lesson 1〜5で学んだ、ページの骨組み・見出し・文章・リンク・画像を組み合わせると、1枚のWebページになります。</p>`,
+    tests: [
+      {
+        description: "DOCTYPE と lang=ja がある",
+        run: code => {
+          const doc = htmlLessonDocument(code);
+          return hasHtmlDoctype(code) && doc.documentElement.getAttribute("lang") === "ja";
+        }
+      },
+      {
+        description: "title が「わたしの自己紹介」",
+        run: code => {
+          const doc = htmlLessonDocument(code);
+          return doc.title.trim() === "わたしの自己紹介";
+        }
+      },
+      {
+        description: "h1 が1つで「わたしの自己紹介」",
+        run: code => {
+          const h1s = [...htmlLessonDocument(code).querySelectorAll("h1")];
+          return h1s.length === 1 &&
+            normalizedText(h1s[0].textContent) === "わたしの自己紹介";
+        }
+      },
+      {
+        description: "h2 に「わたしについて」「好きな場所」がある",
+        run: code => {
+          const vals = [...htmlLessonDocument(code).querySelectorAll("h2")]
+            .map(x => normalizedText(x.textContent));
+          return vals.includes("わたしについて") && vals.includes("好きな場所");
+        }
+      },
+      {
+        description: "自己紹介文で strong / br / em のどれか1つを使っている",
+        run: code => {
+          const doc = htmlLessonDocument(code);
+          const aboutHeading = [...doc.querySelectorAll("h2")]
+            .find(x => normalizedText(x.textContent) === "わたしについて");
+          if (!aboutHeading) return false;
+          const p = aboutHeading.nextElementSibling;
+          return !!p &&
+            p.tagName === "P" &&
+            (
+              !!p.querySelector("strong") ||
+              !!p.querySelector("br") ||
+              !!p.querySelector("em")
+            );
+        }
+      },
+      {
+        description: "ocean.svg と alt「青い海」が正しい",
+        run: code => {
+          const img = htmlLessonDocument(code)
+            .querySelector('img[src="assets/ocean.svg"]');
+          return !!img && img.getAttribute("alt") === "青い海";
+        }
+      },
+      {
+        description: "サンプルサイトへのリンクが正しい",
+        run: code => {
+          const a = htmlLessonDocument(code)
+            .querySelector('a[href="https://www.example.com"]');
+          return !!a && normalizedText(a.textContent) === "サンプルサイトへ";
+        }
+      }
+    ],
+    hints: [
+      "まず Lesson 1 の骨組みを完成させる",
+      "h1 の下に h2 を2つ置く",
+      "自己紹介の文章は自由。strong / br / em のどれか1つを入れればOK",
+      "画像は src と alt、リンクは href を確認する"
+    ]
+  },
+
+  {
+    id: 7,
     title: "3項目ずつのリスト",
     description: "ulとolを少し長くする",
     content: `
@@ -401,7 +533,7 @@ const LESSONS_HTML = [
   },
 
   {
-    id: 7,
+    id: 8,
     title: "カードを2つ作ろう",
     description: "divとspanを繰り返し使う",
     content: `
@@ -465,7 +597,7 @@ const LESSONS_HTML = [
   },
 
   {
-    id: 8,
+    id: 9,
     title: "2セクションのページを作ろう",
     description: "意味のある構造タグを増やす",
     content: `
@@ -483,7 +615,7 @@ const LESSONS_HTML = [
       </ul>
 
       <div class="challenge-box">
-        Lesson 7よりさらに要素数が増えます。構造を意識して組み立てましょう。
+        Lesson 8よりさらに要素数が増えます。構造を意識して組み立てましょう。
       </div>
     `,
     starterCode: `<!-- header -->
@@ -545,7 +677,7 @@ const LESSONS_HTML = [
   },
 
   {
-    id: 9,
+    id: 10,
     title: "入力項目の多いフォーム",
     description: "複数のフォーム部品を組み合わせる",
     content: `
@@ -642,7 +774,7 @@ const LESSONS_HTML = [
   },
 
   {
-    id: 10,
+    id: 11,
     title: "3行の成績表を完成させよう",
     description: "表を少し大きくする",
     content: `
@@ -661,7 +793,7 @@ const LESSONS_HTML = [
       </ul>
 
       <div class="challenge-box">
-        最後はタグ数が一番多い課題です。10問クリアでLevel Up!
+        ここまで学んだ表の作り方を使って、少し大きな表を完成させましょう。
       </div>
     `,
     starterCode: `<table>
@@ -713,5 +845,273 @@ const LESSONS_HTML = [
       }
     ],
     hints: ["見出し1行 + データ3行", "見出しはth、データはtd"]
+  },
+
+  {
+    id: 12,
+    title: "プロジェクト2: カフェのお店ページ",
+    description: "HTML基礎10テーマを組み合わせる総まとめ",
+    content: `
+      <p><strong>プロジェクト:</strong> これまで学んだHTMLの基礎10テーマを組み合わせて、架空のカフェのお店ページを完成させましょう。</p>
+
+      <h3>ページの設計図</h3>
+      <pre>ページ全体
+├ head → title / UTF-8
+├ header → h1 + nav
+└ main
+   ├ section「お店について」
+   │  └ div.card → img + p(strong / br / em) + ul
+   ├ section「メニュー」
+   │  └ table
+   └ section「予約」
+      └ form
+└ footer</pre>
+
+      <h3>合格条件</h3>
+      <ul class="lesson-requirements">
+        <li>DOCTYPE、<code>lang="ja"</code>、UTF-8、title「カフェ・サクラ」</li>
+        <li><code>header</code> の <code>h1</code> は「カフェ・サクラ」</li>
+        <li><code>nav</code> に <code>index.html</code>(ホーム)と <code>menu.html</code>(メニュー)のリンク</li>
+        <li><code>main</code> の中に「お店について」「メニュー」「予約」の3つの <code>section</code></li>
+        <li>「お店について」に <code>div class="card"</code> を使う</li>
+        <li><code>assets/flower.svg</code> の画像、alt「黄色い花」</li>
+        <li>紹介文で <code>strong</code>、<code>br</code>、<code>em</code> を使う</li>
+        <li><code>ul</code> に「静かな店内」「無料Wi-Fi」「季節の花」の3項目</li>
+        <li>メニュー表: 品名・値段 / コーヒー400 / 紅茶350</li>
+        <li>予約フォーム: 名前、人数(1人・2人・3人)、送信ボタン「予約する」</li>
+        <li>名前と人数の <code>label for</code> と入力欄の <code>id</code> を対応させる</li>
+        <li><code>footer</code> は「© 2026 Cafe Sakura」</li>
+      </ul>
+
+      <div class="challenge-box">
+        最終プロジェクトです。外側の構造から作り、そのあと画像・リスト・表・フォームを1つずつ追加しましょう。
+      </div>
+    `,
+    starterCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+
+</head>
+<body>
+  <header>
+
+  </header>
+
+  <main>
+
+  </main>
+
+  <footer>
+
+  </footer>
+</body>
+</html>`,
+    solution: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>カフェ・サクラ</title>
+</head>
+<body>
+  <header>
+    <h1>カフェ・サクラ</h1>
+    <nav>
+      <a href="index.html">ホーム</a>
+      <a href="menu.html">メニュー</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>お店について</h2>
+
+      <div class="card">
+        <img src="assets/flower.svg" alt="黄色い花">
+        <p>
+          <strong>おすすめ</strong>はコーヒーです。<br>
+          <em>ゆっくりお過ごしください。</em>
+        </p>
+
+        <ul>
+          <li>静かな店内</li>
+          <li>無料Wi-Fi</li>
+          <li>季節の花</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>メニュー</h2>
+      <table>
+        <tr><th>品名</th><th>値段</th></tr>
+        <tr><td>コーヒー</td><td>400</td></tr>
+        <tr><td>紅茶</td><td>350</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>予約</h2>
+      <form>
+        <label for="name">名前</label>
+        <input type="text" id="name">
+
+        <label for="people">人数</label>
+        <select id="people">
+          <option>1人</option>
+          <option>2人</option>
+          <option>3人</option>
+        </select>
+
+        <button type="submit">予約する</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>© 2026 Cafe Sakura</footer>
+</body>
+</html>`,
+    explanation: `<p>Webページは、これまで学んだ小さなHTML部品の組み合わせです。最後は、構造・文章・リンク・画像・リスト・div・表・フォームを1ページにまとめます。</p>`,
+    tests: [
+      {
+        description: "DOCTYPE / lang=ja / UTF-8 / title が正しい",
+        run: code => {
+          const doc = htmlLessonDocument(code);
+          const meta = doc.querySelector("meta[charset]");
+          return hasHtmlDoctype(code) &&
+            doc.documentElement.getAttribute("lang") === "ja" &&
+            !!meta &&
+            String(meta.getAttribute("charset")).toUpperCase() === "UTF-8" &&
+            doc.title.trim() === "カフェ・サクラ";
+        }
+      },
+      {
+        description: "header の h1 が「カフェ・サクラ」",
+        run: code => {
+          const h1 = htmlLessonDocument(code).querySelector("header h1");
+          return !!h1 && normalizedText(h1.textContent) === "カフェ・サクラ";
+        }
+      },
+      {
+        description: "nav にホームとメニューのリンク",
+        run: code => {
+          const doc = htmlLessonDocument(code);
+          const home = doc.querySelector('nav a[href="index.html"]');
+          const menu = doc.querySelector('nav a[href="menu.html"]');
+          return normalizedText(home?.textContent) === "ホーム" &&
+            normalizedText(menu?.textContent) === "メニュー";
+        }
+      },
+      {
+        description: "main 内に3つのsectionと指定見出し",
+        run: code => {
+          const doc = htmlLessonDocument(code);
+          const sections = [...doc.querySelectorAll("main > section")];
+          const headings = sections
+            .map(section => normalizedText(section.querySelector("h2")?.textContent));
+          return sections.length >= 3 &&
+            ["お店について", "メニュー", "予約"]
+              .every(value => headings.includes(value));
+        }
+      },
+      {
+        description: "お店についてに div.card がある",
+        run: code => {
+          const doc = htmlLessonDocument(code);
+          const section = [...doc.querySelectorAll("main > section")]
+            .find(s => normalizedText(s.querySelector("h2")?.textContent) === "お店について");
+          return !!section && !!section.querySelector("div.card");
+        }
+      },
+      {
+        description: "flower.svg と alt「黄色い花」が正しい",
+        run: code => {
+          const img = htmlLessonDocument(code)
+            .querySelector('img[src="assets/flower.svg"]');
+          return !!img && img.getAttribute("alt") === "黄色い花";
+        }
+      },
+      {
+        description: "紹介文で strong / br / em を使っている",
+        run: code => {
+          const card = htmlLessonDocument(code).querySelector("div.card");
+          const p = card?.querySelector("p");
+          return !!p &&
+            !!p.querySelector("strong") &&
+            !!p.querySelector("br") &&
+            !!p.querySelector("em");
+        }
+      },
+      {
+        description: "ul に3つの指定項目",
+        run: code => {
+          const vals = [...htmlLessonDocument(code).querySelectorAll("div.card ul > li")]
+            .map(x => normalizedText(x.textContent));
+          return ["静かな店内", "無料Wi-Fi", "季節の花"]
+            .every(value => vals.includes(value));
+        }
+      },
+      {
+        description: "表の見出しが品名・値段",
+        run: code => {
+          const row = htmlLessonDocument(code).querySelector("table tr");
+          const vals = row
+            ? [...row.querySelectorAll("th")].map(x => normalizedText(x.textContent))
+            : [];
+          return vals[0] === "品名" && vals[1] === "値段";
+        }
+      },
+      {
+        description: "コーヒー400 と 紅茶350 の行がある",
+        run: code => {
+          const rows = [...htmlLessonDocument(code).querySelectorAll("table tr")]
+            .map(row => [...row.querySelectorAll("td")]
+              .map(x => normalizedText(x.textContent)));
+          return rows.some(v => v[0] === "コーヒー" && v[1] === "400") &&
+            rows.some(v => v[0] === "紅茶" && v[1] === "350");
+        }
+      },
+      {
+        description: "名前の label と input が対応",
+        run: code => {
+          const doc = htmlLessonDocument(code);
+          return normalizedText(doc.querySelector('label[for="name"]')?.textContent) === "名前" &&
+            !!doc.querySelector('input#name[type="text"]');
+        }
+      },
+      {
+        description: "人数の label / select / option が正しい",
+        run: code => {
+          const doc = htmlLessonDocument(code);
+          const label = doc.querySelector('label[for="people"]');
+          const vals = [...doc.querySelectorAll("select#people option")]
+            .map(x => normalizedText(x.textContent));
+          return normalizedText(label?.textContent) === "人数" &&
+            ["1人", "2人", "3人"].every(value => vals.includes(value));
+        }
+      },
+      {
+        description: "送信ボタンが「予約する」",
+        run: code => {
+          const button = htmlLessonDocument(code)
+            .querySelector('button[type="submit"]');
+          return !!button && normalizedText(button.textContent) === "予約する";
+        }
+      },
+      {
+        description: "footer が正しい",
+        run: code => {
+          const footer = htmlLessonDocument(code).querySelector("footer");
+          return !!footer &&
+            normalizedText(footer.textContent) === "© 2026 Cafe Sakura";
+        }
+      }
+    ],
+    hints: [
+      "最初に DOCTYPE / html / head / body を完成させる",
+      "header → main → footer の大きな構造を先に作る",
+      "お店についてのcardに画像・文章・ulをまとめる",
+      "最後にtableとformを追加し、labelのforとidを確認する"
+    ]
   }
+
 ];

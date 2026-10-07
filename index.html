@@ -4,14 +4,44 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
-<title>LearnJS &amp; Python | Brighter World Quest</title>
+<title>CMCS LearnJS &amp; Python</title>
 <link href="./styles.css" rel="stylesheet"/>
 </head>
 <body>
 <header class="site-header">
+
 <a aria-label="Learn Code ホーム" class="logo" href="#adventure">
-<svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M5 27 27 5V1H23L1 23Z" fill="#101b30"></path><path d="M6 21 24 3h1v3L8 24Z" fill="#d4f4ff"></path><path d="m10 19 4 4-3 3-5-5-3-3 3-3Z" fill="#f8ba32" stroke="#172137" stroke-width="1.5"></path><path d="m6 23-5 5 3 3 5-5" fill="#99541f" stroke="#172137" stroke-width="1.5"></path></svg>
-<span>Learn Code</span>
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 32 32"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M5 27 27 5V1H23L1 23Z"
+      fill="#101b30"
+    ></path>
+
+    <path
+      d="M6 21 24 3h1v3L8 24Z"
+      fill="#d4f4ff"
+    ></path>
+
+    <path
+      d="m10 19 4 4-3 3-5-5-3-3 3-3Z"
+      fill="#f8ba32"
+      stroke="#172137"
+      stroke-width="1.5"
+    ></path>
+
+    <path
+      d="m6 23-5 5 3 3 5-5"
+      fill="#99541f"
+      stroke="#172137"
+      stroke-width="1.5"
+    ></path>
+  </svg>
+
+  <span>Learn Code in CMCS</span>
 </a>
 <a class="playground-link" href="./playground.html">Playground</a>
 <div aria-label="言語切り替え" class="header-language">
@@ -22,6 +52,7 @@
 <nav aria-label="メインナビゲーション" class="app-header-nav">
 <a href="#lessons">レッスン</a>
 <a data-progress-link="" href="./learn.html?view=progress">進捗</a>
+<a data-progress-link="" href="./learn.html?view=resources">リソース</a>
 </nav>
 <div class="auth-actions" data-auth-guest="">
 <button class="header-auth-link" data-open-auth="login" type="button">ログイン</button>
@@ -35,8 +66,8 @@
 <section aria-label="スクロールでコインを集める冒険" class="quest-scroll" id="adventure"><div class="hero">
 <div aria-hidden="true" class="world"><div class="landscape"></div><div class="runners"><img alt="" class="runner-sprite" height="778" src="./assets/adventurers.png" width="2021"/><span class="sword-strike"><svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M5 27 27 5V1H23L1 23Z" fill="#101b30"></path><path d="M6 21 24 3h1v3L8 24Z" fill="#d4f4ff"></path><path d="m10 19 4 4-3 3-5-5-3-3 3-3Z" fill="#f8ba32" stroke="#172137" stroke-width="1.5"></path><path d="m6 23-5 5 3 3 5-5" fill="#99541f" stroke="#172137" stroke-width="1.5"></path></svg></span><span class="sword-slash"><svg aria-hidden="true" viewbox="0 0 160 160"><path d="M20 8Q132 50 130 140Q104 57 20 8Z" fill="#f2fcff"></path><path d="M30 8Q141 61 132 151" fill="none" stroke="#ffe993" stroke-width="7"></path></svg></span></div><span class="world-coin"><svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M11 2h10v3h4v4h3v14h-3v4h-4v3H11v-3H7v-4H4V9h3V5h4Z" fill="#df8400" stroke="#121d32" stroke-width="2"></path><path d="M12 5h8v3h4v15h-4v4h-8v-4H8V9h4Z" fill="#ffc526"></path><path d="M12 8h4v16h-4Z" fill="#fff398"></path><path d="M20 10h2v12h-2Z" fill="#f29400"></path></svg></span><span class="world-coin"><svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M11 2h10v3h4v4h3v14h-3v4h-4v3H11v-3H7v-4H4V9h3V5h4Z" fill="#df8400" stroke="#121d32" stroke-width="2"></path><path d="M12 5h8v3h4v15h-4v4h-8v-4H8V9h4Z" fill="#ffc526"></path><path d="M12 8h4v16h-4Z" fill="#fff398"></path><path d="M20 10h2v12h-2Z" fill="#f29400"></path></svg></span><span class="world-coin"><svg aria-hidden="true" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M11 2h10v3h4v4h3v14h-3v4h-4v3H11v-3H7v-4H4V9h3V5h4Z" fill="#df8400" stroke="#121d32" stroke-width="2"></path><path d="M12 5h8v3h4v15h-4v4h-8v-4H8V9h4Z" fill="#ffc526"></path><path d="M12 8h4v16h-4Z" fill="#fff398"></path><path d="M20 10h2v12h-2Z" fill="#f29400"></path></svg></span><div class="enemy-actor"><div class="enemy-hp"><span></span><span></span><span></span></div><div class="enemy-look"><img alt="" class="enemy-sprite" height="1138" src="./assets/goblin.png" width="1382"/></div><span class="enemy-puff">✦</span><span class="defeat-label">DEFEATED! +60 XP</span></div></div>
 <div class="copy">
-<div class="tag">CODE TODAY. A BRIGHTER TOMORROW.</div>
-<h1>Learn <span class="js">JavaScript</span><br/>&amp; <span class="py">Python</span><br/><span class="last-line">for a Brighter World.</span></h1>
+<div class="tag">CODE TODAY. BRIGHTEN THE WORLD.</div>
+<h1>Learn <span class="js">JavaScript</span><br/>&amp; <span class="py">Python</span><br/><span class="last-line">for brighter the world.</span></h1>
 <p class="sub">本物のスキルを身につけ、本物の課題を解く。<br/>知恵に歩み、真理に立つ。</p>
 <div class="cta">
 <a class="btn" data-start-quest="" href="#adventure">クエストを始める →</a>
@@ -89,7 +120,7 @@
 </div>
 <div aria-live="polite" class="landing-lesson-grid" id="landing-lesson-list"></div>
 </section>
-<footer>© LearnJS &amp; Python — サンプルページ</footer>
+<footer>© LearnJS &amp; Python - CMCS</footer>
 <dialog aria-labelledby="dialog-title" class="dialog" id="preview-dialog"><button aria-label="閉じる" class="close-dialog" type="button">×</button><h2 id="dialog-title"></h2><div id="dialog-content"></div></dialog><div aria-live="polite" class="site-toast" hidden="" id="site-toast" role="status"></div><dialog aria-labelledby="auth-dialog-title" class="dialog auth-dialog" id="auth-dialog">
 <button aria-label="閉じる" class="close-dialog close-auth-dialog" type="button">×</button>
 <h2 id="auth-dialog-title">ログイン</h2>

@@ -1,0 +1,462 @@
+/* =========================================================
+   Resources View inside learn.html
+   css/resources-view.css
+   ========================================================= */
+
+#resources-view {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.resources-view-header {
+  margin-bottom: 1.15rem;
+}
+
+.resources-view-kicker {
+  display: block;
+  margin-bottom: .35rem;
+  color: #6b7a91;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+
+.resources-view-header h2 {
+  margin: 0;
+}
+
+.resources-view-header p {
+  margin: .45rem 0 0;
+  color: #6b7280;
+}
+
+.resources-view-toolbar {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  margin-bottom: 1.2rem;
+}
+
+.resources-view-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  min-height: 46px;
+  padding: 0 .95rem;
+  background: #fff;
+  border: 1px solid #dfe5ee;
+  border-radius: 11px;
+}
+
+.resources-view-search > span {
+  color: #8290a4;
+  font-size: 1.15rem;
+}
+
+.resources-view-search input {
+  width: 100%;
+  padding: .7rem 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #17223b;
+  font: inherit;
+}
+
+.resources-view-language-badge,
+.resources-view-html-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ad481e;
+  background: #fff0e9;
+  border: 1px solid #ffd2bd;
+  border-radius: 999px;
+  font-size: .66rem;
+  font-weight: 800;
+}
+
+.resources-view-language-badge {
+  min-height: 38px;
+  padding: 0 .85rem;
+}
+
+.resources-view-html-badge {
+  padding: .25rem .45rem;
+}
+
+.resources-view-layout {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.resources-view-sidebar {
+  position: sticky;
+  top: 90px;
+  padding: .8rem;
+  background: #fff;
+  border: 1px solid #dfe5ee;
+  border-radius: 12px;
+}
+
+.resources-view-sidebar-title {
+  padding: .25rem .55rem .6rem;
+  color: #8994a6;
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .13em;
+}
+
+.resources-view-category-list {
+  display: grid;
+  gap: .2rem;
+}
+
+.resources-view-category {
+  width: 100%;
+  padding: .65rem .7rem;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #45536b;
+  text-align: left;
+  cursor: pointer;
+  font-size: .78rem;
+  font-weight: 650;
+}
+
+.resources-view-category:hover {
+  background: #f3f6fa;
+}
+
+.resources-view-category.active {
+  color: #2563eb;
+  background: #edf3ff;
+}
+
+.resources-view-content {
+  min-width: 0;
+}
+
+.resources-view-status {
+  color: #67758a;
+  font-size: .8rem;
+}
+
+.resources-view-section {
+  margin-bottom: 1.7rem;
+}
+
+.resources-view-section-head {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  padding-bottom: .55rem;
+  margin-bottom: .7rem;
+  border-bottom: 1px solid #e4e9f0;
+}
+
+.resources-view-section-head h3 {
+  margin: 0;
+  font-size: .98rem;
+}
+
+.resources-view-section-head > span {
+  min-width: 24px;
+  padding: .15rem .4rem;
+  border-radius: 999px;
+  background: #eef2f7;
+  color: #738096;
+  text-align: center;
+  font-size: .62rem;
+  font-weight: 800;
+}
+
+.resources-view-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+}
+
+.resources-view-card {
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #dfe5ee;
+  border-radius: 12px;
+}
+
+.resources-view-card-head {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.resources-view-tag {
+  color: #173b6c;
+  font-size: .9rem;
+  font-weight: 800;
+}
+
+.resources-view-lesson {
+  margin-left: auto;
+  color: #8994a6;
+  font-size: .58rem;
+  font-weight: 800;
+}
+
+.resources-view-summary {
+  margin: .7rem 0 0;
+  color: #536176;
+  font-size: .75rem;
+  line-height: 1.65;
+}
+
+.resources-view-attributes {
+  display: grid;
+  gap: .35rem;
+  margin-top: .7rem;
+}
+
+.resources-view-attribute {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .55rem;
+  padding: .5rem .6rem;
+  border-radius: 7px;
+  background: #f6f8fb;
+  font-size: .69rem;
+  line-height: 1.5;
+}
+
+.resources-view-attribute code {
+  color: #a5421e;
+  font-weight: 800;
+}
+
+.resources-view-example {
+  margin-top: .75rem;
+}
+
+.resources-view-example > span {
+  display: block;
+  margin-bottom: .3rem;
+  color: #8c97a8;
+  font-size: .56rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+}
+
+.resources-view-example pre,
+.resources-walkthrough-code {
+  margin: 0;
+  overflow-x: auto;
+  background: #111827;
+  color: #edf2fa;
+  border-radius: 8px;
+  padding: .7rem .8rem;
+  font-size: .68rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.resources-view-empty,
+.resources-view-error {
+  padding: 2rem;
+  background: #fff;
+  border: 1px dashed #cfd8e5;
+  border-radius: 12px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.resources-view-empty strong {
+  display: block;
+  color: #17223b;
+}
+
+.resources-view-walkthrough {
+  margin-top: 2rem;
+  padding: 1.1rem;
+  background: #fff;
+  border: 1px solid #dfe5ee;
+  border-radius: 14px;
+}
+
+.resources-view-walkthrough h3 {
+  margin-top: 0;
+}
+
+.resources-walkthrough-grid {
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  gap: 1rem;
+}
+
+.resources-walkthrough-lines {
+  display: grid;
+  gap: .4rem;
+}
+
+.resources-walkthrough-line {
+  padding: .65rem;
+  background: #f6f8fb;
+  border-radius: 8px;
+}
+
+.resources-walkthrough-line code {
+  color: #1c57a6;
+  font-size: .68rem;
+  font-weight: 800;
+}
+
+.resources-walkthrough-line p {
+  margin: .25rem 0 0;
+  color: #59677b;
+  font-size: .69rem;
+  line-height: 1.55;
+}
+
+.resources-walkthrough-summary {
+  margin-top: .8rem;
+  padding: .8rem;
+  color: #28583f;
+  background: #eef9f4;
+  border-radius: 8px;
+  font-size: .72rem;
+}
+
+.resources-walkthrough-summary p {
+  margin: .35rem 0;
+}
+
+.resources-walkthrough-summary pre {
+  margin-bottom: 0;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 800px) {
+  #resources-view {
+    padding: 1rem;
+  }
+
+  .resources-view-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .resources-view-sidebar {
+    position: static;
+  }
+
+  .resources-view-category-list {
+    display: flex;
+    gap: .35rem;
+    overflow-x: auto;
+  }
+
+  .resources-view-category {
+    flex: 0 0 auto;
+    width: auto;
+    white-space: nowrap;
+  }
+
+  .resources-view-grid,
+  .resources-walkthrough-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =========================================================
+   Resource copy buttons
+   ========================================================= */
+
+.resources-view-example-head,
+.resources-walkthrough-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .65rem;
+}
+
+.resources-view-example-head {
+  margin-bottom: .3rem;
+}
+
+.resources-view-example-head > span {
+  color: #8c97a8;
+  font-size: .56rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+}
+
+.resources-walkthrough-head {
+  margin-bottom: .7rem;
+}
+
+.resources-walkthrough-head h3 {
+  margin: 0;
+}
+
+.resources-copy-btn {
+  flex: 0 0 auto;
+  padding: .28rem .55rem;
+  border: 1px solid #cfd9e7;
+  border-radius: 6px;
+  background: #fff;
+  color: #2563eb;
+  cursor: pointer;
+  font: inherit;
+  font-size: .62rem;
+  font-weight: 750;
+}
+
+.resources-copy-btn:hover {
+  background: #eff6ff;
+  border-color: #b9cdf5;
+}
+
+.resources-copy-btn.copied {
+  color: #16875f;
+  background: #eefaf5;
+  border-color: #bfe8d5;
+}
+
+/* =========================================================
+   Compact code display
+   ========================================================= */
+
+/* Tag examples stay compact even when an example becomes longer. */
+.resources-view-example pre {
+  max-height: 94px;
+  overflow: auto;
+}
+
+/* Keep "見本コードの読み方" short on the page.
+   Both columns scroll inside instead of stretching the whole page. */
+.resources-walkthrough-code,
+.resources-walkthrough-lines {
+  height: 255px;
+  max-height: 255px;
+  overflow: auto;
+}
+
+.resources-walkthrough-code {
+  white-space: pre;
+}
+
+.resources-walkthrough-lines {
+  align-content: start;
+  padding-right: .2rem;
+}
+
+@media (max-width: 800px) {
+  .resources-walkthrough-code,
+  .resources-walkthrough-lines {
+    height: 210px;
+    max-height: 210px;
+  }
+}

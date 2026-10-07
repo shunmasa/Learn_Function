@@ -1,0 +1,855 @@
+{
+  "version": 1,
+  "resources": [
+    {
+      "id": "html-tags",
+      "slug": "html-tags",
+      "language": "HTML",
+      "badge": "HTML",
+      "title": "HTMLタグ解説",
+      "description": "HTMLでよく使うタグを、カテゴリ・レッスン・例文から探せるリファレンスです。",
+      "searchKeywords": [
+        "HTML",
+        "タグ",
+        "要素",
+        "属性",
+        "初心者",
+        "リファレンス"
+      ],
+      "categories": [
+        {
+          "id": "structure",
+          "name": "ページの骨組み",
+          "lessons": [
+            1
+          ]
+        },
+        {
+          "id": "text",
+          "name": "見出しと文章",
+          "lessons": [
+            2,
+            3
+          ]
+        },
+        {
+          "id": "link-image",
+          "name": "リンクと画像",
+          "lessons": [
+            4,
+            5
+          ]
+        },
+        {
+          "id": "list",
+          "name": "リスト",
+          "lessons": [
+            7
+          ]
+        },
+        {
+          "id": "group",
+          "name": "まとまりを作る",
+          "lessons": [
+            8
+          ]
+        },
+        {
+          "id": "layout",
+          "name": "ページの構造",
+          "lessons": [
+            9
+          ]
+        },
+        {
+          "id": "form",
+          "name": "フォーム",
+          "lessons": [
+            10
+          ]
+        },
+        {
+          "id": "table",
+          "name": "表",
+          "lessons": [
+            11
+          ]
+        },
+        {
+          "id": "other",
+          "name": "その他",
+          "lessons": []
+        }
+      ],
+      "entries": [
+        {
+          "id": "doctype-html",
+          "tag": "<!DOCTYPE html>",
+          "displayName": "<!DOCTYPE html>",
+          "category": "structure",
+          "lessons": [
+            1
+          ],
+          "empty": true,
+          "summary": "HTML5で書かれたページだと宣言する。いちばん最初に書く。",
+          "attributes": [],
+          "example": "<!DOCTYPE html>",
+          "searchKeywords": [
+            "doctype",
+            "HTML5",
+            "宣言"
+          ]
+        },
+        {
+          "id": "html",
+          "tag": "html",
+          "displayName": "<html>",
+          "category": "structure",
+          "lessons": [
+            1
+          ],
+          "empty": false,
+          "summary": "ページ全体を囲む。",
+          "attributes": [
+            {
+              "name": "lang",
+              "meaning": "言語。日本語は ja"
+            }
+          ],
+          "example": "<html lang=\"ja\">...</html>",
+          "searchKeywords": [
+            "html",
+            "lang",
+            "ページ全体"
+          ]
+        },
+        {
+          "id": "head",
+          "tag": "head",
+          "displayName": "<head>",
+          "category": "structure",
+          "lessons": [
+            1
+          ],
+          "empty": false,
+          "summary": "ページの設定を書く場所。画面には表示されない。",
+          "attributes": [],
+          "example": "<head>...</head>",
+          "searchKeywords": [
+            "head",
+            "設定",
+            "見えない"
+          ]
+        },
+        {
+          "id": "meta",
+          "tag": "meta",
+          "displayName": "<meta>",
+          "category": "structure",
+          "lessons": [
+            1
+          ],
+          "empty": true,
+          "summary": "文字コードなどの情報を指定する。これがないと日本語が文字化けすることがある。閉じタグなし。",
+          "attributes": [
+            {
+              "name": "charset",
+              "meaning": "文字コード。UTF-8を使う"
+            }
+          ],
+          "example": "<meta charset=\"UTF-8\">",
+          "searchKeywords": [
+            "meta",
+            "charset",
+            "UTF-8",
+            "文字コード"
+          ]
+        },
+        {
+          "id": "title",
+          "tag": "title",
+          "displayName": "<title>",
+          "category": "structure",
+          "lessons": [
+            1
+          ],
+          "empty": false,
+          "summary": "ブラウザのタブに表示されるページ名。headの中に書く。",
+          "attributes": [],
+          "example": "<title>わたしの学校</title>",
+          "searchKeywords": [
+            "title",
+            "タブ",
+            "ページ名"
+          ]
+        },
+        {
+          "id": "body",
+          "tag": "body",
+          "displayName": "<body>",
+          "category": "structure",
+          "lessons": [
+            1
+          ],
+          "empty": false,
+          "summary": "画面に見える内容をすべて入れる場所。",
+          "attributes": [],
+          "example": "<body>...</body>",
+          "searchKeywords": [
+            "body",
+            "画面",
+            "内容"
+          ]
+        },
+        {
+          "id": "headings",
+          "tag": "h1-h6",
+          "displayName": "<h1>〜<h6>",
+          "category": "text",
+          "lessons": [
+            2
+          ],
+          "empty": false,
+          "summary": "見出し。数字が小さいほど大事。h1 → h2 → h3 の順に使う。h1はページ全体の大きな見出しに使う。",
+          "attributes": [],
+          "example": "<h2>花</h2>",
+          "searchKeywords": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "見出し"
+          ]
+        },
+        {
+          "id": "p",
+          "tag": "p",
+          "displayName": "<p>",
+          "category": "text",
+          "lessons": [
+            3
+          ],
+          "empty": false,
+          "summary": "段落(文章のまとまり)。",
+          "attributes": [],
+          "example": "<p>今日は図書館に行きました。</p>",
+          "searchKeywords": [
+            "p",
+            "段落",
+            "文章"
+          ]
+        },
+        {
+          "id": "strong",
+          "tag": "strong",
+          "displayName": "<strong>",
+          "category": "text",
+          "lessons": [
+            3
+          ],
+          "empty": false,
+          "summary": "大事な言葉を強調する。ふつう太字で表示される。",
+          "attributes": [],
+          "example": "<strong>図書館</strong>",
+          "searchKeywords": [
+            "strong",
+            "強調",
+            "太字"
+          ]
+        },
+        {
+          "id": "em",
+          "tag": "em",
+          "displayName": "<em>",
+          "category": "text",
+          "lessons": [
+            3
+          ],
+          "empty": false,
+          "summary": "気持ちをこめて言いたい言葉を強調する。ふつう斜体で表示される。",
+          "attributes": [],
+          "example": "<em>また行きたいです。</em>",
+          "searchKeywords": [
+            "em",
+            "強調",
+            "斜体"
+          ]
+        },
+        {
+          "id": "br",
+          "tag": "br",
+          "displayName": "<br>",
+          "category": "text",
+          "lessons": [
+            3
+          ],
+          "empty": true,
+          "summary": "文章の途中で改行する。閉じタグなし。",
+          "attributes": [],
+          "example": "一行目<br>二行目",
+          "searchKeywords": [
+            "br",
+            "改行"
+          ]
+        },
+        {
+          "id": "a",
+          "tag": "a",
+          "displayName": "<a>",
+          "category": "link-image",
+          "lessons": [
+            4
+          ],
+          "empty": false,
+          "summary": "リンク。hrefに行き先を書く。外のサイトは https://〜、自分のサイト内は about.html のように書く。",
+          "attributes": [
+            {
+              "name": "href",
+              "meaning": "行き先のURLまたはファイル名"
+            }
+          ],
+          "example": "<a href=\"about.html\">このサイトについて</a>",
+          "searchKeywords": [
+            "a",
+            "href",
+            "リンク",
+            "URL"
+          ]
+        },
+        {
+          "id": "img",
+          "tag": "img",
+          "displayName": "<img>",
+          "category": "link-image",
+          "lessons": [
+            5
+          ],
+          "empty": true,
+          "summary": "画像を表示する。閉じタグなし。",
+          "attributes": [
+            {
+              "name": "src",
+              "meaning": "画像ファイルの場所"
+            },
+            {
+              "name": "alt",
+              "meaning": "画像の説明文(画像が見えない人や、表示されないときのため)"
+            }
+          ],
+          "example": "<img src=\"assets/ocean.svg\" alt=\"青い海\">",
+          "searchKeywords": [
+            "img",
+            "src",
+            "alt",
+            "画像"
+          ]
+        },
+        {
+          "id": "ul",
+          "tag": "ul",
+          "displayName": "<ul>",
+          "category": "list",
+          "lessons": [
+            7
+          ],
+          "empty": false,
+          "summary": "順番のないリスト(●の箇条書き)。買い物リストなど。",
+          "attributes": [],
+          "example": "<ul><li>パン</li></ul>",
+          "searchKeywords": [
+            "ul",
+            "リスト",
+            "箇条書き"
+          ]
+        },
+        {
+          "id": "ol",
+          "tag": "ol",
+          "displayName": "<ol>",
+          "category": "list",
+          "lessons": [
+            7
+          ],
+          "empty": false,
+          "summary": "順番のあるリスト(1, 2, 3…)。作り方の手順など。",
+          "attributes": [],
+          "example": "<ol><li>混ぜる</li></ol>",
+          "searchKeywords": [
+            "ol",
+            "番号",
+            "手順",
+            "リスト"
+          ]
+        },
+        {
+          "id": "li",
+          "tag": "li",
+          "displayName": "<li>",
+          "category": "list",
+          "lessons": [
+            7
+          ],
+          "empty": false,
+          "summary": "リストの1項目。ulかolの中に書く。",
+          "attributes": [],
+          "example": "<li>牛乳</li>",
+          "searchKeywords": [
+            "li",
+            "リスト",
+            "項目"
+          ]
+        },
+        {
+          "id": "div",
+          "tag": "div",
+          "displayName": "<div>",
+          "category": "group",
+          "lessons": [
+            8
+          ],
+          "empty": false,
+          "summary": "内容をひとまとめにする箱。classで名前をつけて、同じ種類の箱を区別できる。",
+          "attributes": [
+            {
+              "name": "class",
+              "meaning": "タグにつける名前。同じ名前を何回でも使える"
+            }
+          ],
+          "example": "<div class=\"card\">...</div>",
+          "searchKeywords": [
+            "div",
+            "class",
+            "まとまり",
+            "箱"
+          ]
+        },
+        {
+          "id": "span",
+          "tag": "span",
+          "displayName": "<span>",
+          "category": "group",
+          "lessons": [
+            8
+          ],
+          "empty": false,
+          "summary": "文の一部分だけをまとめる。divは箱全体、spanは文の中の一部。",
+          "attributes": [
+            {
+              "name": "class",
+              "meaning": "タグにつける名前"
+            }
+          ],
+          "example": "<span class=\"red\">雨</span>",
+          "searchKeywords": [
+            "span",
+            "class",
+            "文章",
+            "一部分"
+          ]
+        },
+        {
+          "id": "header",
+          "tag": "header",
+          "displayName": "<header>",
+          "category": "layout",
+          "lessons": [
+            9
+          ],
+          "empty": false,
+          "summary": "ページの上の部分(タイトルなど)。",
+          "attributes": [],
+          "example": "<header>...</header>",
+          "searchKeywords": [
+            "header",
+            "ヘッダー",
+            "上"
+          ]
+        },
+        {
+          "id": "nav",
+          "tag": "nav",
+          "displayName": "<nav>",
+          "category": "layout",
+          "lessons": [
+            9
+          ],
+          "empty": false,
+          "summary": "ほかのページへのリンクを集める場所。",
+          "attributes": [],
+          "example": "<nav><a href=\"index.html\">ホーム</a></nav>",
+          "searchKeywords": [
+            "nav",
+            "ナビ",
+            "リンク"
+          ]
+        },
+        {
+          "id": "main",
+          "tag": "main",
+          "displayName": "<main>",
+          "category": "layout",
+          "lessons": [
+            9
+          ],
+          "empty": false,
+          "summary": "ページの中心になる内容。1ページに1つ。",
+          "attributes": [],
+          "example": "<main>...</main>",
+          "searchKeywords": [
+            "main",
+            "メイン",
+            "中心"
+          ]
+        },
+        {
+          "id": "section",
+          "tag": "section",
+          "displayName": "<section>",
+          "category": "layout",
+          "lessons": [
+            9
+          ],
+          "empty": false,
+          "summary": "内容を話題ごとに分けるまとまり。ふつう見出し(h2)がつく。",
+          "attributes": [],
+          "example": "<section><h2>今週のお知らせ</h2></section>",
+          "searchKeywords": [
+            "section",
+            "セクション",
+            "区切り"
+          ]
+        },
+        {
+          "id": "footer",
+          "tag": "footer",
+          "displayName": "<footer>",
+          "category": "layout",
+          "lessons": [
+            9
+          ],
+          "empty": false,
+          "summary": "ページの下の部分(著作権表示など)。",
+          "attributes": [],
+          "example": "<footer>© 2026 My School</footer>",
+          "searchKeywords": [
+            "footer",
+            "フッター",
+            "下"
+          ]
+        },
+        {
+          "id": "form",
+          "tag": "form",
+          "displayName": "<form>",
+          "category": "form",
+          "lessons": [
+            10
+          ],
+          "empty": false,
+          "summary": "入力欄をまとめる枠。",
+          "attributes": [],
+          "example": "<form>...</form>",
+          "searchKeywords": [
+            "form",
+            "フォーム",
+            "入力"
+          ]
+        },
+        {
+          "id": "label",
+          "tag": "label",
+          "displayName": "<label>",
+          "category": "form",
+          "lessons": [
+            10
+          ],
+          "empty": false,
+          "summary": "入力欄の名前。forの値を入力欄のidと同じにすると結びつく。",
+          "attributes": [
+            {
+              "name": "for",
+              "meaning": "結びつける入力欄のid"
+            }
+          ],
+          "example": "<label for=\"name\">名前</label>",
+          "searchKeywords": [
+            "label",
+            "for",
+            "ラベル"
+          ]
+        },
+        {
+          "id": "input",
+          "tag": "input",
+          "displayName": "<input>",
+          "category": "form",
+          "lessons": [
+            10
+          ],
+          "empty": true,
+          "summary": "入力欄。閉じタグなし。",
+          "attributes": [
+            {
+              "name": "type",
+              "meaning": "text(文字) / email(メールアドレス) / checkbox(チェックボックス) など"
+            },
+            {
+              "name": "id",
+              "meaning": "そのページの中で1つだけの名前。labelとの結びつきに使う"
+            }
+          ],
+          "example": "<input type=\"text\" id=\"name\">",
+          "searchKeywords": [
+            "input",
+            "type",
+            "id",
+            "入力欄"
+          ]
+        },
+        {
+          "id": "select",
+          "tag": "select",
+          "displayName": "<select>",
+          "category": "form",
+          "lessons": [
+            10
+          ],
+          "empty": false,
+          "summary": "選択肢のメニュー。中にoptionを選択肢の数だけ書く。",
+          "attributes": [
+            {
+              "name": "id",
+              "meaning": "labelと結びつける名前"
+            }
+          ],
+          "example": "<select id=\"grade\">...</select>",
+          "searchKeywords": [
+            "select",
+            "選択",
+            "メニュー"
+          ]
+        },
+        {
+          "id": "option",
+          "tag": "option",
+          "displayName": "<option>",
+          "category": "form",
+          "lessons": [
+            10
+          ],
+          "empty": false,
+          "summary": "selectの選択肢。",
+          "attributes": [],
+          "example": "<option>1年</option>",
+          "searchKeywords": [
+            "option",
+            "選択肢"
+          ]
+        },
+        {
+          "id": "textarea",
+          "tag": "textarea",
+          "displayName": "<textarea>",
+          "category": "form",
+          "lessons": [
+            10
+          ],
+          "empty": false,
+          "summary": "長い文章を書ける入力欄。",
+          "attributes": [
+            {
+              "name": "id",
+              "meaning": "labelと結びつける名前"
+            }
+          ],
+          "example": "<textarea id=\"reason\"></textarea>",
+          "searchKeywords": [
+            "textarea",
+            "長文",
+            "入力"
+          ]
+        },
+        {
+          "id": "button",
+          "tag": "button",
+          "displayName": "<button>",
+          "category": "form",
+          "lessons": [
+            10
+          ],
+          "empty": false,
+          "summary": "ボタン。type=\"submit\" で送信ボタンになる。",
+          "attributes": [
+            {
+              "name": "type",
+              "meaning": "submit など"
+            }
+          ],
+          "example": "<button type=\"submit\">送信</button>",
+          "searchKeywords": [
+            "button",
+            "ボタン",
+            "submit"
+          ]
+        },
+        {
+          "id": "table",
+          "tag": "table",
+          "displayName": "<table>",
+          "category": "table",
+          "lessons": [
+            11
+          ],
+          "empty": false,
+          "summary": "表全体。",
+          "attributes": [],
+          "example": "<table>...</table>",
+          "searchKeywords": [
+            "table",
+            "表"
+          ]
+        },
+        {
+          "id": "tr",
+          "tag": "tr",
+          "displayName": "<tr>",
+          "category": "table",
+          "lessons": [
+            11
+          ],
+          "empty": false,
+          "summary": "表の1行。",
+          "attributes": [],
+          "example": "<tr>...</tr>",
+          "searchKeywords": [
+            "tr",
+            "行",
+            "表"
+          ]
+        },
+        {
+          "id": "th",
+          "tag": "th",
+          "displayName": "<th>",
+          "category": "table",
+          "lessons": [
+            11
+          ],
+          "empty": false,
+          "summary": "見出しのセル(太字・中央ぞろえ)。",
+          "attributes": [],
+          "example": "<th>教科</th>",
+          "searchKeywords": [
+            "th",
+            "見出し",
+            "セル",
+            "表"
+          ]
+        },
+        {
+          "id": "td",
+          "tag": "td",
+          "displayName": "<td>",
+          "category": "table",
+          "lessons": [
+            11
+          ],
+          "empty": false,
+          "summary": "データのセル。",
+          "attributes": [],
+          "example": "<td>国語</td>",
+          "searchKeywords": [
+            "td",
+            "データ",
+            "セル",
+            "表"
+          ]
+        },
+        {
+          "id": "comment",
+          "tag": "<!-- -->",
+          "displayName": "<!-- コメント -->",
+          "category": "other",
+          "lessons": [],
+          "empty": false,
+          "summary": "コメント。メモを書く場所。画面には表示されない。",
+          "attributes": [],
+          "example": "<!-- ここにメモ -->",
+          "searchKeywords": [
+            "コメント",
+            "メモ",
+            "<!--"
+          ]
+        }
+      ],
+      "walkthroughs": [
+        {
+          "id": "html-basic-page",
+          "title": "見本コードの読み方",
+          "lessons": [
+            1
+          ],
+          "code": "<!DOCTYPE html>\n<html lang=\"ja\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>海のページ</title>\n</head>\n<body>\n  <p>青い海が好きです。</p>\n</body>\n</html>",
+          "lines": [
+            {
+              "code": "<!DOCTYPE html>",
+              "meaning": "「HTML5で書かれたページです」とブラウザに伝える宣言。いちばん最初に書く"
+            },
+            {
+              "code": "<html lang=\"ja\">",
+              "meaning": "ページ全体を囲む。lang=\"ja\" で日本語のページと伝える"
+            },
+            {
+              "code": "<head>",
+              "meaning": "ページの設定を書く場所。画面には表示されない"
+            },
+            {
+              "code": "<meta charset=\"UTF-8\">",
+              "meaning": "文字コードの指定。日本語の文字化けを防ぐ。閉じタグなし"
+            },
+            {
+              "code": "<title>海のページ</title>",
+              "meaning": "ブラウザのタブに表示されるページ名"
+            },
+            {
+              "code": "</head>",
+              "meaning": "headを閉じる"
+            },
+            {
+              "code": "<body>",
+              "meaning": "画面に見える内容を入れる場所"
+            },
+            {
+              "code": "<p>青い海が好きです。</p>",
+              "meaning": "段落。画面に「青い海が好きです。」と表示される"
+            },
+            {
+              "code": "</body>",
+              "meaning": "bodyを閉じる"
+            },
+            {
+              "code": "</html>",
+              "meaning": "htmlを閉じる(ページの終わり)"
+            }
+          ],
+          "appearance": [
+            {
+              "where": "タブ",
+              "shows": "海のページ",
+              "from": "title"
+            },
+            {
+              "where": "画面",
+              "shows": "青い海が好きです。",
+              "from": "body の中の p"
+            }
+          ],
+          "summary": "headの中はページの情報、bodyの中は見えるもの。",
+          "structure": "html\n├ head   ← 設定(見えない)\n│  ├ meta\n│  └ title\n└ body   ← 内容(見える)\n   └ p"
+        }
+      ]
+    }
+  ]
+}
