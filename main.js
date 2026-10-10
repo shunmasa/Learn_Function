@@ -145,6 +145,178 @@ function setFormError(id, message) {
   el.hidden = !message;
 }
 
+
+const passwordResetDialog = document.getElementById('password-reset-dialog');
+const passwordResetRequestForm = document.getElementById('password-reset-request-form');
+const passwordResetConfirmForm = document.getElementById('password-reset-confirm-form');
+
+function setPasswordResetStep(step, email = '') {
+  if (!passwordResetRequestForm || !passwordResetConfirmForm) return;
+
+  const confirming = step === 'confirm';
+  passwordResetRequestForm.hidden = confirming;
+  passwordResetConfirmForm.hidden = !confirming;
+
+  if (confirming) {
+    const hiddenEmail = document.getElementById('password-reset-confirm-email');
+    const status = document.getElementById('password-reset-status');
+    if (hiddenEmail) hiddenEmail.value = email;
+    if (status) {
+      status.textContent =
+        `${email} に送信した6桁コードを入力してください。コードは15分間有効です。`;
+    }
+  }
+}
+
+function openPasswordResetDialog() {
+  if (!passwordResetDialog) return;
+
+  const loginEmail = document.getElementById('landing-login-email')?.value.trim() || '';
+  const resetEmail = document.getElementById('password-reset-email');
+  if (resetEmail) resetEmail.value = loginEmail;
+
+  setFormError('password-reset-request-error', '');
+  setFormError('password-reset-confirm-error', '');
+
+  const status = document.getElementById('password-reset-status');
+  if (status) status.textContent = '';
+
+  const code = document.getElementById('password-reset-code');
+  const pass1 = document.getElementById('password-reset-new-password');
+  const pass2 = document.getElementById('password-reset-new-password2');
+  if (code) code.value = '';
+  if (pass1) pass1.value = '';
+  if (pass2) pass2.value = '';
+
+  setPasswordResetStep('request');
+  passwordResetDialog.showModal();
+}
+
+async function requestPasswordResetCode(email) {
+  return landingApi('/api/password-reset/request', {
+    method: 'POST',
+    body: { email }
+  });
+}
+
+document.querySelectorAll('[data-open-password-reset]').forEach(button => {
+  button.addEventListener('click', openPasswordResetDialog);
+});
+
+if (passwordResetDialog) {
+  passwordResetDialog.querySelector('.close-password-reset-dialog')
+    ?.addEventListener('click', () => passwordResetDialog.close());
+
+  passwordResetDialog.addEventListener('click', event => {
+    if (event.target !== passwordResetDialog) return;
+    const rect = passwordResetDialog.getBoundingClientRect();
+    if (
+      event.clientX < rect.left ||
+      event.clientX > rect.right ||
+      event.clientY < rect.top ||
+      event.clientY > rect.bottom
+    ) {
+      passwordResetDialog.close();
+    }
+  });
+}
+
+if (passwordResetRequestForm) {
+  passwordResetRequestForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    setFormError('password-reset-request-error', '');
+
+    const email =
+      document.getElementById('password-reset-email').value.trim().toLowerCase();
+
+    try {
+      await requestPasswordResetCode(email);
+      setPasswordResetStep('confirm', email);
+      document.getElementById('password-reset-code')?.focus();
+    } catch (error) {
+      setFormError(
+        'password-reset-request-error',
+        error.message || '確認コードの送信に失敗しました。'
+      );
+    }
+  });
+}
+
+document.querySelectorAll('[data-resend-password-reset]').forEach(button => {
+  button.addEventListener('click', async () => {
+    const email =
+      document.getElementById('password-reset-confirm-email')?.value.trim().toLowerCase() || '';
+
+    setFormError('password-reset-confirm-error', '');
+
+    try {
+      await requestPasswordResetCode(email);
+      const status = document.getElementById('password-reset-status');
+      if (status) status.textContent = '確認コードをもう一度送信しました。';
+    } catch (error) {
+      setFormError(
+        'password-reset-confirm-error',
+        error.message || '確認コードの再送に失敗しました。'
+      );
+    }
+  });
+});
+
+if (passwordResetConfirmForm) {
+  passwordResetConfirmForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    setFormError('password-reset-confirm-error', '');
+
+    const email =
+      document.getElementById('password-reset-confirm-email').value.trim().toLowerCase();
+    const code =
+      document.getElementById('password-reset-code').value.trim();
+    const password =
+      document.getElementById('password-reset-new-password').value;
+    const password2 =
+      document.getElementById('password-reset-new-password2').value;
+
+    if (!/^\d{6}$/.test(code)) {
+      setFormError('password-reset-confirm-error', '6桁の確認コードを入力してください。');
+      return;
+    }
+
+    if (password.length < 8) {
+      setFormError('password-reset-confirm-error', '新しいパスワードは8文字以上にしてください。');
+      return;
+    }
+
+    if (password !== password2) {
+      setFormError('password-reset-confirm-error', '確認用パスワードが一致しません。');
+      return;
+    }
+
+    try {
+      const result = await landingApi('/api/password-reset/confirm', {
+        method: 'POST',
+        body: { email, code, password }
+      });
+
+      passwordResetDialog.close();
+
+      const loginEmail = document.getElementById('landing-login-email');
+      const loginPassword = document.getElementById('landing-login-password');
+      if (loginEmail) loginEmail.value = email;
+      if (loginPassword) loginPassword.value = '';
+
+      openAuth(
+        'login',
+        result.message || 'パスワードを再設定しました。新しいパスワードでログインしてください。'
+      );
+    } catch (error) {
+      setFormError(
+        'password-reset-confirm-error',
+        error.message || 'パスワードの再設定に失敗しました。'
+      );
+    }
+  });
+}
+
 if (authDialog) {
   authDialog.querySelector('.close-auth-dialog').addEventListener('click', () => authDialog.close());
   authDialog.addEventListener('click', event => {
@@ -409,53 +581,20 @@ function requestRender() {
   if (!rafId) rafId = window.requestAnimationFrame(render);
 }
 function renderQuestTransition() {
-  if (!transitionStage || !transitionRunners) return false;
+  if (!transitionStage) return false;
 
-  const viewportTop = window.scrollY;
-  const viewportBottom = viewportTop + window.innerHeight;
-  const visible = viewportBottom > transitionGeometry.top
-    && viewportTop < transitionGeometry.top + transitionGeometry.height;
-
+  /*
+   * Scene 2 animation is now owned by:
+   *   js/transition-parallax.js
+   *
+   * main.js only unlocks the scene after the goblin has been defeated.
+   * This prevents two scripts from writing different transforms to the
+   * same adventurer sprite.
+   */
   const unlocked = battle.phase === 'defeated';
   transitionStage.classList.toggle('is-unlocked', unlocked);
 
-  if (!unlocked) {
-    transitionRunners.style.opacity = '0';
-    return visible;
-  }
-
-  /*
-   * Scroll progress through the card-free transition area.
-   * This is intentionally a simple translation, not a walking animation.
-   */
-  const travel = Math.max(1, transitionGeometry.height - Math.min(window.innerHeight * .55, 420));
-  const raw = (viewportTop - transitionGeometry.top + window.innerHeight * .18) / travel;
-  const p = clamp(raw, 0, 1);
-
-  // Grow QUEST CLEAR / 次の冒険へ as the user scrolls down.
-  const transitionMessage = transitionStage.querySelector('.transition-message');
-  if (transitionMessage) {
-    const messageScale = 1 + p * 1.0;
-    transitionMessage.style.setProperty('--message-scale', messageScale.toFixed(3));
-  }
-
-  const compact = transitionGeometry.width <= 680;
-  const spriteWidth = compact ? 230 : 345;
-  const spriteHeight = spriteWidth * 778 / 2021;
-
-  // In scene 2 the adventurers do not move downward.
-  // They appear and remain at the very bottom-center of the road.
-  const x = transitionGeometry.width / 2 - spriteWidth / 2;
-  const y = transitionGeometry.height - spriteHeight - (compact ? 12 : 18);
-
-  // Slightly larger because the foreground road is wider.
-　const scale = 1.25;
-
-  transitionRunners.style.opacity = '1';
-  transitionRunners.style.transform =
-    `translate3d(${x}px,${y}px,0) scale(${scale})`;
-
-  return visible;
+  return false;
 }
 
 function render(now = window.performance.now()) {

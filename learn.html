@@ -26,6 +26,7 @@
         <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password" />
         <p id="login-error" class="auth-error hidden"></p>
         <button type="submit" class="btn primary">ログイン</button>
+        <button type="button" id="forgot-password-btn" class="forgot-password-btn">パスワードを忘れた場合</button>
         <p class="demo-hint">新規の方は「新規登録」からアカウントを作成してください</p>
       </form>
       <form id="register-form" class="auth-form hidden">
@@ -42,6 +43,48 @@
       </form>
     </div>
   </div>
+
+  <dialog id="learn-password-reset-dialog" class="learn-password-reset-dialog" aria-labelledby="learn-password-reset-title">
+    <button type="button" id="learn-password-reset-close" class="learn-reset-close" aria-label="閉じる">×</button>
+    <h2 id="learn-password-reset-title">パスワードを再設定</h2>
+    <p class="learn-reset-lead">登録メールに6桁の確認コードを送ります。</p>
+
+    <form id="learn-password-reset-request-form" class="learn-reset-form">
+      <label>メールアドレス</label>
+      <input id="learn-password-reset-email" type="email" autocomplete="email" required />
+      <p id="learn-password-reset-request-error" class="auth-error hidden"></p>
+      <button type="submit" class="btn primary">確認コードを送信</button>
+    </form>
+
+    <form id="learn-password-reset-confirm-form" class="learn-reset-form hidden">
+      <input id="learn-password-reset-confirm-email" type="hidden" />
+
+      <label>6桁の確認コード</label>
+      <input
+        id="learn-password-reset-code"
+        type="text"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        minlength="6"
+        maxlength="6"
+        pattern="[0-9]{6}"
+        placeholder="123456"
+        required
+      />
+
+      <label>新しいパスワード（8文字以上）</label>
+      <input id="learn-password-reset-new-password" type="password" autocomplete="new-password" minlength="8" required />
+
+      <label>新しいパスワード（確認）</label>
+      <input id="learn-password-reset-new-password2" type="password" autocomplete="new-password" minlength="8" required />
+
+      <p id="learn-password-reset-status" class="learn-reset-status"></p>
+      <p id="learn-password-reset-confirm-error" class="auth-error hidden"></p>
+
+      <button type="submit" class="btn primary">パスワードを変更</button>
+      <button type="button" id="learn-password-reset-resend" class="forgot-password-btn">コードをもう一度送信</button>
+    </form>
+  </dialog>
 
   <div id="app-screen" class="screen hidden">
     <header class="app-header">
@@ -154,7 +197,10 @@
               <div id="tests-panel" class="panel" role="tabpanel"><div id="tests-output" class="tests-output"></div></div>
             </div>
             <div class="result-bar">
-              <span id="result-message"></span>
+              <div class="result-status-stack">
+                <span id="result-message"></span>
+                <span id="attempt-status" class="attempt-status">TRY 0 / 3</span>
+              </div>
               <button id="next-lesson-btn" class="btn primary small hidden">次のレッスンへ →</button>
             </div>
           </div>

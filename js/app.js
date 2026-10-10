@@ -4,6 +4,17 @@ let currentLessonId = null;
 let currentLang = "js"; // "html" | "js" | "py"
 let completedByLang = { html: new Set(), js: new Set(), py: new Set() };
 
+/*
+ * GIVE UP MODE
+ * 3 failed judged runs unlock the answer and allow moving forward.
+ *
+ * Give-up lessons are intentionally NOT counted as completed lessons.
+ * They are stored separately so Progress / Level still represent real clears.
+ */
+const MAX_FAILED_ATTEMPTS = 3;
+let giveupByLang = { html: new Set(), js: new Set(), py: new Set() };
+const failedAttemptsByLesson = new Map();
+
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
@@ -15,6 +26,77 @@ function getLessons() {
 
 function getCompleted() {
   return completedByLang[currentLang];
+}
+
+function getGiveups() {
+  return giveupByLang[currentLang];
+}
+
+function lessonAttemptKey(lang = currentLang, id = currentLessonId) {
+  return `${lang}:${id}`;
+}
+
+function getFailedAttempts(id = currentLessonId) {
+  if (id == null) return 0;
+  return failedAttemptsByLesson.get(lessonAttemptKey(currentLang, id)) || 0;
+}
+
+function setFailedAttempts(id, count) {
+  if (id == null) return;
+  const safeCount = Math.max(0, Math.min(MAX_FAILED_ATTEMPTS, Number(count) || 0));
+  failedAttemptsByLesson.set(lessonAttemptKey(currentLang, id), safeCount);
+}
+
+function resetFailedAttempts(id = currentLessonId) {
+  if (id == null) return;
+  failedAttemptsByLesson.delete(lessonAttemptKey(currentLang, id));
+}
+
+function giveupStorageKey() {
+  const email = currentUser && currentUser.email ? currentUser.email : "guest";
+  return `learnfp_giveup:${email}`;
+}
+
+function loadGiveupProgress() {
+  giveupByLang = { html: new Set(), js: new Set(), py: new Set() };
+  try {
+    const raw = localStorage.getItem(giveupStorageKey());
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    giveupByLang.html = new Set(Array.isArray(data.html) ? data.html : []);
+    giveupByLang.js = new Set(Array.isArray(data.js) ? data.js : []);
+    giveupByLang.py = new Set(Array.isArray(data.py) ? data.py : []);
+  } catch (error) {
+    console.warn("give up progress load failed", error);
+  }
+}
+
+function saveGiveupProgress() {
+  if (!currentUser) return;
+  try {
+    localStorage.setItem(
+      giveupStorageKey(),
+      JSON.stringify({
+        html: [...giveupByLang.html],
+        js: [...giveupByLang.js],
+        py: [...giveupByLang.py],
+      })
+    );
+  } catch (error) {
+    console.warn("give up progress save failed", error);
+  }
+}
+
+function getLessonSolution(lesson) {
+  if (!lesson) return "";
+  const value =
+    lesson.solution ??
+    lesson.solutionCode ??
+    lesson.answer ??
+    lesson.sampleAnswer ??
+    lesson.correctCode ??
+    "";
+  return typeof value === "string" ? value : "";
 }
 
 // ========== AUTH ==========
@@ -43,6 +125,208 @@ function showAuthError(form, message) {
   el.textContent = message;
   el.classList.remove("hidden");
 }
+
+
+function setLearnResetError(id, message) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = message || "";
+  el.classList.toggle("hidden", !message);
+}
+
+function setLearnResetStep(step, email = "") {
+  const requestForm = $("#learn-password-reset-request-form");
+  const confirmForm = $("#learn-password-reset-confirm-form");
+  if (!requestForm || !confirmForm) return;
+
+  const confirming = step === "confirm";
+  requestForm.classList.toggle("hidden", confirming);
+  confirmForm.classList.toggle("hidden", !confirming);
+
+  if (confirming) {
+    $("#learn-password-reset-confirm-email").value = email;
+    $("#learn-password-reset-status").textContent =
+      `${email} に送信した6桁コードを入力してください。コードは15分間有効です。`;
+  }
+}
+
+function openLearnPasswordReset() {
+  const dialog = $("#learn-password-reset-dialog");
+  if (!dialog) return;
+
+  if (!useRemoteAuth()) {
+    showAuthError(
+      "login",
+      "パスワード再設定には Cloudflare Worker のメール認証設定が必要です。"
+    );
+    return;
+  }
+
+  const email = $("#login-email")?.value.trim() || "";
+  $("#learn-password-reset-email").value = email;
+
+  setLearnResetError("learn-password-reset-request-error", "");
+  setLearnResetError("learn-password-reset-confirm-error", "");
+
+  $("#learn-password-reset-code").value = "";
+  $("#learn-password-reset-new-password").value = "";
+  $("#learn-password-reset-new-password2").value = "";
+  $("#learn-password-reset-status").textContent = "";
+
+  setLearnResetStep("request");
+  dialog.showModal();
+}
+
+async function requestLearnPasswordResetCode(email) {
+  return api("/api/password-reset/request", {
+    method: "POST",
+    body: { email },
+  });
+}
+
+const forgotPasswordButton = $("#forgot-password-btn");
+if (forgotPasswordButton) {
+  forgotPasswordButton.addEventListener("click", openLearnPasswordReset);
+}
+
+const learnResetDialog = $("#learn-password-reset-dialog");
+if (learnResetDialog) {
+  $("#learn-password-reset-close")?.addEventListener(
+    "click",
+    () => learnResetDialog.close()
+  );
+
+  learnResetDialog.addEventListener("click", (event) => {
+    if (event.target !== learnResetDialog) return;
+
+    const rect = learnResetDialog.getBoundingClientRect();
+    if (
+      event.clientX < rect.left ||
+      event.clientX > rect.right ||
+      event.clientY < rect.top ||
+      event.clientY > rect.bottom
+    ) {
+      learnResetDialog.close();
+    }
+  });
+}
+
+$("#learn-password-reset-request-form")?.addEventListener(
+  "submit",
+  async (event) => {
+    event.preventDefault();
+    setLearnResetError("learn-password-reset-request-error", "");
+
+    const email =
+      $("#learn-password-reset-email").value.trim().toLowerCase();
+
+    try {
+      await requestLearnPasswordResetCode(email);
+      setLearnResetStep("confirm", email);
+      $("#learn-password-reset-code")?.focus();
+    } catch (error) {
+      setLearnResetError(
+        "learn-password-reset-request-error",
+        error.message || "確認コードの送信に失敗しました。"
+      );
+    }
+  }
+);
+
+$("#learn-password-reset-resend")?.addEventListener(
+  "click",
+  async () => {
+    const email =
+      $("#learn-password-reset-confirm-email").value.trim().toLowerCase();
+
+    setLearnResetError("learn-password-reset-confirm-error", "");
+
+    try {
+      await requestLearnPasswordResetCode(email);
+      $("#learn-password-reset-status").textContent =
+        "確認コードをもう一度送信しました。";
+    } catch (error) {
+      setLearnResetError(
+        "learn-password-reset-confirm-error",
+        error.message || "確認コードの再送に失敗しました。"
+      );
+    }
+  }
+);
+
+$("#learn-password-reset-confirm-form")?.addEventListener(
+  "submit",
+  async (event) => {
+    event.preventDefault();
+    setLearnResetError("learn-password-reset-confirm-error", "");
+
+    const email =
+      $("#learn-password-reset-confirm-email").value.trim().toLowerCase();
+    const code =
+      $("#learn-password-reset-code").value.trim();
+    const password =
+      $("#learn-password-reset-new-password").value;
+    const password2 =
+      $("#learn-password-reset-new-password2").value;
+
+    if (!/^\d{6}$/.test(code)) {
+      setLearnResetError(
+        "learn-password-reset-confirm-error",
+        "6桁の確認コードを入力してください。"
+      );
+      return;
+    }
+
+    if (password.length < 8) {
+      setLearnResetError(
+        "learn-password-reset-confirm-error",
+        "新しいパスワードは8文字以上にしてください。"
+      );
+      return;
+    }
+
+    if (password !== password2) {
+      setLearnResetError(
+        "learn-password-reset-confirm-error",
+        "確認用パスワードが一致しません。"
+      );
+      return;
+    }
+
+    try {
+      const result = await api("/api/password-reset/confirm", {
+        method: "POST",
+        body: { email, code, password },
+      });
+
+      learnResetDialog.close();
+
+      $("#login-email").value = email;
+      $("#login-password").value = "";
+
+      showAuthError(
+        "login",
+        result.message ||
+          "パスワードを再設定しました。新しいパスワードでログインしてください。"
+      );
+
+      /*
+       * The auth-error component is red by default, so mark this message
+       * as a success message after it becomes visible.
+       */
+      const loginMessage = $("#login-error");
+      if (loginMessage) {
+        loginMessage.classList.add("password-reset-success");
+        loginMessage.classList.remove("hidden");
+      }
+    } catch (error) {
+      setLearnResetError(
+        "learn-password-reset-confirm-error",
+        error.message || "パスワードの再設定に失敗しました。"
+      );
+    }
+  }
+);
 
 async function api(path, options = {}) {
   const base = apiBase();
@@ -96,6 +380,7 @@ function setSessionUser(user, token) {
     lang: user.lang || "js",
   };
   applyUserProgress(currentUser);
+  loadGiveupProgress();
   if (token) localStorage.setItem(TOKEN_KEY, token);
   localStorage.setItem(SESSION_KEY, user.email);
   localStorage.setItem(
@@ -228,6 +513,7 @@ $$(".tab").forEach((tab) => {
 $("#login-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   showAuthError("login", "");
+  $("#login-error")?.classList.remove("password-reset-success");
   const email = $("#login-email").value.trim().toLowerCase();
   const password = $("#login-password").value;
   if (!email || !password) {
@@ -308,6 +594,8 @@ $("#logout-btn").addEventListener("click", async () => {
   }
   currentUser = null;
   completedByLang = { html: new Set(), js: new Set(), py: new Set() };
+  giveupByLang = { html: new Set(), js: new Set(), py: new Set() };
+  failedAttemptsByLesson.clear();
   localStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem("learnfp_user");
@@ -368,7 +656,12 @@ $$(".nav-btn").forEach((btn) => {
 function isUnlocked(id) {
   if (currentUser && currentUser.isAdmin) return true;
   if (id === 1) return true;
-  return getCompleted().has(id - 1);
+
+  const previousId = id - 1;
+  return (
+    getCompleted().has(previousId) ||
+    getGiveups().has(previousId)
+  );
 }
 
 function renderLessonList() {
@@ -378,13 +671,15 @@ function renderLessonList() {
   getLessons().forEach((lesson) => {
     const unlocked = isUnlocked(lesson.id);
     const done = completed.has(lesson.id);
+    const gaveUp = getGiveups().has(lesson.id);
     const card = document.createElement("div");
-    card.className = `lesson-card ${!unlocked ? "locked" : ""} ${done ? "completed" : ""}`;
+    card.className = `lesson-card ${!unlocked ? "locked" : ""} ${done ? "completed" : ""} ${gaveUp && !done ? "giveup" : ""}`;
     card.innerHTML = `
       <div class="num">LESSON ${lesson.id}</div>
       <h3>${lesson.title}</h3>
       <p>${lesson.description}</p>
-      <span class="status">${done ? "✅" : unlocked ? "▶" : "🔒"}</span>
+      <span class="status">${done ? "✅" : gaveUp ? "↪" : unlocked ? "▶" : "🔒"}</span>
+      ${gaveUp && !done ? '<span class="giveup-card-label">GIVE UP</span>' : ""}
     `;
     if (unlocked) card.addEventListener("click", () => openLesson(lesson.id));
     list.appendChild(card);
@@ -439,6 +734,17 @@ function openLesson(id) {
   } else {
     switchEditorTab("console");
   }
+
+  updateAttemptStatus(lesson);
+
+  if (getGiveups().has(lesson.id) && !getCompleted().has(lesson.id)) {
+    activateGiveUpMode(lesson, {
+      persist: false,
+      restored: true,
+      switchToTests: false,
+    });
+  }
+
   scheduleLiveConsole();
 }
 
@@ -716,11 +1022,27 @@ const codeEditorEl = $("#code-editor");
 if (codeEditorEl) {
   codeEditorEl.addEventListener("input", () => {
     renderCodeHighlight();
-    $("#result-message").textContent = "";
-    $("#result-message").className = "";
+
+    const lesson = getLessons().find((l) => l.id === currentLessonId);
+    const inGiveUpMode = !!lesson && getGiveups().has(lesson.id) && !getCompleted().has(lesson.id);
+
     $("#tests-output").innerHTML = "";
     $("#tests-count").textContent = "";
-    $("#next-lesson-btn").classList.add("hidden");
+
+    if (inGiveUpMode) {
+      $("#result-message").textContent =
+        "GIVE UP MODE：回答を確認しながら書き直せます。次へ進むこともできます。";
+      $("#result-message").className = "giveup";
+      $("#next-lesson-btn").classList.remove("hidden");
+      appendGiveUpAnswer(lesson);
+      updateAttemptStatus(lesson);
+    } else {
+      $("#result-message").textContent = "";
+      $("#result-message").className = "";
+      $("#next-lesson-btn").classList.add("hidden");
+      updateAttemptStatus(lesson);
+    }
+
     switchEditorTab(currentLang === "html" ? "view" : "console");
     scheduleLiveConsole();
   });
@@ -803,6 +1125,161 @@ function runPython(code) {
   });
 }
 
+// ========== GIVE UP MODE ==========
+function updateAttemptStatus(lesson = null) {
+  const el = $("#attempt-status");
+  if (!el) return;
+
+  const activeLesson = lesson || getLessons().find((l) => l.id === currentLessonId);
+  if (!activeLesson) {
+    el.textContent = "";
+    el.className = "attempt-status";
+    return;
+  }
+
+  if (getCompleted().has(activeLesson.id)) {
+    el.textContent = "CLEAR";
+    el.className = "attempt-status clear";
+    return;
+  }
+
+  if (getGiveups().has(activeLesson.id)) {
+    el.textContent = "GIVE UP MODE";
+    el.className = "attempt-status giveup";
+    return;
+  }
+
+  const attempts = getFailedAttempts(activeLesson.id);
+  el.textContent = `TRY ${attempts} / ${MAX_FAILED_ATTEMPTS}`;
+  el.className = attempts >= 2
+    ? "attempt-status warning"
+    : "attempt-status";
+}
+
+function recordFailedAttempt(lesson) {
+  if (!lesson) return 0;
+
+  if (getGiveups().has(lesson.id)) {
+    return MAX_FAILED_ATTEMPTS;
+  }
+
+  const nextCount = Math.min(
+    MAX_FAILED_ATTEMPTS,
+    getFailedAttempts(lesson.id) + 1
+  );
+
+  setFailedAttempts(lesson.id, nextCount);
+  updateAttemptStatus(lesson);
+  return nextCount;
+}
+
+function appendGiveUpAnswer(lesson) {
+  const testsEl = $("#tests-output");
+  if (!testsEl || !lesson) return;
+
+  testsEl.querySelector(".giveup-panel")?.remove();
+
+  const solution = getLessonSolution(lesson);
+  const panel = document.createElement("section");
+  panel.className = "giveup-panel";
+
+  const heading = document.createElement("div");
+  heading.className = "giveup-panel-heading";
+  heading.innerHTML = `
+    <span class="giveup-badge">GIVE UP MODE</span>
+    <strong>回答を確認して、次へ進めます。</strong>
+  `;
+
+  const note = document.createElement("p");
+  note.className = "giveup-note";
+  note.textContent =
+    "3回トライしました。ここでは合格扱いにはせず、回答を学んで次のレッスンへ進めます。";
+
+  const label = document.createElement("div");
+  label.className = "giveup-answer-label";
+  label.textContent = "ANSWER";
+
+  const pre = document.createElement("pre");
+  pre.className = "giveup-answer";
+  const code = document.createElement("code");
+  code.textContent = solution || "このレッスンには回答コードがまだ設定されていません。";
+  pre.appendChild(code);
+
+  panel.append(heading, note, label, pre);
+
+  if (solution) {
+    const actions = document.createElement("div");
+    actions.className = "giveup-actions";
+
+    const useAnswerButton = document.createElement("button");
+    useAnswerButton.type = "button";
+    useAnswerButton.className = "btn giveup-use-answer";
+    useAnswerButton.textContent = "回答をエディターに入れる";
+
+    useAnswerButton.addEventListener("click", () => {
+      $("#code-editor").value = solution;
+      renderCodeHighlight();
+
+      if (currentLang === "html") {
+        renderHtmlPreview(solution);
+      }
+
+      scheduleLiveConsole();
+
+      const resultMsg = $("#result-message");
+      resultMsg.textContent =
+        "回答をエディターに入れました。内容を確認してから実行できます。";
+      resultMsg.className = "giveup";
+    });
+
+    actions.appendChild(useAnswerButton);
+    panel.appendChild(actions);
+  }
+
+  if (lesson.explanation) {
+    const explanation = document.createElement("div");
+    explanation.className = "giveup-explanation";
+    explanation.innerHTML = lesson.explanation;
+    panel.appendChild(explanation);
+  }
+
+  testsEl.appendChild(panel);
+}
+
+function activateGiveUpMode(
+  lesson,
+  {
+    persist = true,
+    restored = false,
+    switchToTests = true,
+  } = {}
+) {
+  if (!lesson) return;
+
+  getGiveups().add(lesson.id);
+  setFailedAttempts(lesson.id, MAX_FAILED_ATTEMPTS);
+
+  if (persist) {
+    saveGiveupProgress();
+  }
+
+  const resultMsg = $("#result-message");
+  resultMsg.textContent = restored
+    ? "GIVE UP MODE：回答を確認して、次のレッスンへ進めます。"
+    : "3回トライしました。GIVE UP MODEで回答を確認して次へ進めます。";
+  resultMsg.className = "giveup";
+
+  $("#next-lesson-btn").classList.remove("hidden");
+
+  updateAttemptStatus(lesson);
+  appendGiveUpAnswer(lesson);
+  renderLessonList();
+
+  if (switchToTests) {
+    switchEditorTab("tests");
+  }
+}
+
 // ========== RUN ==========
 async function runCode() {
   const lesson = getLessons().find((l) => l.id === currentLessonId);
@@ -837,10 +1314,20 @@ async function runCode() {
       `<div class="info">（出力なし）</div>`;
     if (error) {
       consoleEl.innerHTML += `<div class="error">${escapeHtml(error)}</div>`;
-      resultMsg.textContent = "実行エラーがあります。コンソールを確認してください。";
-      resultMsg.className = "error";
-      $("#next-lesson-btn").classList.add("hidden");
-      switchEditorTab("console");
+
+      const failedAttempts = recordFailedAttempt(lesson);
+
+      if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
+        activateGiveUpMode(lesson);
+      } else {
+        const remaining = MAX_FAILED_ATTEMPTS - failedAttempts;
+        resultMsg.textContent =
+          `実行エラーがあります。TRY ${failedAttempts} / ${MAX_FAILED_ATTEMPTS} — あと${remaining}回トライできます。`;
+        resultMsg.className = "error";
+        $("#next-lesson-btn").classList.add("hidden");
+        switchEditorTab("console");
+      }
+
       syncPreview();
       return;
     }
@@ -887,6 +1374,15 @@ async function runCode() {
     const alreadyCompleted = completed.has(lesson.id);
     const levelBefore = getPlayerLevel();
 
+    /*
+     * A learner can still come back after GIVE UP MODE,
+     * solve the lesson, and convert it into a real clear.
+     */
+    if (getGiveups().delete(lesson.id)) {
+      saveGiveupProgress();
+    }
+    resetFailedAttempts(lesson.id);
+
     if (passCount > 0) celebrateConfetti({ count: 160, duration: 180 });
     completed.add(lesson.id);
 
@@ -900,6 +1396,8 @@ async function runCode() {
     resultMsg.className = "success";
     saveUser();
     updateProgress();
+    updateAttemptStatus(lesson);
+    renderLessonList();
     $("#next-lesson-btn").classList.remove("hidden");
     switchEditorTab("tests");
     if (lesson.explanation) {
@@ -909,13 +1407,25 @@ async function runCode() {
       testsEl.appendChild(expDiv);
     }
   } else {
+    const failedAttempts = recordFailedAttempt(lesson);
+
+    if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
+      activateGiveUpMode(lesson);
+      return;
+    }
+
+    const remaining = MAX_FAILED_ATTEMPTS - failedAttempts;
+
     if (passCount > 0) {
-      resultMsg.textContent = `✨ ${passCount} / ${lesson.tests.length} テスト通過！もう少し！`;
+      resultMsg.textContent =
+        `✨ ${passCount} / ${lesson.tests.length} テスト通過！ TRY ${failedAttempts} / ${MAX_FAILED_ATTEMPTS} — あと${remaining}回。`;
       resultMsg.className = "success";
     } else {
-      resultMsg.textContent = "いくつかテストが失敗しています。修正して再実行してください。";
+      resultMsg.textContent =
+        `まだ条件をクリアしていません。TRY ${failedAttempts} / ${MAX_FAILED_ATTEMPTS} — あと${remaining}回トライできます。`;
       resultMsg.className = "error";
     }
+
     $("#next-lesson-btn").classList.add("hidden");
     switchEditorTab("tests");
   }
@@ -940,7 +1450,20 @@ $("#reset-btn").addEventListener("click", () => {
     $("#tests-output").innerHTML = "";
     $("#tests-count").textContent = "";
     $("#preview-output").textContent = "実行結果がここに表示されます";
-    $("#next-lesson-btn").classList.add("hidden");
+    const inGiveUpMode = getGiveups().has(lesson.id) && !getCompleted().has(lesson.id);
+
+    if (inGiveUpMode) {
+      $("#result-message").textContent =
+        "GIVE UP MODE：リセットしました。回答を確認して次へ進むこともできます。";
+      $("#result-message").className = "giveup";
+      $("#next-lesson-btn").classList.remove("hidden");
+      appendGiveUpAnswer(lesson);
+    } else {
+      $("#next-lesson-btn").classList.add("hidden");
+    }
+
+    updateAttemptStatus(lesson);
+
     if (currentLang === "html") renderHtmlPreview($("#code-editor").value);
     switchEditorTab(currentLang === "html" ? "view" : "console");
     scheduleLiveConsole();

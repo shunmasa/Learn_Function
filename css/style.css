@@ -1050,3 +1050,306 @@ main {
 @media (max-width: 900px) {
   .lesson-layout { grid-template-columns: 1fr; }
 }
+
+/* ========== 3-TRY / GIVE UP MODE ========== */
+
+.result-status-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.18rem;
+  min-width: 0;
+}
+
+.attempt-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 0.12rem 0.45rem;
+  border: 1px solid #d9deea;
+  border-radius: 999px;
+  background: #f7f8fb;
+  color: #778196;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.attempt-status.warning {
+  border-color: #f5ca75;
+  background: #fff8e8;
+  color: #9a6508;
+}
+
+.attempt-status.giveup {
+  border-color: #d7b6ff;
+  background: #f7efff;
+  color: #7a3eb1;
+}
+
+.attempt-status.clear {
+  border-color: #a7dfba;
+  background: #effbf3;
+  color: #237643;
+}
+
+#result-message.giveup {
+  color: #a979db;
+}
+
+.lesson-card.giveup {
+  border-color: #dcc2f4;
+  background: #fbf7ff;
+}
+
+.lesson-card.giveup .status {
+  color: #8c55bb;
+}
+
+.giveup-card-label {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 0.65rem;
+  padding: 0.14rem 0.44rem;
+  border-radius: 999px;
+  background: #efe2fb;
+  color: #7d49a7;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.giveup-panel {
+  margin: 0.8rem 0 0;
+  padding: 1rem;
+  border: 1px solid #765596;
+  border-radius: 9px;
+  background: #241d2e;
+  color: #ede4f7;
+  font-family: var(--font-sans);
+}
+
+.giveup-panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.55rem;
+}
+
+.giveup-panel-heading strong {
+  color: #f7efff;
+  font-size: 0.9rem;
+}
+
+.giveup-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: #8051aa;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.giveup-note {
+  margin: 0 0 0.9rem;
+  color: #cfc1dc;
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+
+.giveup-answer-label {
+  margin-bottom: 0.35rem;
+  color: #c59ee7;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.giveup-answer {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  border: 1px solid #4b4057;
+  border-radius: 7px;
+  background: #111722;
+  color: #dfe8f5;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.65;
+  white-space: pre;
+}
+
+.giveup-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
+
+.btn.giveup-use-answer {
+  width: auto;
+  margin: 0;
+  padding: 0.48rem 0.8rem;
+  border: 1px solid #8f64b6;
+  background: #6f4893;
+  color: #fff;
+  font-size: 0.78rem;
+}
+
+.btn.giveup-use-answer:hover {
+  background: #8055a7;
+}
+
+.giveup-explanation {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #4a3c56;
+  color: #d6cbdc;
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 600px) {
+  .result-bar {
+    align-items: flex-end;
+  }
+
+  .attempt-status {
+    font-size: 0.6rem;
+  }
+
+  .giveup-panel {
+    padding: 0.85rem;
+  }
+
+  .giveup-panel-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+}
+
+/* ========== PASSWORD RESET ========== */
+
+.forgot-password-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--primary);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.45rem 0;
+  text-align: center;
+}
+
+.forgot-password-btn:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.learn-password-reset-dialog {
+  width: min(440px, calc(100% - 28px));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.7rem;
+  background: #fff;
+  color: var(--text);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, .24);
+}
+
+.learn-password-reset-dialog::backdrop {
+  background: rgba(15, 23, 42, .58);
+  backdrop-filter: blur(3px);
+}
+
+.learn-password-reset-dialog h2 {
+  margin: 0 2rem 0.35rem 0;
+  font-size: 1.3rem;
+}
+
+.learn-reset-close {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.75rem;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: #eef2f7;
+  color: #4b5563;
+  cursor: pointer;
+  font-size: 1.25rem;
+}
+
+.learn-reset-lead {
+  margin: 0 0 1.2rem;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+}
+
+.learn-reset-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.learn-reset-form.hidden {
+  display: none;
+}
+
+.learn-reset-form label {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.learn-reset-form input {
+  width: 100%;
+  margin-top: 0.28rem;
+  padding: 0.68rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  font: 500 0.95rem var(--font-sans);
+}
+
+.learn-reset-form input:focus {
+  outline: 2px solid #bfdbfe;
+  border-color: var(--primary);
+}
+
+#learn-password-reset-code {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: .28em;
+  text-align: center;
+}
+
+.learn-reset-status {
+  margin: 0;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #315b88;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.auth-error.password-reset-success {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+  color: #15803d;
+}
+
