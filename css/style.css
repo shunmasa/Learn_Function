@@ -1353,3 +1353,739 @@ main {
   color: #15803d;
 }
 
+/* =========================================================
+   LEVEL + BADGES + CERTIFICATES
+   ========================================================= */
+
+.player-level-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1.15rem 1.25rem;
+  border: 1px solid #dce3ef;
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 0 0, rgba(103,106,236,.13), transparent 36%),
+    #fff;
+}
+
+.player-level-badge {
+  width: 82px;
+  height: 82px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  border: 1px solid #cbc8ff;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #6f72f0, #5143b9);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(79,70,181,.2);
+}
+
+.player-level-badge span {
+  font-family: var(--font-mono);
+  font-size: .58rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  opacity: .8;
+}
+
+.player-level-badge strong {
+  margin-top: .1rem;
+  font-family: var(--font-mono);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.player-level-info {
+  min-width: 0;
+}
+
+.player-level-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .8rem;
+}
+
+.player-level-row strong {
+  font-size: 1.05rem;
+}
+
+.player-level-row span {
+  color: var(--text-muted);
+  font-size: .78rem;
+}
+
+.level-progress-wrap {
+  height: 9px;
+  margin: .65rem 0 .55rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e9ecf3;
+}
+
+.level-progress-bar {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #686cf0, #9b76ef);
+  transition: width .35s ease;
+}
+
+#level-progress-text {
+  color: var(--text-muted);
+  font-size: .78rem;
+}
+
+.achievement-section {
+  margin-top: 1.35rem;
+  padding: 1.3rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.achievement-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+.achievement-heading h3 {
+  margin-top: .15rem;
+  font-size: 1rem;
+}
+
+.achievement-heading p {
+  max-width: 480px;
+  color: var(--text-muted);
+  font-size: .78rem;
+  text-align: right;
+}
+
+.achievement-kicker,
+.certificate-library-kicker {
+  color: #6366e8;
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: .7rem;
+}
+
+.achievement-badge {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: .75rem;
+  align-items: center;
+  position: relative;
+  min-height: 82px;
+  padding: .85rem .9rem;
+  border: 1px solid #dfe3eb;
+  border-radius: 11px;
+  background: #f9fafc;
+}
+
+.achievement-badge.earned {
+  border-color: #dfc173;
+  background:
+    radial-gradient(circle at 0 0, rgba(255,216,105,.24), transparent 40%),
+    #fffdf6;
+  box-shadow: 0 5px 18px rgba(113,87,23,.07);
+}
+
+.achievement-badge.locked {
+  opacity: .55;
+  filter: grayscale(.75);
+}
+
+.achievement-badge-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #cfd5df;
+  border-radius: 50%;
+  background: #edf0f5;
+  color: #596579;
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  font-weight: 900;
+}
+
+.achievement-badge.earned .achievement-badge-icon {
+  border-color: #e0b94f;
+  background: linear-gradient(145deg, #ffed9b, #d69c2d);
+  color: #5b3b07;
+}
+
+.achievement-badge-copy {
+  min-width: 0;
+}
+
+.achievement-badge-copy strong {
+  display: block;
+  color: #222938;
+  font-family: var(--font-mono);
+  font-size: .74rem;
+  letter-spacing: .045em;
+}
+
+.achievement-badge-copy span {
+  display: block;
+  margin-top: .2rem;
+  color: var(--text-muted);
+  font-size: .72rem;
+}
+
+.achievement-badge-state {
+  grid-column: 2;
+  color: #8b6b19;
+  font-size: .65rem;
+  font-weight: 700;
+}
+
+.achievement-badge.locked .achievement-badge-state {
+  color: #7b8493;
+}
+
+.certificate-grid {
+  display: grid;
+  gap: .75rem;
+}
+
+.certificate-library-card {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .9rem;
+  padding: .9rem 1rem;
+  border: 1px solid #dde2eb;
+  border-radius: 11px;
+  background: #fafbfc;
+}
+
+.certificate-library-card.earned {
+  border-color: #b9c9ef;
+  background:
+    radial-gradient(circle at 0 50%, rgba(83,99,210,.12), transparent 30%),
+    #fff;
+}
+
+.certificate-library-card.locked {
+  opacity: .65;
+}
+
+.certificate-library-icon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #cbd3e2;
+  border-radius: 10px;
+  background: #eef2f7;
+  color: #65728a;
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  font-weight: 900;
+}
+
+.certificate-library-card.earned .certificate-library-icon {
+  border-color: #a9b9ee;
+  background: linear-gradient(145deg, #edf0ff, #d6dcff);
+  color: #403993;
+}
+
+.certificate-library-copy strong,
+.certificate-library-copy small,
+.certificate-library-copy span {
+  display: block;
+}
+
+.certificate-library-copy strong {
+  margin-top: .05rem;
+  font-size: .94rem;
+}
+
+.certificate-library-copy small {
+  margin-top: .2rem;
+  color: var(--text-muted);
+  font-size: .72rem;
+}
+
+.certificate-library-actions {
+  display: flex;
+  gap: .45rem;
+  align-items: center;
+}
+
+.certificate-library-actions .btn {
+  white-space: nowrap;
+}
+
+.certificate-locked-label {
+  color: var(--text-muted);
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+.certificate-view-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.certificate-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: 1rem;
+}
+
+.certificate-page {
+  width: 100%;
+  aspect-ratio: 297 / 210;
+  overflow: hidden;
+  padding: clamp(18px, 3.1vw, 42px);
+  background:
+    radial-gradient(circle at 10% 10%, rgba(208,174,87,.13), transparent 24%),
+    radial-gradient(circle at 90% 90%, rgba(74,78,145,.09), transparent 28%),
+    #f8f3e6;
+  color: #1e2941;
+  font-family: Georgia, "Times New Roman", serif;
+  box-shadow: 0 18px 55px rgba(20,30,52,.15);
+}
+
+.certificate-border {
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  border: 3px solid #c19a45;
+}
+
+.certificate-inner-border {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5% 8% 4%;
+  border: 1px solid rgba(91,71,29,.65);
+  text-align: center;
+}
+
+.certificate-inner-border::before,
+.certificate-inner-border::after {
+  content: "✦";
+  position: absolute;
+  top: 5.2%;
+  color: #b28a35;
+  font-size: clamp(14px, 2vw, 28px);
+}
+
+.certificate-inner-border::before {
+  left: 4.5%;
+}
+
+.certificate-inner-border::after {
+  right: 4.5%;
+}
+
+.certificate-brand {
+  position: absolute;
+  top: 5.8%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #6d5a2c;
+  font-family: var(--font-mono);
+  font-size: clamp(8px, .9vw, 12px);
+  font-weight: 800;
+  letter-spacing: .2em;
+  white-space: nowrap;
+}
+
+.certificate-seal {
+  position: absolute;
+  top: 8%;
+  right: 8%;
+  width: clamp(58px, 7.5vw, 100px);
+  height: clamp(58px, 7.5vw, 100px);
+  display: grid;
+  place-items: center;
+  border: 2px solid #c09a48;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #f5df94 0 52%, #d3ae58 53% 58%, #f3e1a8 59%);
+  color: #5f4512;
+  font-family: var(--font-mono);
+  font-size: clamp(10px, 1.4vw, 18px);
+  font-weight: 900;
+  box-shadow: inset 0 0 0 5px rgba(255,255,255,.3);
+}
+
+.certificate-small-title {
+  margin: 0;
+  color: #70623e;
+  font-size: clamp(9px, .95vw, 13px);
+  letter-spacing: .34em;
+}
+
+.certificate-page h1 {
+  margin: .4% 0 0;
+  color: #24304d;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(36px, 6vw, 82px);
+  line-height: .95;
+  letter-spacing: .08em;
+  text-shadow: none;
+}
+
+.certificate-completion {
+  margin: .8% 0 3%;
+  color: #a57f30;
+  font-size: clamp(10px, 1.25vw, 17px);
+  font-weight: 700;
+  letter-spacing: .35em;
+}
+
+.certificate-presented,
+.certificate-copy {
+  margin: .5% 0;
+  color: #5b6170;
+  font-size: clamp(10px, 1.15vw, 16px);
+}
+
+.certificate-name {
+  min-width: 58%;
+  margin: 1.3% 0 1%;
+  padding: 0 4% .6%;
+  border-bottom: 1px solid #99782f;
+  color: #252a38;
+  font-size: clamp(26px, 4vw, 54px);
+  font-style: italic;
+  line-height: 1.1;
+}
+
+.certificate-page h2 {
+  margin: 1% 0;
+  color: #3e3a72;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(20px, 2.8vw, 38px);
+  letter-spacing: .02em;
+}
+
+.certificate-footer-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr 1fr;
+  gap: 3%;
+  align-items: end;
+  margin-top: 4%;
+}
+
+.certificate-meta-block {
+  text-align: left;
+}
+
+.certificate-meta-right {
+  text-align: right;
+}
+
+.certificate-meta-block span {
+  display: block;
+  color: #8a7c5e;
+  font-family: var(--font-mono);
+  font-size: clamp(6px, .72vw, 10px);
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.certificate-meta-block strong {
+  display: block;
+  margin-top: .35rem;
+  color: #3e4351;
+  font-size: clamp(8px, .9vw, 12px);
+  font-weight: 600;
+}
+
+.certificate-signature {
+  padding-top: 1%;
+  border-top: 1px solid #8f783f;
+  color: #313747;
+  text-align: center;
+}
+
+.certificate-signature span {
+  display: block;
+  font-size: clamp(11px, 1.2vw, 16px);
+  font-style: italic;
+}
+
+.certificate-signature small {
+  color: #77715f;
+  font-size: clamp(7px, .75vw, 10px);
+}
+
+.certificate-help {
+  margin-top: .9rem;
+  color: var(--text-muted);
+  font-size: .78rem;
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .player-level-card {
+    grid-template-columns: 70px 1fr;
+  }
+
+  .player-level-badge {
+    width: 70px;
+    height: 70px;
+  }
+
+  .player-level-row,
+  .achievement-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: .25rem;
+  }
+
+  .achievement-heading p {
+    text-align: left;
+  }
+
+  .certificate-library-card {
+    grid-template-columns: 54px minmax(0, 1fr);
+  }
+
+  .certificate-library-icon {
+    width: 54px;
+    height: 54px;
+  }
+
+  .certificate-library-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+  }
+
+  .certificate-page {
+    min-width: 760px;
+  }
+
+  #certificate-view {
+    overflow-x: auto;
+  }
+}
+
+@media print {
+  body.certificate-print-mode > * {
+    display: none !important;
+  }
+
+  body.certificate-print-mode #app-screen {
+    display: block !important;
+  }
+
+  body.certificate-print-mode #app-screen > .app-header {
+    display: none !important;
+  }
+
+  body.certificate-print-mode #app-screen main {
+    display: block !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  body.certificate-print-mode #app-screen main > .view {
+    display: none !important;
+  }
+
+  body.certificate-print-mode #certificate-view {
+    display: block !important;
+  }
+
+  body.certificate-print-mode .certificate-toolbar,
+  body.certificate-print-mode .certificate-help {
+    display: none !important;
+  }
+
+  body.certificate-print-mode .certificate-view-shell {
+    max-width: none;
+  }
+
+  body.certificate-print-mode .certificate-page {
+    width: 297mm;
+    height: 210mm;
+    box-shadow: none;
+  }
+}
+
+/* =========================================================
+   PROJECT LABELS + FOUR COURSE BADGE LOGOS
+   ========================================================= */
+
+.lesson-card.project-card {
+  border-color: #e6c768;
+  background:
+    radial-gradient(circle at 100% 0, rgba(255,220,105,.17), transparent 34%),
+    #fffdf7;
+}
+
+.lesson-card.project-card .num {
+  color: #a66d00;
+}
+
+.lesson-card.project-card.completed {
+  border-color: #9dcfae;
+  background:
+    radial-gradient(circle at 100% 0, rgba(255,220,105,.12), transparent 34%),
+    #f6fff8;
+}
+
+.achievement-badge {
+  grid-template-columns: 64px minmax(0, 1fr);
+  min-height: 94px;
+}
+
+.achievement-badge-logo {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #edf0f5;
+  box-shadow:
+    inset 0 0 0 1px #cfd5df,
+    0 5px 12px rgba(31,41,55,.06);
+  overflow: hidden;
+}
+
+.achievement-badge.earned .achievement-badge-logo {
+  background: #fff8d9;
+  box-shadow:
+    inset 0 0 0 2px #d9ad45,
+    0 7px 16px rgba(113,87,23,.12);
+}
+
+.badge-logo-svg {
+  width: 56px;
+  height: 56px;
+  image-rendering: pixelated;
+}
+
+.achievement-badge.locked .badge-logo-svg {
+  filter: grayscale(1);
+  opacity: .58;
+}
+
+.badge-logo-frame {
+  fill: #25324a;
+}
+
+.badge-logo-panel {
+  fill: #f7f4e7;
+}
+
+.badge-logo-mark {
+  fill: #5f65d9;
+}
+
+.badge-logo-accent {
+  fill: #e8b63f;
+}
+
+.badge-logo-dot {
+  fill: #ffffff;
+}
+
+/* HTML: warm quest shield */
+.badge-logo-html .badge-logo-frame {
+  fill: #6e3a20;
+}
+
+.badge-logo-html .badge-logo-panel {
+  fill: #f28b3c;
+}
+
+.badge-logo-html .badge-logo-mark {
+  fill: #fff4d7;
+}
+
+.badge-logo-html .badge-logo-accent {
+  fill: #6e3a20;
+}
+
+/* JavaScript: golden quest gem */
+.badge-logo-js .badge-logo-frame {
+  fill: #4c3d16;
+}
+
+.badge-logo-js .badge-logo-panel {
+  fill: #f5d54a;
+}
+
+.badge-logo-js .badge-logo-mark {
+  fill: #3d351c;
+}
+
+/* Python: blue/gold twin-path crest */
+.badge-logo-py .badge-logo-frame {
+  fill: #243a63;
+}
+
+.badge-logo-py .badge-logo-panel {
+  fill: #eef5ff;
+}
+
+.badge-logo-py .badge-logo-py-a {
+  fill: #4d78c9;
+}
+
+.badge-logo-py .badge-logo-py-b {
+  fill: #e6b743;
+}
+
+/* Code Master: royal crown */
+.badge-logo-master .badge-logo-frame {
+  fill: #33245f;
+}
+
+.badge-logo-master .badge-logo-accent {
+  fill: #f0c74e;
+}
+
+.badge-logo-master .badge-logo-mark {
+  fill: #7d5bd0;
+}
+
+.badge-logo-master .badge-logo-panel {
+  fill: #fff3b6;
+}
+
+@media (max-width: 600px) {
+  .achievement-badge {
+    grid-template-columns: 58px minmax(0, 1fr);
+  }
+
+  .achievement-badge-logo {
+    width: 58px;
+    height: 58px;
+  }
+
+  .badge-logo-svg {
+    width: 50px;
+    height: 50px;
+  }
+}
+

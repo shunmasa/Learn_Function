@@ -142,6 +142,74 @@
           <p id="progress-text">0 / 0 完了</p>
           <div id="completed-list"></div>
         </div>
+
+        <section class="achievement-section" aria-labelledby="badges-heading">
+          <div class="achievement-heading">
+            <div>
+              <span class="achievement-kicker">ACHIEVEMENTS</span>
+              <h3 id="badges-heading">獲得バッジ</h3>
+            </div>
+            <p>レッスンやコースをクリアすると自動でバッジが追加されます。</p>
+          </div>
+          <div id="badge-gallery" class="badge-grid"></div>
+        </section>
+
+        <section class="achievement-section certificate-library" aria-labelledby="certificates-heading">
+          <div class="achievement-heading">
+            <div>
+              <span class="achievement-kicker">CERTIFICATES</span>
+              <h3 id="certificates-heading">修了証</h3>
+            </div>
+            <p>コースを100%完了すると、ここからCertificateを表示・PDF保存できます。</p>
+          </div>
+          <div id="certificate-list" class="certificate-grid"></div>
+        </section>
+      </section>
+
+      <section id="certificate-view" class="view hidden">
+        <div class="certificate-view-shell">
+          <div class="certificate-toolbar">
+            <button id="certificate-back" class="btn ghost small" type="button">← 進捗へ戻る</button>
+            <button id="certificate-download" class="btn primary small" type="button">PDFとして保存</button>
+          </div>
+
+          <article id="certificate-page" class="certificate-page" aria-label="Course completion certificate">
+            <div class="certificate-border">
+              <div class="certificate-inner-border">
+                <div class="certificate-brand">LEARN CODE IN CMCS</div>
+                <div id="certificate-seal" class="certificate-seal">JS</div>
+
+                <p class="certificate-small-title">CERTIFICATE OF</p>
+                <h1>CERTIFICATE</h1>
+                <p class="certificate-completion">OF COMPLETION</p>
+
+                <p class="certificate-presented">This certificate is proudly presented to</p>
+                <div id="certificate-name" class="certificate-name">Student Name</div>
+
+                <p class="certificate-copy">for successfully completing the</p>
+                <h2 id="certificate-course">JavaScript Course</h2>
+                <p class="certificate-copy">and demonstrating commitment to learning through practice.</p>
+
+                <div class="certificate-footer-row">
+                  <div class="certificate-meta-block">
+                    <span>ISSUED</span>
+                    <strong id="certificate-date">October 13, 2026</strong>
+                  </div>
+                  <div class="certificate-signature">
+                    <span>Learn Code in CMCS</span>
+                    <small>Course Completion</small>
+                  </div>
+                  <div class="certificate-meta-block certificate-meta-right">
+                    <span>CERTIFICATE ID</span>
+                    <strong id="certificate-id">CMCS-JS-00000000</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <p class="certificate-help">コース修了後は「進捗」ページからいつでもこのCertificateを開き、PDFとして保存できます。</p>
+        </div>
       </section>
 
       <section id="lesson-detail-view" class="view hidden">
@@ -216,6 +284,8 @@
   <script src="js/lessons-python.js"></script>
   <script src="js/lessons-html.js"></script>
   <script src="js/resources-view.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

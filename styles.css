@@ -668,29 +668,52 @@ footer{
     width: 152%;
   }
 
+  /*
+   * MOBILE ROAD FIX
+   * Make the meadow/path taller without making it much wider.
+   * This stretches the road upward into the middle distance so
+   * the adventurers, deer and rabbit stay visually on land.
+   */
   .transition-layer-meadow {
-    left: -29%;
-    width: 158%;
-    bottom: -4%;
+    left: -32%;
+    width: 164%;
+
+    /*
+     * Longer mobile road:
+     * extend the transparent meadow/path farther upward
+     * without changing the normal PC view.
+     */
+    height: 88%;
+    bottom: -7%;
+
+    object-fit: fill;
+    object-position: center bottom;
+    transform-origin: center bottom;
   }
 
   .transition-layer-deer {
-    left: 2%;
-    top: 53%;
+    left: 3%;
+    top: 55%;
 
     width: clamp(95px, 27vw, 140px);
   }
 
   .transition-layer-rabbit {
-    right: 0;
-    top: 76%;
+    right: 2%;
+    top: 77%;
 
     width: clamp(62px, 18vw, 92px);
   }
 
   .transition-layer-birds {
     left: 4%;
-    top: 12%;
+
+    /*
+     * MOBILE ONLY:
+     * Keep the birds below QUEST CLEAR / 次の冒険へ
+     * instead of crossing through the text.
+     */
+    top: 31%;
 
     width: clamp(125px, 38vw, 195px);
   }
@@ -703,6 +726,7 @@ footer{
   }
 
   .transition-runners {
+    bottom: 12px;
     width: clamp(185px, 47vw, 255px);
   }
 
@@ -830,3 +854,30 @@ footer{
   font-size: 12px !important;
 }
 
+/* =========================================================
+   27-INCH / VERY WIDE DESKTOP ONLY
+   ========================================================= */
+@media (min-width: 1500px) {
+  .quest-transition {
+    height: 275svh;
+    min-height: 1900px;
+  }
+
+  /*
+   * QUEST CLEAR / 次の冒険へ:
+   * previous desktop position was calc(12% + 80px).
+   * Start 50px higher -> calc(12% + 30px).
+   */
+  .transition-message {
+    top: calc(12% + 30px);
+  }
+}
+
+
+
+/* 13-inch Mac / normal desktop: move QUEST CLEAR + 次の冒険へ 30px higher */
+@media (min-width: 1001px) and (max-width: 1499px) {
+  .transition-message {
+    top: calc(12% + 50px);
+  }
+}

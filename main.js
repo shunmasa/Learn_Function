@@ -399,6 +399,13 @@ function lessonUnlocked(id, completed) {
   return completed.has(id - 1);
 }
 
+
+function landingLessonLabel(lang, lessonId) {
+  if (lang === "html" && Number(lessonId) === 6) return "PROJECT 1";
+  if (lang === "html" && Number(lessonId) === 12) return "PROJECT 2";
+  return `LESSON ${lessonId}`;
+}
+
 function renderLandingLessons() {
   const list = document.getElementById('landing-lesson-list');
   const title = document.querySelector('[data-lessons-title]');
@@ -417,7 +424,7 @@ function renderLandingLessons() {
     card.dataset.lessonId = String(lesson.id);
     const status = !landingUser ? 'ログインして開始 →' : done ? '✓ 完了' : unlocked ? 'レッスンを開く →' : '🔒 前のレッスンを完了';
     card.innerHTML = `
-      <span class="lesson-number">LESSON ${lesson.id}</span>
+      <span class="lesson-number">${landingLessonLabel(landingLang, lesson.id)}</span>
       <strong>${escapeLandingHtml(lesson.title)}</strong>
       <span class="lesson-description">${escapeLandingHtml(lesson.description || '')}</span>
       <span class="lesson-card-status">${status}</span>`;

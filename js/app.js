@@ -652,6 +652,31 @@ $$(".nav-btn").forEach((btn) => {
   });
 });
 
+
+// ========== PROJECT DEFINITIONS ==========
+const PROJECTS_BY_LANG = {
+  html: [
+    { id: 6, number: 1, title: "Project 1" },
+    { id: 12, number: 2, title: "Project 2" },
+  ],
+  js: [],
+  py: [],
+};
+
+function getProjectDefinition(lang, lessonId) {
+  const projects = PROJECTS_BY_LANG[lang] || [];
+  return projects.find((project) => project.id === Number(lessonId)) || null;
+}
+
+function getLessonDisplayLabel(lang, lessonId) {
+  const project = getProjectDefinition(lang, lessonId);
+  return project ? `PROJECT ${project.number}` : `LESSON ${lessonId}`;
+}
+
+function isProjectLesson(lang, lessonId) {
+  return !!getProjectDefinition(lang, lessonId);
+}
+
 // ========== LESSON LIST ==========
 function isUnlocked(id) {
   if (currentUser && currentUser.isAdmin) return true;
@@ -674,8 +699,10 @@ function renderLessonList() {
     const gaveUp = getGiveups().has(lesson.id);
     const card = document.createElement("div");
     card.className = `lesson-card ${!unlocked ? "locked" : ""} ${done ? "completed" : ""} ${gaveUp && !done ? "giveup" : ""}`;
+    const displayLabel = getLessonDisplayLabel(currentLang, lesson.id);
+    card.classList.toggle("project-card", isProjectLesson(currentLang, lesson.id));
     card.innerHTML = `
-      <div class="num">LESSON ${lesson.id}</div>
+      <div class="num">${displayLabel}</div>
       <h3>${lesson.title}</h3>
       <p>${lesson.description}</p>
       <span class="status">${done ? "✅" : gaveUp ? "↪" : unlocked ? "▶" : "🔒"}</span>
@@ -694,7 +721,7 @@ function openLesson(id) {
   $$(".view").forEach((v) => v.classList.add("hidden"));
   $("#lesson-detail-view").classList.remove("hidden");
 
-  $("#lesson-number").textContent = `LESSON ${lesson.id}`;
+  $("#lesson-number").textContent = getLessonDisplayLabel(currentLang, lesson.id);
   $("#lesson-language").textContent = currentLang === "html" ? "HTML" : currentLang === "py" ? "PYTHON" : "JAVASCRIPT";
   $("#lesson-title").textContent = lesson.title;
   $("#lesson-description").textContent = lesson.description || "";
@@ -711,6 +738,7 @@ function openLesson(id) {
   $("#toggle-hints").setAttribute("aria-expanded", "false");
   $("#result-message").textContent = "";
   $("#result-message").className = "";
+  $("#next-lesson-btn").textContent = "次のレッスンへ →";
   $("#next-lesson-btn").classList.add("hidden");
   $("#console-output").innerHTML = currentLang === "html"
     ? `<div class="info">HTML は VIEW タブにリアルタイム表示されます。</div>`
@@ -1387,17 +1415,47 @@ async function runCode() {
     completed.add(lesson.id);
 
     const levelAfter = getPlayerLevel();
-    if (!alreadyCompleted && levelAfter > levelBefore) {
-      celebrateConfetti({ count: 240, duration: 220 });
-      resultMsg.textContent = `🎉 LEVEL UP! Level ${levelAfter} になりました！`;
+    const newlyCleared = !alreadyCompleted;
+    const projectClear = newlyCleared && isProjectLesson(currentLang, lesson.id);
+    const justLeveledUp = projectClear && levelAfter > levelBefore;
+    const courseComplete = isCourseComplete(currentLang);
+
+    if (justLeveledUp) {
+      celebrateConfetti({
+        count: courseComplete ? 340 : 260,
+        duration: courseComplete ? 270 : 230,
+      });
+
+      if (courseComplete) {
+        resultMsg.textContent =
+          `🎓 PROJECT CLEAR & COURSE COMPLETE! Level ${levelAfter} になりました。Certificateとバッジを獲得しました！`;
+      } else {
+        const project = getProjectDefinition(currentLang, lesson.id);
+        resultMsg.textContent =
+          `🏅 ${project ? project.title.toUpperCase() : "PROJECT"} CLEAR! LEVEL UP! Level ${levelAfter} になりました！`;
+      }
+    } else if (newlyCleared && courseComplete) {
+      celebrateConfetti({ count: 300, duration: 250 });
+      resultMsg.textContent =
+        "🎓 COURSE COMPLETE! Certificateとコースバッジを獲得しました！";
+    } else if (!newlyCleared && courseComplete) {
+      resultMsg.textContent =
+        "🎓 コース修了済みです。進捗ページからCertificateを確認できます。";
     } else {
       resultMsg.textContent = "🎉 全条件クリア！合格です！";
     }
+
     resultMsg.className = "success";
     saveUser();
     updateProgress();
     updateAttemptStatus(lesson);
     renderLessonList();
+
+    const nextLessonExists = getLessons().some((item) => item.id === lesson.id + 1);
+    $("#next-lesson-btn").textContent =
+      !nextLessonExists && courseComplete
+        ? "Certificateを見る →"
+        : "次のレッスンへ →";
     $("#next-lesson-btn").classList.remove("hidden");
     switchEditorTab("tests");
     if (lesson.explanation) {
@@ -1472,15 +1530,22 @@ $("#reset-btn").addEventListener("click", () => {
 
 $("#next-lesson-btn").addEventListener("click", () => {
   const nextId = currentLessonId + 1;
-  if (getLessons().find((l) => l.id === nextId)) {
+
+  if (getLessons().find((lesson) => lesson.id === nextId)) {
     openLesson(nextId);
-  } else {
-    $$(".view").forEach((v) => v.classList.add("hidden"));
-    $("#lessons-view").classList.remove("hidden");
-    $$(".nav-btn").forEach((b) => b.classList.remove("active"));
-    $$(".nav-btn")[0].classList.add("active");
-    renderLessonList();
+    return;
   }
+
+  if (isCourseComplete(currentLang)) {
+    openCertificateView(currentLang);
+    return;
+  }
+
+  $$(".view").forEach((view) => view.classList.add("hidden"));
+  $("#lessons-view").classList.remove("hidden");
+  $$(".nav-btn").forEach((button) => button.classList.remove("active"));
+  $$(".nav-btn")[0].classList.add("active");
+  renderLessonList();
 });
 
 document.addEventListener("keydown", (e) => {
@@ -1491,22 +1556,100 @@ document.addEventListener("keydown", (e) => {
 });
 
 
-const LESSONS_PER_LEVEL = 10;
+// ========== LEVEL / BADGES / CERTIFICATES ==========
 
-function getTotalCompletedCount() {
-  return Object.values(completedByLang).reduce((total, set) => total + set.size, 0);
+/*
+ * Level rule:
+ * Start at Level 1.
+ * Level +1 only when a PROJECT is genuinely cleared.
+ *
+ * Current projects:
+ *   HTML Project 1 = lesson id 6
+ *   HTML Project 2 = lesson id 12
+ *   JavaScript / Python = no projects yet
+ */
+const COURSE_META = {
+  html: {
+    short: "HTML",
+    title: "HTML Course",
+    badgeTitle: "HTML COMPLETE",
+  },
+  js: {
+    short: "JS",
+    title: "JavaScript Course",
+    badgeTitle: "JAVASCRIPT COMPLETE",
+  },
+  py: {
+    short: "PY",
+    title: "Python Course",
+    badgeTitle: "PYTHON COMPLETE",
+  },
+};
+
+let activeCertificateLang = "js";
+
+function lessonsForLanguage(lang) {
+  if (lang === "html") return typeof LESSONS_HTML !== "undefined" ? LESSONS_HTML : [];
+  if (lang === "py") return typeof LESSONS_PY !== "undefined" ? LESSONS_PY : [];
+  return typeof LESSONS_JS !== "undefined" ? LESSONS_JS : [];
+}
+
+function completedForLanguageSet(lang) {
+  return completedByLang[lang] || new Set();
+}
+
+function getCourseProgress(lang) {
+  const lessons = lessonsForLanguage(lang);
+  const completed = completedForLanguageSet(lang);
+  const done = lessons.filter((lesson) => completed.has(lesson.id)).length;
+  const total = lessons.length;
+
+  return {
+    done,
+    total,
+    pct: total ? Math.round((done / total) * 100) : 0,
+    complete: total > 0 && done === total,
+  };
+}
+
+function isCourseComplete(lang) {
+  return getCourseProgress(lang).complete;
+}
+
+function getCompletedProjectCount() {
+  let total = 0;
+
+  for (const lang of ["html", "js", "py"]) {
+    const completed = completedForLanguageSet(lang);
+    const projects = PROJECTS_BY_LANG[lang] || [];
+
+    for (const project of projects) {
+      if (completed.has(project.id)) total++;
+    }
+  }
+
+  return total;
+}
+
+function getTotalProjectCount() {
+  return Object.values(PROJECTS_BY_LANG).reduce(
+    (total, projects) => total + projects.length,
+    0
+  );
 }
 
 function getPlayerLevel() {
-  return 1 + Math.floor(getTotalCompletedCount() / LESSONS_PER_LEVEL);
+  return 1 + getCompletedProjectCount();
 }
 
 function updatePlayerLevelUI() {
-  const totalCompleted = getTotalCompletedCount();
+  const completedProjects = getCompletedProjectCount();
+  const totalProjects = getTotalProjectCount();
   const level = getPlayerLevel();
-  const progressInLevel = totalCompleted % LESSONS_PER_LEVEL;
-  const pct = (progressInLevel / LESSONS_PER_LEVEL) * 100;
-  const remaining = LESSONS_PER_LEVEL - progressInLevel;
+  const projectPct = totalProjects
+    ? Math.round((completedProjects / totalProjects) * 100)
+    : 0;
+  const remainingProjects = Math.max(0, totalProjects - completedProjects);
 
   const levelEl = $("#player-level");
   const levelTitle = $("#player-level-title");
@@ -1516,28 +1659,447 @@ function updatePlayerLevelUI() {
 
   if (levelEl) levelEl.textContent = String(level);
   if (levelTitle) levelTitle.textContent = `Level ${level}`;
-  if (totalEl) totalEl.textContent = `${totalCompleted} lessons completed`;
-  if (bar) bar.style.width = pct + "%";
-  if (text) text.textContent = `次のLevelまであと${remaining}レッスン`;
+  if (totalEl) {
+    totalEl.textContent =
+      `${completedProjects} / ${totalProjects} Projects completed`;
+  }
+  if (bar) bar.style.width = projectPct + "%";
+
+  if (text) {
+    if (totalProjects === 0) {
+      text.textContent = "現在、Level対象のProjectはありません。";
+    } else if (remainingProjects > 0) {
+      text.textContent =
+        `Projectをクリアすると Level +1 ・ あと${remainingProjects} Project`;
+    } else {
+      text.textContent =
+        "現在実装されているProjectをすべてクリアしました！";
+    }
+  }
 }
+
+function badgeLogoSVG(kind) {
+  const common =
+    'viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false" shape-rendering="crispEdges"';
+
+  if (kind === "html") {
+    return `
+      <svg ${common} class="badge-logo-svg badge-logo-html">
+        <path d="M10 5h44v8h5v35h-5v6H10v-6H5V13h5Z" class="badge-logo-frame"/>
+        <path d="M15 14h34v32H15Z" class="badge-logo-panel"/>
+        <path d="M25 23 17 32l8 9v-6l-3-3 3-3Zm14 0 8 9-8 9v-6l3-3-3-3Z" class="badge-logo-mark"/>
+        <path d="M30 20h6l-5 24h-6Z" class="badge-logo-accent"/>
+      </svg>`;
+  }
+
+  if (kind === "js") {
+    return `
+      <svg ${common} class="badge-logo-svg badge-logo-js">
+        <path d="m32 4 7 7h10v10l7 7-7 7v10H39l-7 7-7-7H15V35l-7-7 7-7V11h10Z" class="badge-logo-frame"/>
+        <path d="M17 16h30v30H17Z" class="badge-logo-panel"/>
+        <path d="M24 24h6v14c0 5-3 8-8 8h-3v-6h3c2 0 2-1 2-3Zm9 0h13v6h-7v3h4c3 0 5 2 5 6v1c0 4-3 7-8 7h-8v-6h8c1 0 2 0 2-2 0-1-1-1-2-1h-7Z" class="badge-logo-mark"/>
+      </svg>`;
+  }
+
+  if (kind === "py") {
+    return `
+      <svg ${common} class="badge-logo-svg badge-logo-py">
+        <path d="M12 7h40v5h5v40h-5v5H12v-5H7V12h5Z" class="badge-logo-frame"/>
+        <path d="M14 14h36v36H14Z" class="badge-logo-panel"/>
+        <path d="M20 18h18c5 0 8 3 8 8v7H31v5h-6c-5 0-8-3-8-8v-5c0-4 2-7 3-7Z" class="badge-logo-mark badge-logo-py-a"/>
+        <path d="M44 46H26c-5 0-8-3-8-8v-7h15v-5h6c5 0 8 3 8 8v5c0 4-2 7-3 7Z" class="badge-logo-accent badge-logo-py-b"/>
+        <rect x="24" y="22" width="4" height="4" class="badge-logo-dot"/>
+        <rect x="36" y="38" width="4" height="4" class="badge-logo-dot"/>
+      </svg>`;
+  }
+
+  return `
+    <svg ${common} class="badge-logo-svg badge-logo-master">
+      <path d="M8 14h48v38H8Z" class="badge-logo-frame"/>
+      <path d="m14 20 9 8 9-15 9 15 9-8-4 24H18Z" class="badge-logo-accent"/>
+      <path d="M20 46h24v7H20Z" class="badge-logo-mark"/>
+      <path d="M29 28h6v6h6v6h-6v6h-6v-6h-6v-6h6Z" class="badge-logo-panel"/>
+    </svg>`;
+}
+
+function buildBadgeDefinitions() {
+  const allCoursesComplete =
+    isCourseComplete("html") &&
+    isCourseComplete("js") &&
+    isCourseComplete("py");
+
+  return [
+    {
+      id: "html-complete",
+      logo: badgeLogoSVG("html"),
+      title: COURSE_META.html.badgeTitle,
+      description: "HTMLコースを100%修了",
+      earned: isCourseComplete("html"),
+    },
+    {
+      id: "js-complete",
+      logo: badgeLogoSVG("js"),
+      title: COURSE_META.js.badgeTitle,
+      description: "JavaScriptコースを100%修了",
+      earned: isCourseComplete("js"),
+    },
+    {
+      id: "py-complete",
+      logo: badgeLogoSVG("py"),
+      title: COURSE_META.py.badgeTitle,
+      description: "Pythonコースを100%修了",
+      earned: isCourseComplete("py"),
+    },
+    {
+      id: "code-master",
+      logo: badgeLogoSVG("master"),
+      title: "CODE MASTER",
+      description: "HTML・JavaScript・Python の全コースを修了",
+      earned: allCoursesComplete,
+    },
+  ];
+}
+
+function renderBadges() {
+  const gallery = $("#badge-gallery");
+  if (!gallery) return;
+
+  gallery.innerHTML = buildBadgeDefinitions()
+    .map(
+      (badge) => `
+        <article class="achievement-badge ${badge.earned ? "earned" : "locked"}">
+          <div class="achievement-badge-logo">${badge.logo}</div>
+          <div class="achievement-badge-copy">
+            <strong>${escapeHtml(badge.title)}</strong>
+            <span>${escapeHtml(badge.description)}</span>
+          </div>
+          <div class="achievement-badge-state">${badge.earned ? "獲得済み" : "未獲得"}</div>
+        </article>
+      `
+    )
+    .join("");
+}
+
+function renderCertificates() {
+  const list = $("#certificate-list");
+  if (!list) return;
+
+  list.innerHTML = ["html", "js", "py"]
+    .map((lang) => {
+      const meta = COURSE_META[lang];
+      const progress = getCourseProgress(lang);
+
+      return `
+        <article class="certificate-library-card ${progress.complete ? "earned" : "locked"}">
+          <div class="certificate-library-icon">${escapeHtml(meta.short)}</div>
+          <div class="certificate-library-copy">
+            <span class="certificate-library-kicker">CERTIFICATE</span>
+            <strong>${escapeHtml(meta.title)}</strong>
+            <small>${progress.done} / ${progress.total} lessons complete</small>
+          </div>
+          <div class="certificate-library-actions">
+            ${
+              progress.complete
+                ? `
+                  <button class="btn ghost small" type="button" data-certificate-open="${lang}">
+                    Certificateを見る
+                  </button>
+                  <button class="btn primary small" type="button" data-certificate-pdf="${lang}">
+                    PDF保存
+                  </button>
+                `
+                : `<span class="certificate-locked-label">🔒 ${progress.pct}%</span>`
+            }
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+
+  list.querySelectorAll("[data-certificate-open]").forEach((button) => {
+    button.addEventListener("click", () => {
+      openCertificateView(button.dataset.certificateOpen);
+    });
+  });
+
+  list.querySelectorAll("[data-certificate-pdf]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const lang = button.dataset.certificatePdf;
+      button.disabled = true;
+      const oldText = button.textContent;
+      button.textContent = "PDF作成中…";
+
+      try {
+        await downloadCertificatePDF(lang);
+      } finally {
+        button.disabled = false;
+        button.textContent = oldText;
+      }
+    });
+  });
+}
+
+function renderAchievements() {
+  renderBadges();
+  renderCertificates();
+}
+
+function certificateHash(value) {
+  let hash = 2166136261;
+
+  for (let i = 0; i < value.length; i++) {
+    hash ^= value.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+
+  return (hash >>> 0).toString(16).toUpperCase().padStart(8, "0");
+}
+
+function certificateIdFor(lang) {
+  const email = currentUser && currentUser.email ? currentUser.email : "student";
+  return `CMCS-${COURSE_META[lang].short}-${certificateHash(`${email}:${lang}:learn-code`)}`;
+}
+
+function certificateDateText() {
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date());
+}
+
+function populateCertificate(lang) {
+  if (!COURSE_META[lang]) return;
+
+  activeCertificateLang = lang;
+  const meta = COURSE_META[lang];
+  const studentName =
+    currentUser && (currentUser.name || currentUser.email)
+      ? currentUser.name || currentUser.email
+      : "Student";
+
+  const nameEl = $("#certificate-name");
+  const courseEl = $("#certificate-course");
+  const sealEl = $("#certificate-seal");
+  const dateEl = $("#certificate-date");
+  const idEl = $("#certificate-id");
+
+  if (nameEl) nameEl.textContent = studentName;
+  if (courseEl) courseEl.textContent = meta.title;
+  if (sealEl) sealEl.textContent = meta.short;
+  if (dateEl) dateEl.textContent = certificateDateText();
+  if (idEl) idEl.textContent = certificateIdFor(lang);
+}
+
+function openCertificateView(lang) {
+  if (!COURSE_META[lang] || !isCourseComplete(lang)) return;
+
+  populateCertificate(lang);
+
+  $$(".view").forEach((view) => view.classList.add("hidden"));
+  $("#certificate-view").classList.remove("hidden");
+
+  $$(".nav-btn").forEach((button) => {
+    button.classList.toggle("active", button.dataset.view === "progress");
+  });
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function restoreProgressView() {
+  $$(".view").forEach((view) => view.classList.add("hidden"));
+  $("#progress-view").classList.remove("hidden");
+
+  $$(".nav-btn").forEach((button) => {
+    button.classList.toggle("active", button.dataset.view === "progress");
+  });
+
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function captureCertificateCanvas(lang) {
+  if (!isCourseComplete(lang)) {
+    throw new Error("このコースはまだ修了していません。");
+  }
+
+  populateCertificate(lang);
+
+  const view = $("#certificate-view");
+  const certificate = $("#certificate-page");
+
+  if (!view || !certificate) {
+    throw new Error("Certificate page が見つかりません。");
+  }
+
+  const wasHidden = view.classList.contains("hidden");
+  const previousStyle = view.getAttribute("style");
+
+  if (wasHidden) {
+    view.classList.remove("hidden");
+    view.style.position = "fixed";
+    view.style.left = "-20000px";
+    view.style.top = "0";
+    view.style.width = "1200px";
+    view.style.zIndex = "-1";
+    view.style.background = "#ffffff";
+  }
+
+  try {
+    await new Promise((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(resolve))
+    );
+
+    if (typeof window.html2canvas !== "function") {
+      throw new Error("PDFライブラリを読み込めませんでした。");
+    }
+
+    return await window.html2canvas(certificate, {
+      scale: 2,
+      backgroundColor: "#f8f3e6",
+      useCORS: true,
+      logging: false,
+    });
+  } finally {
+    if (wasHidden) {
+      view.classList.add("hidden");
+      if (previousStyle === null) {
+        view.removeAttribute("style");
+      } else {
+        view.setAttribute("style", previousStyle);
+      }
+    }
+  }
+}
+
+async function downloadCertificatePDF(lang = activeCertificateLang) {
+  if (!COURSE_META[lang] || !isCourseComplete(lang)) return;
+
+  try {
+    const canvas = await captureCertificateCanvas(lang);
+    const JsPDF =
+      window.jspdf && window.jspdf.jsPDF
+        ? window.jspdf.jsPDF
+        : null;
+
+    if (!JsPDF) {
+      throw new Error("jsPDFを読み込めませんでした。");
+    }
+
+    const pdf = new JsPDF({
+      orientation: "landscape",
+      unit: "mm",
+      format: "a4",
+      compress: true,
+    });
+
+    const pageWidth = 297;
+    const pageHeight = 210;
+
+    pdf.addImage(
+      canvas.toDataURL("image/png"),
+      "PNG",
+      0,
+      0,
+      pageWidth,
+      pageHeight,
+      undefined,
+      "FAST"
+    );
+
+    const studentName =
+      currentUser && (currentUser.name || currentUser.email)
+        ? currentUser.name || currentUser.email
+        : "Student";
+
+    const safeName = String(studentName)
+      .trim()
+      .replace(/[\\/:*?"<>|]+/g, "_")
+      .replace(/\s+/g, "_")
+      .slice(0, 48);
+
+    pdf.save(
+      `LearnCode_${COURSE_META[lang].short}_Certificate_${safeName || "Student"}.pdf`
+    );
+  } catch (error) {
+    console.warn("certificate PDF generation failed", error);
+
+    /*
+     * Fallback:
+     * Open the certificate page and use the browser print dialog.
+     * The print stylesheet below keeps only the certificate visible,
+     * so "Save as PDF" still works.
+     */
+    openCertificateView(lang);
+    document.body.classList.add("certificate-print-mode");
+
+    setTimeout(() => {
+      window.print();
+      setTimeout(() => {
+        document.body.classList.remove("certificate-print-mode");
+      }, 500);
+    }, 150);
+  }
+}
+
+$("#certificate-back")?.addEventListener("click", restoreProgressView);
+
+$("#certificate-download")?.addEventListener("click", async () => {
+  const button = $("#certificate-download");
+  if (!button) return;
+
+  button.disabled = true;
+  const oldText = button.textContent;
+  button.textContent = "PDF作成中…";
+
+  try {
+    await downloadCertificatePDF(activeCertificateLang);
+  } finally {
+    button.disabled = false;
+    button.textContent = oldText;
+  }
+});
 
 function updateProgress() {
   updatePlayerLevelUI();
+
   const lessons = getLessons();
   const completed = getCompleted();
   const total = lessons.length;
-  const done = lessons.filter((l) => completed.has(l.id)).length;
+  const done = lessons.filter((lesson) => completed.has(lesson.id)).length;
   const pct = total ? Math.round((done / total) * 100) : 0;
-  $("#progress-bar").style.width = pct + "%";
-  const label = currentLang === "html" ? "HTML" : currentLang === "py" ? "Python" : "JavaScript";
-  $("#progress-text").textContent = `${label}: ${done} / ${total} 完了 (${pct}%)`;
+
+  const progressBar = $("#progress-bar");
+  const progressText = $("#progress-text");
+
+  if (progressBar) progressBar.style.width = pct + "%";
+
+  const label =
+    currentLang === "html"
+      ? "HTML"
+      : currentLang === "py"
+        ? "Python"
+        : "JavaScript";
+
+  if (progressText) {
+    progressText.textContent = `${label}: ${done} / ${total} 完了 (${pct}%)`;
+  }
+
   const list = $("#completed-list");
+
   if (list) {
-    const names = lessons.filter((l) => completed.has(l.id)).map((l) => l.title);
+    const names = lessons
+      .filter((lesson) => completed.has(lesson.id))
+      .map((lesson) => lesson.title);
+
     list.innerHTML = names.length
-      ? "<p>完了:</p><ul>" + names.map((n) => `<li>${escapeHtml(n)}</li>`).join("") + "</ul>"
+      ? "<p>完了:</p><ul>" +
+        names.map((name) => `<li>${escapeHtml(name)}</li>`).join("") +
+        "</ul>"
       : "<p>まだ完了したレッスンはありません。</p>";
   }
+
+  renderAchievements();
 }
 
 
@@ -1557,6 +2119,14 @@ function applyRequestedRoute() {
     $$(".nav-btn").forEach((b) => b.classList.toggle("active", b.dataset.view === "progress"));
     updateProgress();
     return;
+  }
+
+  if (params.get("view") === "certificate") {
+    const certificateLang = params.get("lang") || currentLang;
+    if (COURSE_META[certificateLang] && isCourseComplete(certificateLang)) {
+      openCertificateView(certificateLang);
+      return;
+    }
   }
 
   const requestedLesson = Number(params.get("lesson"));
