@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "resources": [
     {
       "id": "html-tags",
@@ -410,19 +410,30 @@
             8
           ],
           "empty": false,
-          "summary": "内容をひとまとめにする箱。classで名前をつけて、同じ種類の箱を区別できる。",
+          "summary": "複数の要素をひとまとめにする箱。classをつけると、CSSで同じ種類の箱にまとめて見た目を設定できる。",
           "attributes": [
             {
               "name": "class",
               "meaning": "タグにつける名前。同じ名前を何回でも使える"
             }
           ],
-          "example": "<div class=\"card\">...</div>",
+          "example": "<style>\n.card {\n  border: 2px solid #94a3b8;\n  padding: 12px;\n  border-radius: 10px;\n  background: #f8fafc;\n}\n</style>\n\n<div class=\"card\">\n  カードの内容\n</div>",
           "searchKeywords": [
             "div",
             "class",
             "まとまり",
-            "箱"
+            "箱",
+            "style",
+            "CSS",
+            "card"
+          ],
+          "examples": [
+            {
+              "title": "div.card にCSSをつける",
+              "note": "styleタグで .card の見た目を決め、div class=\"card\" にそのデザインを使います。",
+              "preview": true,
+              "code": "<style>\n.card {\n  border: 2px solid #94a3b8;\n  padding: 12px;\n  border-radius: 10px;\n  background: #f8fafc;\n}\n</style>\n\n<div class=\"card\">\n  カードの内容\n</div>"
+            }
           ]
         },
         {
@@ -434,19 +445,31 @@
             8
           ],
           "empty": false,
-          "summary": "文の一部分だけをまとめる。divは箱全体、spanは文の中の一部。",
+          "summary": "文の一部分だけをまとめるタグ。divは箱全体、spanは文章や文字の一部分にclassをつけたいときに使う。",
           "attributes": [
             {
               "name": "class",
               "meaning": "タグにつける名前"
             }
           ],
-          "example": "<span class=\"red\">雨</span>",
+          "example": "<style>\n.red {\n  color: #dc2626;\n  font-weight: bold;\n}\n\n.blue {\n  color: #2563eb;\n  font-weight: bold;\n}\n</style>\n\n<p>今日の天気は <span class=\"red\">雨</span> です。</p>\n<p>明日の天気は <span class=\"blue\">晴れ</span> です。</p>",
           "searchKeywords": [
             "span",
             "class",
             "文章",
-            "一部分"
+            "一部分",
+            "style",
+            "CSS",
+            "red",
+            "blue"
+          ],
+          "examples": [
+            {
+              "title": "span.red / span.blue にCSSをつける",
+              "note": "classを変えると、同じspanでも別のCSSを使えます。",
+              "preview": true,
+              "code": "<style>\n.red {\n  color: #dc2626;\n  font-weight: bold;\n}\n\n.blue {\n  color: #2563eb;\n  font-weight: bold;\n}\n</style>\n\n<p>今日の天気は <span class=\"red\">雨</span> です。</p>\n<p>明日の天気は <span class=\"blue\">晴れ</span> です。</p>"
+            }
           ]
         },
         {
@@ -476,13 +499,25 @@
             9
           ],
           "empty": false,
-          "summary": "ほかのページへのリンクを集める場所。",
+          "summary": "ほかのページへのリンクを集める場所。aタグを並べ、CSSを使うとナビゲーションらしい見た目にできる。",
           "attributes": [],
-          "example": "<nav><a href=\"index.html\">ホーム</a></nav>",
+          "example": "<style>\nnav {\n  display: flex;\n  gap: 8px;\n  padding: 10px;\n  background: #0f172a;\n  border-radius: 10px;\n}\n\nnav a {\n  padding: 8px 14px;\n  border-radius: 7px;\n  background: #2563eb;\n  color: white;\n  text-decoration: none;\n  font-weight: bold;\n}\n</style>\n\n<nav>\n  <a href=\"index.html\">ホーム</a>\n  <a href=\"events.html\">行事</a>\n</nav>",
           "searchKeywords": [
             "nav",
             "ナビ",
-            "リンク"
+            "リンク",
+            "style",
+            "CSS",
+            "flex",
+            "navigation"
+          ],
+          "examples": [
+            {
+              "title": "ホーム・行事のナビゲーション",
+              "note": "navの中にaタグを置き、display:flexで横並びにしています。",
+              "preview": true,
+              "code": "<style>\nnav {\n  display: flex;\n  gap: 8px;\n  padding: 10px;\n  background: #0f172a;\n  border-radius: 10px;\n}\n\nnav a {\n  padding: 8px 14px;\n  border-radius: 7px;\n  background: #2563eb;\n  color: white;\n  text-decoration: none;\n  font-weight: bold;\n}\n</style>\n\n<nav>\n  <a href=\"index.html\">ホーム</a>\n  <a href=\"events.html\">行事</a>\n</nav>"
+            }
           ]
         },
         {
@@ -589,23 +624,51 @@
             10
           ],
           "empty": true,
-          "summary": "入力欄。閉じタグなし。",
+          "summary": "入力欄。閉じタグなし。typeを変えると、文字・メール・チェックなど入力方法を変えられる。",
           "attributes": [
             {
               "name": "type",
-              "meaning": "text(文字) / email(メールアドレス) / checkbox(チェックボックス) など"
+              "meaning": "入力の種類。text / email / checkbox など"
             },
             {
               "name": "id",
-              "meaning": "そのページの中で1つだけの名前。labelとの結びつきに使う"
+              "meaning": "ページ内で1つだけの名前。labelのforと同じにすると結びつく"
+            },
+            {
+              "name": "name",
+              "meaning": "フォーム送信時の項目名。radioなどをグループにするときにも使う"
             }
           ],
-          "example": "<input type=\"text\" id=\"name\">",
+          "example": "<label for=\"name\">名前</label>\n<input type=\"text\" id=\"name\" placeholder=\"山田 太郎\">",
           "searchKeywords": [
             "input",
             "type",
             "id",
-            "入力欄"
+            "入力欄",
+            "text",
+            "email",
+            "checkbox",
+            "name"
+          ],
+          "examples": [
+            {
+              "title": "1. 文字入力 — text",
+              "note": "名前など、普通の1行テキストに使います。",
+              "preview": true,
+              "code": "<label for=\"name\">名前</label>\n<input type=\"text\" id=\"name\" placeholder=\"山田 太郎\">"
+            },
+            {
+              "title": "2. メール入力 — email",
+              "note": "メールアドレス用の入力欄です。",
+              "preview": true,
+              "code": "<label for=\"email\">メール</label>\n<input type=\"email\" id=\"email\" placeholder=\"taro@example.com\">"
+            },
+            {
+              "title": "3. チェック — checkbox",
+              "note": "ON / OFFを選ぶときに使います。",
+              "preview": true,
+              "code": "<input type=\"checkbox\" id=\"agree\">\n<label for=\"agree\">内容を確認しました</label>"
+            }
           ]
         },
         {
@@ -617,18 +680,35 @@
             10
           ],
           "empty": false,
-          "summary": "選択肢のメニュー。中にoptionを選択肢の数だけ書く。",
+          "summary": "選択肢のメニュー。selectの中にoptionを並べる。selectedで最初から選択、disabledで選べない項目を作れる。",
           "attributes": [
             {
               "name": "id",
               "meaning": "labelと結びつける名前"
+            },
+            {
+              "name": "name",
+              "meaning": "フォーム送信時の項目名"
             }
           ],
-          "example": "<select id=\"grade\">...</select>",
+          "example": "<label for=\"car-select\">車を選んでください:</label>\n<select name=\"cars\" id=\"car-select\">\n  <option value=\"\">--選択してください--</option>\n  <option value=\"volvo\">ボルボ</option>\n  <option value=\"saab\" selected>サーブ</option>\n  <option value=\"mercedes\" disabled>メルセデス（選択不可）</option>\n  <option value=\"audi\">アウディ</option>\n</select>",
           "searchKeywords": [
             "select",
             "選択",
-            "メニュー"
+            "メニュー",
+            "selected",
+            "disabled",
+            "車",
+            "ボルボ",
+            "サーブ"
+          ],
+          "examples": [
+            {
+              "title": "車を選ぶメニュー",
+              "note": "selected は最初から選択された項目、disabled は選択できない項目です。",
+              "preview": true,
+              "code": "<label for=\"car-select\">車を選んでください:</label>\n<select name=\"cars\" id=\"car-select\">\n  <option value=\"\">--選択してください--</option>\n  <option value=\"volvo\">ボルボ</option>\n  <option value=\"saab\" selected>サーブ</option>\n  <option value=\"mercedes\" disabled>メルセデス（選択不可）</option>\n  <option value=\"audi\">アウディ</option>\n</select>"
+            }
           ]
         },
         {
@@ -640,12 +720,45 @@
             10
           ],
           "empty": false,
-          "summary": "selectの選択肢。",
-          "attributes": [],
-          "example": "<option>1年</option>",
+          "summary": "selectの中に書く1つの選択肢。valueは送信する値、selectedは最初から選択、disabledは選択できない状態。",
+          "attributes": [
+            {
+              "name": "value",
+              "meaning": "フォームで送る値"
+            },
+            {
+              "name": "selected",
+              "meaning": "最初から選択された状態にする"
+            },
+            {
+              "name": "disabled",
+              "meaning": "その項目を選べない状態にする"
+            }
+          ],
+          "example": "<option value=\"volvo\">ボルボ</option>",
           "searchKeywords": [
             "option",
-            "選択肢"
+            "選択肢",
+            "value",
+            "selected",
+            "disabled"
+          ],
+          "examples": [
+            {
+              "title": "普通のoption",
+              "preview": false,
+              "code": "<option value=\"volvo\">ボルボ</option>"
+            },
+            {
+              "title": "最初から選択",
+              "preview": false,
+              "code": "<option value=\"saab\" selected>サーブ</option>"
+            },
+            {
+              "title": "選択できない",
+              "preview": false,
+              "code": "<option value=\"mercedes\" disabled>メルセデス</option>"
+            }
           ]
         },
         {
@@ -680,18 +793,40 @@
             10
           ],
           "empty": false,
-          "summary": "ボタン。type=\"submit\" で送信ボタンになる。",
+          "summary": "クリックできるボタン。typeによって役割が変わる。フォーム送信はsubmit、普通の操作はbutton、入力を戻すときはresetを使える。",
           "attributes": [
             {
               "name": "type",
-              "meaning": "submit など"
+              "meaning": "submit(送信) / button(通常ボタン) / reset(入力をリセット)"
             }
           ],
-          "example": "<button type=\"submit\">送信</button>",
+          "example": "<button type=\"submit\">送信する</button>",
           "searchKeywords": [
             "button",
             "ボタン",
-            "submit"
+            "submit",
+            "reset",
+            "通常ボタン"
+          ],
+          "examples": [
+            {
+              "title": "1. 送信ボタン — submit",
+              "note": "formの内容を送信するときに使います。",
+              "preview": true,
+              "code": "<button type=\"submit\">送信する</button>"
+            },
+            {
+              "title": "2. 通常ボタン — button",
+              "note": "JavaScriptなどで自分の処理を付けたいときの普通のボタンです。",
+              "preview": true,
+              "code": "<button type=\"button\">詳細を見る</button>"
+            },
+            {
+              "title": "3. リセットボタン — reset",
+              "note": "formの入力内容を初期状態へ戻します。",
+              "preview": true,
+              "code": "<form>\n  <input type=\"text\" value=\"入力例\">\n  <button type=\"reset\">入力をリセット</button>\n</form>"
+            }
           ]
         },
         {

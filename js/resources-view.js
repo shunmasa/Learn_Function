@@ -116,11 +116,16 @@
       .map(attr => `${attr.name} ${attr.meaning}`)
       .join(" ");
 
+    const examples = (entry.examples || [])
+      .map(example => `${example.title || ""} ${example.note || ""} ${example.code || ""}`)
+      .join(" ");
+
     return [
       entry.tag,
       entry.displayName,
       entry.summary,
       entry.example,
+      examples,
       attrs,
       ...(entry.searchKeywords || [])
     ].join(" ").toLowerCase();
@@ -248,6 +253,54 @@
             </div>
           `).join("");
 
+          const examples = Array.isArray(entry.examples) && entry.examples.length
+            ? entry.examples
+            : [
+                {
+                  title: "基本例",
+                  code: entry.example || "",
+                  preview: false,
+                }
+              ];
+
+          const examplesHtml = examples.map((example, index) => {
+            const code = String(example.code || "");
+            const title = example.title || (examples.length > 1 ? `EXAMPLE ${index + 1}` : "EXAMPLE");
+            const note = example.note
+              ? `<p class="resources-view-example-note">${escapeHtml(example.note)}</p>`
+              : "";
+            const preview = example.preview
+              ? `
+                <div class="resources-view-preview-shell">
+                  <div class="resources-view-preview-label">PREVIEW</div>
+                  <iframe
+                    class="resources-view-preview"
+                    data-resource-preview="${index}"
+                    title="${escapeHtml((entry.displayName || entry.tag) + " の表示例")}" 
+                    sandbox=""
+                    loading="lazy"
+                  ></iframe>
+                </div>
+              `
+              : "";
+
+            return `
+              <section class="resources-view-example-item">
+                <div class="resources-view-example-head">
+                  <span>${escapeHtml(title)}</span>
+                  <button
+                    class="resources-copy-btn"
+                    type="button"
+                    data-resource-copy="${encodeURIComponent(code)}"
+                  >コピー</button>
+                </div>
+                ${note}
+                <pre><code>${escapeHtml(code)}</code></pre>
+                ${preview}
+              </section>
+            `;
+          }).join("");
+
           const card = document.createElement("article");
           card.className = "resources-view-card";
 
@@ -275,18 +328,51 @@
               : ""
             }
 
-            <div class="resources-view-example">
-              <div class="resources-view-example-head">
-                <span>EXAMPLE</span>
-                <button
-                  class="resources-copy-btn"
-                  type="button"
-                  data-resource-copy="${encodeURIComponent(entry.example || "")}"
-                >コピー</button>
-              </div>
-              <pre><code>${escapeHtml(entry.example)}</code></pre>
+            <div class="resources-view-example-list">
+              ${examplesHtml}
             </div>
           `;
+
+          card.querySelectorAll("[data-resource-preview]").forEach(frame => {
+            const index = Number(frame.dataset.resourcePreview || 0);
+            const example = examples[index];
+            if (!example) return;
+
+            frame.srcdoc = `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    html { color-scheme: light; }
+    body {
+      margin: 0;
+      padding: 18px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #1f2937;
+      background: #ffffff;
+      line-height: 1.6;
+    }
+    input, select, textarea, button { font: inherit; }
+    input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+      max-width: 100%;
+      padding: 7px 9px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+    }
+    button {
+      padding: 8px 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      background: #f8fafc;
+      cursor: pointer;
+    }
+    label { font-weight: 650; }
+  </style>
+</head>
+<body>${String(example.code || "")}</body>
+</html>`;
+          });
 
           grid.appendChild(card);
         });
