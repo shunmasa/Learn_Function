@@ -479,24 +479,30 @@
      */
     /*
      * 27-inch/full monitor:
-     * - begin the climb earlier
-     * - reach the crest before the sticky scene releases
-     * - travel farther because the visible road is physically taller
+     * - keep moving through almost the whole scroll
+     * - finish on the road crest instead of floating into the sky
      *
-     * Mobile and normal/13-inch desktop keep their existing values.
+     * Mobile also keeps moving until the very end and climbs farther.
+     * Normal/13-inch desktop keeps its existing behavior.
      */
     const runnerProgress =
       largeDesktop
         ? smoothstep(
-            0.00,
-            0.80,
-            clamp(p + 0.08, 0, 1)
-          )
-        : smoothstep(
-            0.04,
-            0.97,
+            0.02,
+            0.96,
             p
-          );
+          )
+        : mobileLayout
+          ? smoothstep(
+              0.04,
+              1.00,
+              p
+            )
+          : smoothstep(
+              0.04,
+              0.97,
+              p
+            );
 
     const runnerTravel =
       runnerProgress *
@@ -504,21 +510,21 @@
         stageHeight *
           (
             /*
-             * MOBILE ONLY:
-             * Keep the adventurers on the visible road crest.
-             * 0.36 let them climb past the meadow and float over the lake
-             * near the end of the scroll on tall phone viewports.
+             * MOBILE + 27-INCH FINAL TUNING:
+             * Use a high enough height ratio that the pixel caps below
+             * become the intended final travel on typical viewports.
+             * 13-inch / normal desktop remains unchanged.
              */
             mobileLayout
-              ? 0.25
+              ? 0.40
               : largeDesktop
-                ? 0.60
+                ? 0.75
                 : 0.43
           ),
         mobileLayout
-          ? 190
+          ? 270
           : largeDesktop
-            ? 520
+            ? 490
             : 330
       );
 
@@ -544,10 +550,9 @@
       velocity * 0.035 +
       /*
        * 27-inch/full monitor only:
-       * keep the adventurers seated on the road crest instead of
-       * letting their feet rise slightly into the sky.
+       * final grounding correction so the feet stay on the road crest.
        */
-      (largeDesktop ? 24 : 0);
+      (largeDesktop ? 40 : 0);
 
     const runnerScale =
       lerp(
