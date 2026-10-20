@@ -3,6 +3,7 @@ let currentUser = null;
 let currentLessonId = null;
 let currentLang = "js"; // "html" | "js" | "py"
 let completedByLang = { html: new Set(), js: new Set(), py: new Set() };
+let htmlPreviewMode = "work"; // "work" | "example"
 
 /*
  * GIVE UP MODE
@@ -715,6 +716,7 @@ function renderLessonList() {
 
 function openLesson(id) {
   currentLessonId = id;
+  htmlPreviewMode = "work";
   const lesson = getLessons().find((l) => l.id === id);
   if (!lesson) return;
 
@@ -757,8 +759,13 @@ function openLesson(id) {
   if (previewPanel) previewPanel.classList.toggle("hidden", htmlMode);
 
   if (htmlMode) {
+    htmlPreviewMode = "work";
     renderHtmlPreview($("#code-editor").value);
     switchEditorTab("view");
+
+    if (viewTab) viewTab.textContent = "VIEW";
+
+    updateHtmlPreviewButtons("work");
   } else {
     switchEditorTab("console");
   }
@@ -808,6 +815,115 @@ $$(".editor-tab").forEach((tab) => {
   tab.addEventListener("click", () => switchEditorTab(tab.dataset.panel));
 });
 
+
+
+// ========== HTML EXAMPLE VIEW ==========
+function updateHtmlPreviewButtons(mode = htmlPreviewMode) {
+  const root = $("#lesson-content");
+  if (!root) return;
+
+  const exampleButton = root.querySelector("[data-view-example]");
+  const workButton = root.querySelector("[data-view-work]");
+
+  if (exampleButton) {
+    const active = mode === "example";
+    exampleButton.setAttribute("aria-pressed", String(active));
+    exampleButton.classList.toggle("is-active", active);
+  }
+
+  if (workButton) {
+    const active = mode === "work";
+    workButton.setAttribute("aria-pressed", String(active));
+    workButton.classList.toggle("is-active", active);
+  }
+}
+
+function showHtmlExamplePreview() {
+  if (currentLang !== "html" || currentLessonId == null) return;
+
+  const lesson = getLessons().find((item) => item.id === currentLessonId);
+  const resultMsg = $("#result-message");
+  const viewTab = $("#view-tab");
+
+  if (!lesson || !lesson.exampleCode) {
+    if (resultMsg) {
+      resultMsg.textContent = "このレッスンには見本VIEWがまだありません。";
+      resultMsg.className = "error";
+    }
+    return;
+  }
+
+  htmlPreviewMode = "example";
+
+  if (liveTimer) {
+    clearTimeout(liveTimer);
+    liveTimer = null;
+  }
+
+  renderHtmlPreview(lesson.exampleCode);
+  switchEditorTab("view");
+
+  if (viewTab) {
+    viewTab.classList.remove("hidden");
+    viewTab.textContent = "VIEW • EXAMPLE";
+  }
+
+  updateHtmlPreviewButtons("example");
+
+  if (resultMsg) {
+    resultMsg.textContent =
+      "見本をVIEWに表示しました。左のエディターのコードは変更していません。";
+    resultMsg.className = "";
+  }
+}
+
+function showHtmlWorkPreview(message = true) {
+  if (currentLang !== "html") return;
+
+  htmlPreviewMode = "work";
+
+  if (liveTimer) {
+    clearTimeout(liveTimer);
+    liveTimer = null;
+  }
+
+  renderHtmlPreview($("#code-editor")?.value || "");
+  switchEditorTab("view");
+
+  const viewTab = $("#view-tab");
+  if (viewTab) {
+    viewTab.classList.remove("hidden");
+    viewTab.textContent = "VIEW";
+  }
+
+  updateHtmlPreviewButtons("work");
+
+  if (message) {
+    const resultMsg = $("#result-message");
+    if (resultMsg) {
+      resultMsg.textContent = "自分のコードをVIEWに戻しました。";
+      resultMsg.className = "";
+    }
+  }
+}
+
+const lessonContentViewControls = $("#lesson-content");
+if (lessonContentViewControls) {
+  lessonContentViewControls.addEventListener("click", (event) => {
+    const exampleButton = event.target.closest("[data-view-example]");
+    if (exampleButton && lessonContentViewControls.contains(exampleButton)) {
+      event.preventDefault();
+      showHtmlExamplePreview();
+      return;
+    }
+
+    const workButton = event.target.closest("[data-view-work]");
+    if (workButton && lessonContentViewControls.contains(workButton)) {
+      event.preventDefault();
+      showHtmlWorkPreview(true);
+    }
+  });
+}
 
 // ========== JAVASCRIPT SANDBOX ==========
 // User-written JavaScript and JavaScript lesson tests run in a dedicated Web Worker.
@@ -921,18 +1037,43 @@ function renderHtmlPreview(code) {
   const frame = $("#html-preview-frame");
   if (!frame) return;
 
+  // HTML/CSS preview intentionally remains script-free.
   const csp = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src http: https: data:; style-src 'unsafe-inline'; font-src data:;">`;
+  const previewBaseStyle = `<style>
+    html { color-scheme: light; background: #fff; }
+    body {
+      margin: 0;
+      padding: 18px;
+      background: #fff;
+      color: #1f2937;
+      font-family: Arial, "Noto Sans JP", sans-serif;
+      line-height: 1.6;
+    }
+  </style>`;
+
   const source = String(code || "");
-  const safeSource = /<head[\s>]/i.test(source)
-    ? source.replace(/<head([^>]*)>/i, `<head$1>${csp}`)
-    : csp + source;
+  let safeSource;
+
+  if (/<head[\s>]/i.test(source)) {
+    safeSource = source.replace(
+      /<head([^>]*)>/i,
+      `<head$1>${csp}${previewBaseStyle}`
+    );
+  } else {
+    safeSource =
+      `<!DOCTYPE html><html lang="ja"><head>${csp}${previewBaseStyle}</head><body>` +
+      source +
+      `</body></html>`;
+  }
 
   frame.srcdoc = safeSource;
 }
 
 function syncPreview() {
   if (currentLang === "html") {
-    renderHtmlPreview($("#code-editor").value);
+    if (htmlPreviewMode !== "example") {
+      renderHtmlPreview($("#code-editor").value);
+    }
     return;
   }
   const output = $("#console-output").textContent.trim();
@@ -1006,8 +1147,12 @@ async function updateLiveConsole() {
   liveRunning = true;
   try {
     if (currentLang === "html") {
-      renderHtmlPreview(code);
-      consoleEl.innerHTML = `<div class="info">VIEW タブを更新しました。</div>`;
+      if (htmlPreviewMode === "example") {
+        consoleEl.innerHTML = `<div class="info">見本サイトをVIEWに表示中です。</div>`;
+      } else {
+        renderHtmlPreview(code);
+        consoleEl.innerHTML = `<div class="info">VIEW タブを更新しました。</div>`;
+      }
     } else if (currentLang === "py") {
       const r = await runPython(code);
       if (r.error) {
@@ -1050,6 +1195,13 @@ const codeEditorEl = $("#code-editor");
 if (codeEditorEl) {
   codeEditorEl.addEventListener("input", () => {
     renderCodeHighlight();
+
+    if (currentLang === "html" && htmlPreviewMode === "example") {
+      htmlPreviewMode = "work";
+      const viewTab = $("#view-tab");
+      if (viewTab) viewTab.textContent = "VIEW";
+      updateHtmlPreviewButtons("work");
+    }
 
     const lesson = getLessons().find((l) => l.id === currentLessonId);
     const inGiveUpMode = !!lesson && getGiveups().has(lesson.id) && !getCompleted().has(lesson.id);
@@ -1319,6 +1471,10 @@ async function runCode() {
   const resultMsg = $("#result-message");
 
   if (currentLang === "html") {
+    htmlPreviewMode = "work";
+    const viewTab = $("#view-tab");
+    if (viewTab) viewTab.textContent = "VIEW";
+    updateHtmlPreviewButtons("work");
     renderHtmlPreview(code);
     consoleEl.innerHTML = `<div class="info">HTML を VIEW タブに表示しました。</div>`;
   } else if (currentLang === "py") {
@@ -1522,7 +1678,12 @@ $("#reset-btn").addEventListener("click", () => {
 
     updateAttemptStatus(lesson);
 
-    if (currentLang === "html") renderHtmlPreview($("#code-editor").value);
+    if (currentLang === "html") {
+      htmlPreviewMode = "work";
+      const viewTab = $("#view-tab");
+      if (viewTab) viewTab.textContent = "VIEW";
+      renderHtmlPreview($("#code-editor").value);
+    }
     switchEditorTab(currentLang === "html" ? "view" : "console");
     scheduleLiveConsole();
   }

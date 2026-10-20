@@ -45,6 +45,11 @@ const LESSONS_HTML = [
 &lt;/body&gt;
 &lt;/html&gt;</pre>
 
+      <p>
+        <button type="button" class="btn primary small" data-view-example>▶ EXAMPLEをVIEWで見る</button>
+        <button type="button" class="btn ghost small" data-view-work>↩ 自分のVIEWへ戻る</button>
+      </p>
+
       <p><strong>練習課題:</strong> 見本とは違う内容で「わたしの学校」というページを作ってください。</p>
 
       <h3>合格条件</h3>
@@ -60,6 +65,24 @@ const LESSONS_HTML = [
         見本をコピーせず、指定された別の文章でページを完成させましょう。
       </div>
     `,
+    exampleCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>海のページ</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 28px; background: #eef7ff; color: #17324d; }
+    .box { max-width: 520px; margin: auto; padding: 24px; background: white; border: 1px solid #c9dfef; border-radius: 12px; }
+    h1 { margin-top: 0; color: #2563eb; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>海のページ</h1>
+    <p>青い海が好きです。</p>
+  </div>
+</body>
+</html>`,
     starterCode: `<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -114,6 +137,11 @@ const LESSONS_HTML = [
 &lt;h2&gt;鳥類&lt;/h2&gt;
 &lt;h3&gt;すずめ&lt;/h3&gt;</pre>
 
+      <p>
+        <button type="button" class="btn primary small" data-view-example>▶ EXAMPLEをVIEWで見る</button>
+        <button type="button" class="btn ghost small" data-view-work>↩ 自分のVIEWへ戻る</button>
+      </p>
+
       <p><strong>練習課題:</strong> 「春の楽しみ」という別テーマの見出し構造を作ってください。</p>
 
       <h3>合格条件</h3>
@@ -127,6 +155,26 @@ const LESSONS_HTML = [
         Lesson 1よりタグ数が増えます。h1 → h2 → h3 の順番を意識しましょう。
       </div>
     `,
+    exampleCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>動物図鑑</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 28px; color: #1f2937; }
+    h1 { color: #1d4ed8; border-bottom: 3px solid #bfdbfe; padding-bottom: 8px; }
+    h2 { margin-top: 24px; color: #166534; }
+    h3 { margin-left: 18px; color: #475569; }
+  </style>
+</head>
+<body>
+  <h1>動物図鑑</h1>
+  <h2>哺乳類</h2>
+  <h3>犬</h3>
+  <h2>鳥類</h2>
+  <h3>すずめ</h3>
+</body>
+</html>`,
     starterCode: `<!-- 春の楽しみを見出しで整理しよう -->`,
     solution: `<h1>春の楽しみ</h1>
 
@@ -170,6 +218,11 @@ const LESSONS_HTML = [
       <p><strong>まず見本:</strong></p>
       <pre>&lt;p&gt;こんにちは。&lt;strong&gt;Masa&lt;/strong&gt;です。&lt;br&gt;よろしくお願いします。&lt;/p&gt;</pre>
 
+      <p>
+        <button type="button" class="btn primary small" data-view-example>▶ EXAMPLEをVIEWで見る</button>
+        <button type="button" class="btn ghost small" data-view-work>↩ 自分のVIEWへ戻る</button>
+      </p>
+
       <p><strong>練習課題:</strong> 図書館へ行った日の文章を、2つの段落に分けて書いてください。</p>
 
       <h3>合格条件</h3>
@@ -185,6 +238,22 @@ const LESSONS_HTML = [
         文章の内容もタグの使い方も、見本とは変えて練習します。
       </div>
     `,
+    exampleCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>文章の見本</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 28px; background: #fafafa; }
+    p { max-width: 560px; padding: 16px; background: white; border-left: 4px solid #60a5fa; line-height: 1.8; }
+    strong { color: #dc2626; }
+    em { color: #2563eb; }
+  </style>
+</head>
+<body>
+  <p>こんにちは。<strong>Masa</strong>です。<br><em>よろしくお願いします。</em></p>
+</body>
+</html>`,
     starterCode: `<!-- 2つのpを書こう -->`,
     solution: `<p>今日は<strong>図書館</strong>に行きました。<br>本を3冊読みました。</p>
 <p><em>また行きたいです。</em></p>`,
@@ -222,6 +291,11 @@ const LESSONS_HTML = [
       <p><strong>まず見本:</strong></p>
       <pre>&lt;a href="https://www.example.com"&gt;サンプルサイトへ&lt;/a&gt;</pre>
 
+      <p>
+        <button type="button" class="btn primary small" data-view-example>▶ EXAMPLEをVIEWで見る</button>
+        <button type="button" class="btn ghost small" data-view-work>↩ 自分のVIEWへ戻る</button>
+      </p>
+
       <p><strong>練習課題:</strong> 今回はリンクを2つ作ります。</p>
 
       <h3>合格条件</h3>
@@ -235,6 +309,20 @@ const LESSONS_HTML = [
         URLの種類が違っても、aタグとhrefの基本は同じです。
       </div>
     `,
+    exampleCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>リンクの見本</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 32px; }
+    a { display: inline-block; padding: 10px 16px; border-radius: 8px; background: #2563eb; color: white; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <a href="https://www.example.com">サンプルサイトへ</a>
+</body>
+</html>`,
     starterCode: `<!-- 外部サイトへのリンク -->
 
 <!-- 自分のページへのリンク -->`,
@@ -269,6 +357,11 @@ const LESSONS_HTML = [
       <p><strong>まず見本:</strong></p>
       <pre>&lt;img src="cat.svg" alt="ソファで寝ている猫"&gt;</pre>
 
+      <p>
+        <button type="button" class="btn primary small" data-view-example>▶ EXAMPLEをVIEWで見る</button>
+        <button type="button" class="btn ghost small" data-view-work>↩ 自分のVIEWへ戻る</button>
+      </p>
+
       <p><strong>練習課題:</strong> 今度は3枚の画像を書きます。</p>
 
       <h3>合格条件</h3>
@@ -287,6 +380,20 @@ const LESSONS_HTML = [
         画像が増えても、1枚ずつsrcとaltをセットで書きましょう。
       </div>
     `,
+    exampleCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>画像の見本</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 28px; background: #f8fafc; }
+    img { display: block; width: min(320px, 100%); padding: 12px; background: white; border: 1px solid #dbe3ef; border-radius: 12px; }
+  </style>
+</head>
+<body>
+  <img src="assets/dog.svg" alt="公園を走る犬">
+</body>
+</html>`,
     starterCode: `<!-- 画像を3枚書こう -->`,
     solution: `<img src="assets/dog.svg" alt="公園を走る犬">
 <img src="assets/flower.svg" alt="黄色い花">
@@ -327,6 +434,11 @@ const LESSONS_HTML = [
     content: `
       <p><strong>プロジェクト:</strong> Lesson 1〜5 で学んだ内容を使って、自己紹介ページを1枚完成させましょう。</p>
 
+      <p>
+        <button type="button" class="btn primary small" data-view-example>▶ EXAMPLEをVIEWで見る</button>
+        <button type="button" class="btn ghost small" data-view-work>↩ 自分のVIEWへ戻る</button>
+      </p>
+
       <h3>ページの設計図</h3>
       <pre>ページ全体
 ├ title「わたしの自己紹介」
@@ -350,6 +462,32 @@ const LESSONS_HTML = [
         Lesson 1〜5 の内容だけを使います。上から1つずつ作って、テストを確認しましょう。
       </div>
     `,
+    exampleCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>わたしのプロフィール</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #eef4fb; color: #1f2937; }
+    main { max-width: 680px; margin: 32px auto; padding: 26px; background: white; border-radius: 14px; }
+    h1 { color: #1d4ed8; }
+    h2 { margin-top: 26px; color: #0f766e; }
+    img { width: min(280px, 100%); border-radius: 10px; }
+    a { color: #2563eb; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>わたしのプロフィール</h1>
+    <h2>わたしについて</h2>
+    <p>こんにちは。<strong>Ken</strong>です。<br><em>プログラミングを勉強中です。</em></p>
+    <h2>好きな場所</h2>
+    <img src="assets/flower.svg" alt="黄色い花">
+    <p>公園が好きです。</p>
+    <a href="https://www.example.com">おすすめサイトへ</a>
+  </main>
+</body>
+</html>`,
     starterCode: `<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -471,6 +609,11 @@ const LESSONS_HTML = [
   &lt;li&gt;材料を切る&lt;/li&gt;
 &lt;/ol&gt;</pre>
 
+      <p>
+        <button type="button" class="btn primary small" data-view-example>▶ EXAMPLEをVIEWで見る</button>
+        <button type="button" class="btn ghost small" data-view-work>↩ 自分のVIEWへ戻る</button>
+      </p>
+
       <h3>見本の表示</h3>
       <div class="html-demo-result">
         <ul>
@@ -496,6 +639,32 @@ const LESSONS_HTML = [
         リストが長くなっても、ul/olの使い分けは同じです。
       </div>
     `,
+    exampleCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>リストの見本</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 28px; background: #f8fafc; }
+    .list-box { max-width: 520px; padding: 20px 28px; background: white; border: 1px solid #dbe3ef; border-radius: 12px; }
+    ul { color: #166534; }
+    ol { color: #1d4ed8; }
+    li { margin: 7px 0; }
+  </style>
+</head>
+<body>
+  <div class="list-box">
+    <ul>
+      <li>りんご</li>
+      <li>みかん</li>
+    </ul>
+    <ol>
+      <li>手を洗う</li>
+      <li>材料を切る</li>
+    </ol>
+  </div>
+</body>
+</html>`,
     starterCode: `<!-- 買い物リスト -->
 
 <!-- 作る手順 -->`,
@@ -534,172 +703,519 @@ const LESSONS_HTML = [
 
   {
     id: 8,
-    title: "カードを2つ作ろう",
-    description: "divとspanを繰り返し使う",
+    title: "span・div・classを使おう",
+    description: "spanにclassをつけて、divでまとめる",
     content: `
-      <p><strong>まず見本:</strong> 1つのdiv.cardの中にh2とpとspan。</p>
+      <p><strong>今回は3つだけ覚えます:</strong> <code>span</code> → <code>class</code> → <code>div</code></p>
 
-      <p><strong>練習課題:</strong> 今回はカードを2つ作ります。</p>
+      <h3>1. まず span</h3>
+      <pre>&lt;span&gt;雨&lt;/span&gt;</pre>
+      <p><code>span</code> は、文字の一部分をまとめるタグです。</p>
+
+      <h3>2. class をつける</h3>
+      <pre>&lt;span class="red"&gt;雨&lt;/span&gt;</pre>
+      <p><code>class="red"</code> のように名前をつけると、CSSで見た目を変えられます。</p>
+
+      <h3>3. div でまとめる</h3>
+      <pre>&lt;div class="card"&gt;
+  &lt;span class="red"&gt;雨&lt;/span&gt;
+&lt;/div&gt;</pre>
+
+      <p><strong>CSSは最初から入っています。</strong> 今回はHTMLだけ書いてください。</p>
+
+      <p>
+        <button type="button" class="btn primary small" data-view-example>▶ EXAMPLEをVIEWで見る</button>
+        <button type="button" class="btn ghost small" data-view-work>↩ 自分のVIEWへ戻る</button>
+      </p>
+
+      <pre>&lt;style&gt;
+.card {
+  border: 2px solid #cbd5e1;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+}
+.red {
+  color: red;
+  font-weight: bold;
+}
+.blue {
+  color: blue;
+  font-weight: bold;
+}
+&lt;/style&gt;</pre>
+
+      <p><strong>練習課題:</strong> cardを2つ作り、1つ目に「雨」、2つ目に「晴れ」を入れます。</p>
 
       <h3>合格条件</h3>
       <ul class="lesson-requirements">
         <li><code>div class="card"</code> が2つ</li>
-        <li>1枚目h2「今日の天気」、span.red「雨」</li>
-        <li>2枚目h2「明日の天気」、span.blue「晴れ」</li>
-        <li>それぞれのcardにpがある</li>
+        <li>1つ目のcardに <code>span class="red"</code> で「雨」</li>
+        <li>2つ目のcardに <code>span class="blue"</code> で「晴れ」</li>
+        <li><code>.card</code>、<code>.red</code>、<code>.blue</code> のCSSがある</li>
       </ul>
 
       <div class="challenge-box">
-        同じ構造を2回書くことで、divとspanの使い方を定着させます。
+        h2やpは使いません。今回は span・div・class の3つに集中します。
       </div>
     `,
-    starterCode: `<!-- 今日のカード -->
+    exampleCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>天気カード</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+    }
 
-<!-- 明日のカード -->`,
-    solution: `<div class="card">
-  <h2>今日の天気</h2>
-  <p>今日は<span class="red">雨</span>です。</p>
+    .card {
+      max-width: 340px;
+      border: 2px solid #cbd5e1;
+      padding: 16px;
+      margin: 10px auto;
+      border-radius: 10px;
+      background: white;
+    }
+
+    .red {
+      color: red;
+      font-weight: bold;
+    }
+
+    .blue {
+      color: blue;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <span class="red">雨</span>
+  </div>
+
+  <div class="card">
+    <span class="blue">晴れ</span>
+  </div>
+</body>
+</html>`,
+    starterCode: `<style>
+.card {
+  border: 2px solid #cbd5e1;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+}
+
+.red {
+  color: red;
+  font-weight: bold;
+}
+
+.blue {
+  color: blue;
+  font-weight: bold;
+}
+</style>
+
+<!-- 1つ目のcard -->
+
+
+<!-- 2つ目のcard -->
+`,
+    solution: `<style>
+.card {
+  border: 2px solid #cbd5e1;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+}
+
+.red {
+  color: red;
+  font-weight: bold;
+}
+
+.blue {
+  color: blue;
+  font-weight: bold;
+}
+</style>
+
+<div class="card">
+  <span class="red">雨</span>
 </div>
 
 <div class="card">
-  <h2>明日の天気</h2>
-  <p>明日は<span class="blue">晴れ</span>です。</p>
+  <span class="blue">晴れ</span>
 </div>`,
-    explanation: `<p>同じ種類のまとまりには同じclassを使うことができます。</p>`,
+    explanation: `<p><code>span</code> は文字の一部分、<code>div</code> はまとまり全体、<code>class</code> はCSSで見た目を指定するための名前です。</p>`,
     tests: [
-      { description: "div.cardが2つ以上", run: code => htmlLessonDocument(code).querySelectorAll("div.card").length >= 2 },
       {
-        description: "今日の天気カードが正しい",
+        description: "div.card が2つある",
+        run: code => htmlLessonDocument(code).querySelectorAll("div.card").length >= 2
+      },
+      {
+        description: "1つ目のcardに span.red「雨」",
         run: code => {
           const cards = [...htmlLessonDocument(code).querySelectorAll("div.card")];
-          return cards.some(card =>
-            normalizedText(card.querySelector("h2")?.textContent) === "今日の天気" &&
-            normalizedText(card.querySelector("p span.red")?.textContent) === "雨"
-          );
+          const span = cards[0]?.querySelector("span.red");
+          return !!span && normalizedText(span.textContent) === "雨";
         }
       },
       {
-        description: "明日の天気カードが正しい",
+        description: "2つ目のcardに span.blue「晴れ」",
         run: code => {
           const cards = [...htmlLessonDocument(code).querySelectorAll("div.card")];
-          return cards.some(card =>
-            normalizedText(card.querySelector("h2")?.textContent) === "明日の天気" &&
-            normalizedText(card.querySelector("p span.blue")?.textContent) === "晴れ"
-          );
+          const span = cards[1]?.querySelector("span.blue");
+          return !!span && normalizedText(span.textContent) === "晴れ";
         }
       },
       {
-        description: "各cardにpがある",
-        run: code => [...htmlLessonDocument(code).querySelectorAll("div.card")].slice(0,2).every(card => !!card.querySelector("p"))
+        description: "card / red / blue のCSSが設定されている",
+        run: code => {
+          const css = [...htmlLessonDocument(code).querySelectorAll("style")]
+            .map(style => style.textContent)
+            .join("\\n")
+            .replace(/\\s+/g, " ");
+
+          return /\\.card\\s*\\{[^}]*border\\s*:/i.test(css) &&
+                 /\\.red\\s*\\{[^}]*color\\s*:\\s*red\\b/i.test(css) &&
+                 /\\.blue\\s*\\{[^}]*color\\s*:\\s*blue\\b/i.test(css);
+        }
       }
     ],
-    hints: ["cardを2回書く", "redとblueで別のspan"]
+    hints: [
+      "まず <span class=\"red\">雨</span> を書く",
+      "そのspanを <div class=\"card\">...</div> で囲む",
+      "2つ目は red を blue にして「晴れ」と書く",
+      "CSSは最初から入っているので変更しなくてOK"
+    ]
   },
 
   {
     id: 9,
     title: "2セクションのページを作ろう",
-    description: "意味のある構造タグを増やす",
+    description: "header・main・section・footerを組み合わせる",
     content: `
-      <p><strong>まず見本:</strong> header / nav / main / section / footer が1つずつ。</p>
+      <p><strong>まず見本:</strong> 「部活動ニュース」という簡単なページを見てみましょう。</p>
 
-      <p><strong>練習課題:</strong> 学校ニュースページを作ります。</p>
+      <p>
+        <button type="button" class="btn primary small" data-view-example>▶ EXAMPLEをVIEWで見る</button>
+        <button type="button" class="btn ghost small" data-view-work>↩ 自分のVIEWへ戻る</button>
+      </p>
+
+      <pre>&lt;header&gt;
+  &lt;h1&gt;部活動ニュース&lt;/h1&gt;
+&lt;/header&gt;
+
+&lt;main&gt;
+  &lt;section&gt;
+    &lt;h2&gt;今日のお知らせ&lt;/h2&gt;
+  &lt;/section&gt;
+
+  &lt;section&gt;
+    &lt;h2&gt;今月の予定&lt;/h2&gt;
+  &lt;/section&gt;
+&lt;/main&gt;
+
+&lt;footer&gt;© 2026 Green School&lt;/footer&gt;</pre>
+
+      <p><strong>練習課題:</strong> 見本と同じ形で「学校ニュース」ページを作ります。</p>
 
       <h3>合格条件</h3>
       <ul class="lesson-requirements">
-        <li>headerのh1「学校ニュース」</li>
-        <li>navに「ホーム」と「行事」のリンクを2つ</li>
-        <li>mainの中にsectionが2つ</li>
-        <li>sectionのh2は「今週のお知らせ」「来週の予定」</li>
-        <li>footerに「© 2026 My School」</li>
+        <li><code>header</code> の <code>h1</code> は「学校ニュース」</li>
+        <li><code>main</code> の中に <code>section</code> が2つ</li>
+        <li>1つ目の <code>h2</code> は「今週のお知らせ」</li>
+        <li>2つ目の <code>h2</code> は「来週の予定」</li>
+        <li><code>footer</code> に「© 2026 My School」</li>
       </ul>
 
       <div class="challenge-box">
-        Lesson 8よりさらに要素数が増えます。構造を意識して組み立てましょう。
+        header → main → section → footer の順番を見ながら作りましょう。
       </div>
     `,
+    exampleCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>部活動ニュース</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #1f2937;
+    }
+
+    header {
+      padding: 22px;
+      background: #2563eb;
+      color: white;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    main {
+      padding: 22px;
+    }
+
+    section {
+      margin-bottom: 16px;
+      padding: 18px;
+      background: white;
+      border: 1px solid #dbe3ef;
+      border-radius: 10px;
+    }
+
+    section h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    footer {
+      padding: 16px 22px;
+      background: #1e293b;
+      color: white;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>部活動ニュース</h1>
+  </header>
+
+  <main>
+    <section>
+      <h2>今日のお知らせ</h2>
+    </section>
+
+    <section>
+      <h2>今月の予定</h2>
+    </section>
+  </main>
+
+  <footer>© 2026 Green School</footer>
+</body>
+</html>`,
     starterCode: `<!-- header -->
 
-<!-- mainの中にsectionを2つ -->
 
-<!-- footer -->`,
+<!-- main の中に section を2つ -->
+
+
+<!-- footer -->
+`,
     solution: `<header>
   <h1>学校ニュース</h1>
-  <nav>
-    <a href="index.html">ホーム</a>
-    <a href="events.html">行事</a>
-  </nav>
 </header>
 
 <main>
   <section>
     <h2>今週のお知らせ</h2>
   </section>
+
   <section>
     <h2>来週の予定</h2>
   </section>
 </main>
 
 <footer>© 2026 My School</footer>`,
-    explanation: `<p>sectionを複数に増やしても、mainの中に整理して入れます。</p>`,
+    explanation: `<p><code>header</code> はページの上、<code>main</code> は中心の内容、<code>section</code> は内容のまとまり、<code>footer</code> はページの下です。</p>`,
     tests: [
       {
-        description: "headerのh1が「学校ニュース」",
+        description: "header の h1 が「学校ニュース」",
         run: code => normalizedText(htmlLessonDocument(code).querySelector("header h1")?.textContent) === "学校ニュース"
       },
       {
-        description: "navにリンクが2つ以上",
-        run: code => htmlLessonDocument(code).querySelectorAll("header nav a").length >= 2
+        description: "main の中に section が2つ",
+        run: code => htmlLessonDocument(code).querySelectorAll("main > section").length >= 2
       },
       {
-        description: "ホームと行事リンクがある",
+        description: "1つ目の section は「今週のお知らせ」",
         run: code => {
-          const doc = htmlLessonDocument(code);
-          const home = doc.querySelector('nav a[href="index.html"]');
-          const events = doc.querySelector('nav a[href="events.html"]');
-          return normalizedText(home?.textContent) === "ホーム" && normalizedText(events?.textContent) === "行事";
-        }
-      },
-      { description: "main内にsectionが2つ", run: code => htmlLessonDocument(code).querySelectorAll("main > section").length >= 2 },
-      {
-        description: "2つのsection見出しが正しい",
-        run: code => {
-          const vals = [...htmlLessonDocument(code).querySelectorAll("main > section > h2")].map(x => normalizedText(x.textContent));
-          return vals.includes("今週のお知らせ") && vals.includes("来週の予定");
+          const sections = [...htmlLessonDocument(code).querySelectorAll("main > section")];
+          return normalizedText(sections[0]?.querySelector("h2")?.textContent) === "今週のお知らせ";
         }
       },
       {
-        description: "footerが正しい",
+        description: "2つ目の section は「来週の予定」",
+        run: code => {
+          const sections = [...htmlLessonDocument(code).querySelectorAll("main > section")];
+          return normalizedText(sections[1]?.querySelector("h2")?.textContent) === "来週の予定";
+        }
+      },
+      {
+        description: "footer が「© 2026 My School」",
         run: code => normalizedText(htmlLessonDocument(code).querySelector("footer")?.textContent) === "© 2026 My School"
       }
     ],
-    hints: ["navにaを2個", "main > sectionを2個"]
+    hints: [
+      "まず header と h1 を書く",
+      "main の中に section を2つ書く",
+      "最後に footer を書く"
+    ]
   },
 
   {
     id: 10,
-    title: "入力項目の多いフォーム",
-    description: "複数のフォーム部品を組み合わせる",
+    title: "入力フォームを作ろう",
+    description: "label・input・select・textarea・buttonを使う",
     content: `
-      <p><strong>まず見本:</strong> 名前・学年・メッセージのフォーム。</p>
+      <p><strong>まず見本:</strong> シンプルな「イベント申込フォーム」を見てみましょう。</p>
 
-      <p><strong>練習課題:</strong> クラブ参加フォームを作ってください。</p>
+      <p>
+        <button type="button" class="btn primary small" data-view-example>▶ EXAMPLEをVIEWで見る</button>
+        <button type="button" class="btn ghost small" data-view-work>↩ 自分のVIEWへ戻る</button>
+      </p>
+
+      <pre>&lt;form&gt;
+  &lt;label for="student"&gt;名前&lt;/label&gt;
+  &lt;input type="text" id="student"&gt;
+
+  &lt;label for="email-example"&gt;メール&lt;/label&gt;
+  &lt;input type="email" id="email-example"&gt;
+
+  &lt;label for="classroom"&gt;クラス&lt;/label&gt;
+  &lt;select id="classroom"&gt;
+    &lt;option&gt;A組&lt;/option&gt;
+    &lt;option&gt;B組&lt;/option&gt;
+  &lt;/select&gt;
+
+  &lt;label for="message"&gt;メッセージ&lt;/label&gt;
+  &lt;textarea id="message"&gt;&lt;/textarea&gt;
+
+  &lt;input type="checkbox" id="news"&gt;
+  &lt;label for="news"&gt;お知らせを受け取る&lt;/label&gt;
+
+  &lt;button type="submit"&gt;申し込む&lt;/button&gt;
+&lt;/form&gt;</pre>
+
+      <h3>label と id</h3>
+
+      <pre>&lt;label for="student"&gt;名前&lt;/label&gt;
+&lt;input type="text" id="student"&gt;</pre>
+
+      <p><code>for="student"</code> と <code>id="student"</code> を同じ名前にします。</p>
+
+      <p><strong>練習課題:</strong> 「クラブ参加フォーム」を作ってください。</p>
 
       <h3>合格条件</h3>
       <ul class="lesson-requirements">
-        <li>名前: label/input text</li>
-        <li>メール: label/input email</li>
-        <li>学年: selectに1年・2年・3年</li>
-        <li>参加理由: textarea</li>
-        <li>確認チェック: input type="checkbox"</li>
-        <li>送信button</li>
-        <li>labelのforと各idを対応させる</li>
+        <li>名前: <code>label</code> + <code>input type="text"</code></li>
+        <li>メール: <code>label</code> + <code>input type="email"</code></li>
+        <li>学年: <code>select</code> に1年・2年・3年</li>
+        <li>参加理由: <code>textarea</code></li>
+        <li>確認チェック: <code>input type="checkbox"</code></li>
+        <li>送信 <code>button</code></li>
+        <li><code>label</code> の <code>for</code> と各入力欄の <code>id</code> を合わせる</li>
       </ul>
 
       <div class="challenge-box">
-        これまでよりタグと属性が多いフォームです。1項目ずつ確認しましょう。
+        1項目ずつ書きましょう。label の for と入力欄の id が同じか確認します。
       </div>
     `,
+    exampleCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>イベント申込フォーム</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 28px;
+      font-family: Arial, sans-serif;
+      background: #eef3f9;
+      color: #1f2937;
+    }
+
+    form {
+      max-width: 460px;
+      margin: 0 auto;
+      padding: 24px;
+      background: white;
+      border: 1px solid #d7e0ec;
+      border-radius: 14px;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #b8c5d8;
+      border-radius: 8px;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 80px;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .check label {
+      margin: 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 11px;
+      border: 0;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <form>
+    <label for="student">名前</label>
+    <input type="text" id="student">
+
+    <label for="email-example">メール</label>
+    <input type="email" id="email-example">
+
+    <label for="classroom">クラス</label>
+    <select id="classroom">
+      <option>A組</option>
+      <option>B組</option>
+    </select>
+
+    <label for="message">メッセージ</label>
+    <textarea id="message"></textarea>
+
+    <div class="check">
+      <input type="checkbox" id="news">
+      <label for="news">お知らせを受け取る</label>
+    </div>
+
+    <button type="submit">申し込む</button>
+  </form>
+</body>
+</html>`,
     starterCode: `<form>
   <!-- 名前 -->
 
@@ -730,12 +1246,12 @@ const LESSONS_HTML = [
   <label for="reason">参加理由</label>
   <textarea id="reason"></textarea>
 
-  <label for="agree">内容を確認しました</label>
   <input type="checkbox" id="agree">
+  <label for="agree">内容を確認しました</label>
 
   <button type="submit">送信</button>
 </form>`,
-    explanation: `<p>フォームが長くなった時ほど、labelとidの対応が重要です。</p>`,
+    explanation: `<p>フォームは、labelと入力欄を1組ずつ作ると分かりやすくなります。forとidは同じ名前にします。</p>`,
     tests: [
       {
         description: "名前入力が正しい",
@@ -756,12 +1272,27 @@ const LESSONS_HTML = [
       {
         description: "学年が1・2・3年",
         run: code => {
-          const vals = [...htmlLessonDocument(code).querySelectorAll("select#grade option")].map(x => normalizedText(x.textContent));
+          const vals = [...htmlLessonDocument(code).querySelectorAll("select#grade option")]
+            .map(x => normalizedText(x.textContent));
           return ["1年","2年","3年"].every(v => vals.includes(v));
         }
       },
-      { description: "参加理由textarea", run: code => !!htmlLessonDocument(code).querySelector("textarea#reason") },
-      { description: "確認checkbox", run: code => !!htmlLessonDocument(code).querySelector('input#agree[type="checkbox"]') },
+      {
+        description: "参加理由のlabelとtextareaが対応",
+        run: code => {
+          const doc = htmlLessonDocument(code);
+          return normalizedText(doc.querySelector('label[for="reason"]')?.textContent) === "参加理由" &&
+                 !!doc.querySelector("textarea#reason");
+        }
+      },
+      {
+        description: "確認checkboxのlabelとinputが対応",
+        run: code => {
+          const doc = htmlLessonDocument(code);
+          return normalizedText(doc.querySelector('label[for="agree"]')?.textContent) === "内容を確認しました" &&
+                 !!doc.querySelector('input#agree[type="checkbox"]');
+        }
+      },
       {
         description: "送信button",
         run: code => {
@@ -770,17 +1301,50 @@ const LESSONS_HTML = [
         }
       }
     ],
-    hints: ["input type=email", "checkboxにもlabelを付けます"]
+    hints: [
+      "label の for と入力欄の id を同じ名前にする",
+      "名前は text、メールは email",
+      "学年は select、参加理由は textarea",
+      "最後に checkbox と送信buttonを書く"
+    ]
   },
 
   {
     id: 11,
     title: "3行の成績表を完成させよう",
-    description: "表を少し大きくする",
+    description: "table・tr・th・tdを使って表を作る",
     content: `
-      <p><strong>まず見本:</strong> 見出し1行 + データ1行の表。</p>
+      <p><strong>まず見本:</strong> 練習課題とほぼ同じ形の「ミニ成績表」を見てみましょう。</p>
 
-      <p><strong>練習課題:</strong> 3教科の成績表を作ってください。</p>
+      <p>
+        <button type="button" class="btn primary small" data-view-example>▶ EXAMPLEをVIEWで見る</button>
+        <button type="button" class="btn ghost small" data-view-work>自分のコードをVIEWに戻す</button>
+      </p>
+
+      <pre>&lt;table&gt;
+  &lt;tr&gt;
+    &lt;th&gt;教科&lt;/th&gt;
+    &lt;th&gt;点数&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;英語&lt;/td&gt;
+    &lt;td&gt;88&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;理科&lt;/td&gt;
+    &lt;td&gt;95&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;</pre>
+
+      <h3>表の作り方</h3>
+      <ul>
+        <li><code>table</code> … 表全体</li>
+        <li><code>tr</code> … 表の1行</li>
+        <li><code>th</code> … 見出しのセル</li>
+        <li><code>td</code> … データのセル</li>
+      </ul>
+
+      <p><strong>練習課題:</strong> 見本と同じ構造で、3教科の成績表を作ってください。</p>
 
       <h3>合格条件</h3>
       <ul class="lesson-requirements">
@@ -788,14 +1352,80 @@ const LESSONS_HTML = [
         <li>データ1: 国語 / 85</li>
         <li>データ2: 数学 / 92</li>
         <li>データ3: 情報 / 100</li>
-        <li>trは合計4行以上</li>
-        <li>見出しはth、データはtdを使う</li>
+        <li><code>tr</code> は合計4行以上</li>
+        <li>見出しは <code>th</code>、データは <code>td</code> を使う</li>
       </ul>
 
       <div class="challenge-box">
-        ここまで学んだ表の作り方を使って、少し大きな表を完成させましょう。
+        まず見本をVIEWで確認してから、「見出し1行 + データ3行」の形をまねして作りましょう。
       </div>
     `,
+    exampleCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ミニ成績表</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 28px;
+      font-family: sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+    .report-card {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 24px;
+      background: white;
+      border: 1px solid #d9e2ef;
+      border-radius: 14px;
+      box-shadow: 0 10px 26px rgba(30, 64, 175, .08);
+    }
+    h1 {
+      margin: 0 0 18px;
+      color: #1d4ed8;
+      font-size: 24px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px 14px;
+      border: 1px solid #cbd5e1;
+      text-align: left;
+    }
+    th {
+      background: #dbeafe;
+      color: #1e3a8a;
+    }
+    tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+  </style>
+</head>
+<body>
+  <div class="report-card">
+    <h1>ミニ成績表</h1>
+
+    <table>
+      <tr>
+        <th>教科</th>
+        <th>点数</th>
+      </tr>
+      <tr>
+        <td>英語</td>
+        <td>88</td>
+      </tr>
+      <tr>
+        <td>理科</td>
+        <td>95</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>`,
     starterCode: `<table>
   <!-- 見出し -->
 
@@ -811,7 +1441,7 @@ const LESSONS_HTML = [
   <tr><td>数学</td><td>92</td></tr>
   <tr><td>情報</td><td>100</td></tr>
 </table>`,
-    explanation: `<p>行数が増えても、trの中にthまたはtdを入れる基本は同じです。</p>`,
+    explanation: `<p><code>tr</code>を1行ずつ増やし、見出しには<code>th</code>、普通のデータには<code>td</code>を使います。</p>`,
     tests: [
       { description: "trが4行以上", run: code => htmlLessonDocument(code).querySelectorAll("table tr").length >= 4 },
       {
@@ -844,7 +1474,12 @@ const LESSONS_HTML = [
         })
       }
     ],
-    hints: ["見出し1行 + データ3行", "見出しはth、データはtd"]
+    hints: [
+      "まず見本の表をVIEWで見る",
+      "1行目は th を2つ使う",
+      "2行目以降は td を2つずつ使う",
+      "見出し1行 + データ3行 = trは合計4行"
+    ]
   },
 
   {
@@ -852,7 +1487,45 @@ const LESSONS_HTML = [
     title: "プロジェクト2: カフェのお店ページ",
     description: "HTML基礎10テーマを組み合わせる総まとめ",
     content: `
-      <p><strong>プロジェクト:</strong> これまで学んだHTMLの基礎10テーマを組み合わせて、架空のカフェのお店ページを完成させましょう。</p>
+      <p><strong>まず見本:</strong> 最終プロジェクトとほぼ同じ部品を使った「カフェ・アオゾラ」の完成例を見てみましょう。</p>
+
+      <p>
+        <button type="button" class="btn primary small" data-view-example>▶ EXAMPLEをVIEWで見る</button>
+        <button type="button" class="btn ghost small" data-view-work>自分のコードをVIEWに戻す</button>
+      </p>
+
+      <h3>見本で確認するポイント</h3>
+      <pre>ページ全体
+├ head → title / UTF-8
+├ header → h1 + nav
+└ main
+   ├ section「お店について」
+   │  └ div.card → img + p + ul
+   ├ section「おすすめ」
+   │  └ table
+   └ section「予約」
+      └ form
+└ footer</pre>
+
+      <p>VIEWでは、<strong>header / nav / card / 画像 / リスト / table / form / footer</strong> が1つのページになる様子を確認できます。</p>
+
+      <h3>見本の一部</h3>
+      <pre>&lt;section&gt;
+  &lt;h2&gt;お店について&lt;/h2&gt;
+  &lt;div class="card"&gt;
+    &lt;img src="assets/ocean.svg" alt="青い海"&gt;
+    &lt;p&gt;&lt;strong&gt;人気席&lt;/strong&gt;は窓側です。&lt;br&gt;
+      &lt;em&gt;ゆっくりお過ごしください。&lt;/em&gt;
+    &lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;窓辺の席&lt;/li&gt;
+      &lt;li&gt;無料Wi-Fi&lt;/li&gt;
+      &lt;li&gt;手作りケーキ&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</pre>
+
+      <p><strong>プロジェクト:</strong> 見本の構造を参考に、今度は「カフェ・サクラ」のページを完成させましょう。</p>
 
       <h3>ページの設計図</h3>
       <pre>ページ全体
@@ -884,9 +1557,157 @@ const LESSONS_HTML = [
       </ul>
 
       <div class="challenge-box">
-        最終プロジェクトです。外側の構造から作り、そのあと画像・リスト・表・フォームを1つずつ追加しましょう。
+        最初に見本カフェをVIEWで確認し、外側の構造 → card → table → form の順に作ると分かりやすいです。
       </div>
     `,
+    exampleCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>カフェ・アオゾラ</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      color: #243247;
+      background: #f5f9fc;
+    }
+    header {
+      padding: 26px 7%;
+      background: linear-gradient(135deg, #0f6f8d, #49a8be);
+      color: white;
+    }
+    header h1 { margin: 0 0 12px; }
+    nav { display: flex; gap: 10px; }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 7px 12px;
+      border: 1px solid rgba(255,255,255,.55);
+      border-radius: 999px;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 26px 18px;
+      display: grid;
+      gap: 22px;
+    }
+    section {
+      padding: 20px;
+      background: white;
+      border: 1px solid #d9e6ec;
+      border-radius: 14px;
+    }
+    section h2 { margin-top: 0; color: #0f6f8d; }
+    .card {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px 12px;
+      border: 1px solid #cbd9e0;
+      text-align: left;
+    }
+    th { background: #e7f5f8; }
+    form {
+      display: grid;
+      gap: 10px;
+      max-width: 420px;
+    }
+    input, select, button {
+      padding: 9px 10px;
+      border: 1px solid #b9cbd3;
+      border-radius: 7px;
+      font: inherit;
+    }
+    button {
+      border: 0;
+      background: #0f6f8d;
+      color: white;
+      font-weight: bold;
+    }
+    footer {
+      padding: 18px;
+      background: #18394a;
+      color: white;
+      text-align: center;
+    }
+    @media (max-width: 560px) {
+      .card { grid-template-columns: 1fr; }
+      .card img { max-width: 240px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>カフェ・アオゾラ</h1>
+    <nav>
+      <a href="home.html">ホーム</a>
+      <a href="drinks.html">ドリンク</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>お店について</h2>
+      <div class="card">
+        <img src="assets/ocean.svg" alt="青い海">
+        <div>
+          <p>
+            <strong>人気席</strong>は窓側です。<br>
+            <em>ゆっくりお過ごしください。</em>
+          </p>
+          <ul>
+            <li>窓辺の席</li>
+            <li>無料Wi-Fi</li>
+            <li>手作りケーキ</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>おすすめ</h2>
+      <table>
+        <tr><th>品名</th><th>値段</th></tr>
+        <tr><td>レモネード</td><td>450</td></tr>
+        <tr><td>ココア</td><td>380</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>予約</h2>
+      <form>
+        <label for="guest">名前</label>
+        <input type="text" id="guest">
+
+        <label for="seats">人数</label>
+        <select id="seats">
+          <option>1人</option>
+          <option>2人</option>
+          <option>4人</option>
+        </select>
+
+        <button type="submit">予約する</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>© 2026 Cafe Aozora</footer>
+</body>
+</html>`,
     starterCode: `<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -970,7 +1791,7 @@ const LESSONS_HTML = [
   <footer>© 2026 Cafe Sakura</footer>
 </body>
 </html>`,
-    explanation: `<p>Webページは、これまで学んだ小さなHTML部品の組み合わせです。最後は、構造・文章・リンク・画像・リスト・div・表・フォームを1ページにまとめます。</p>`,
+    explanation: `<p>最終プロジェクトでは、これまで別々に練習した構造・リンク・画像・リスト・div・表・フォームを1ページにまとめます。見本と同じ「組み立て方」を使い、内容は指定されたカフェ・サクラに変えて完成させます。</p>`,
     tests: [
       {
         description: "DOCTYPE / lang=ja / UTF-8 / title が正しい",
@@ -1107,7 +1928,8 @@ const LESSONS_HTML = [
       }
     ],
     hints: [
-      "最初に DOCTYPE / html / head / body を完成させる",
+      "最初に見本カフェをVIEWで見て、ページ全体の形を確認する",
+      "DOCTYPE / html / head / body を最初に完成させる",
       "header → main → footer の大きな構造を先に作る",
       "お店についてのcardに画像・文章・ulをまとめる",
       "最後にtableとformを追加し、labelのforとidを確認する"
