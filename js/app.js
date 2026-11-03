@@ -658,7 +658,7 @@ $$(".nav-btn").forEach((btn) => {
 const PROJECTS_BY_LANG = {
   html: [
     { id: 6, number: 1, title: "Project 1" },
-    { id: 12, number: 2, title: "Project 2" },
+    { id: 25, number: 2, title: "Project 2" },
   ],
   js: [],
   py: [],
@@ -669,21 +669,40 @@ function getProjectDefinition(lang, lessonId) {
   return projects.find((project) => project.id === Number(lessonId)) || null;
 }
 
+function lessonsForLanguage(lang) {
+  if (lang === "html") return typeof LESSONS_HTML !== "undefined" ? LESSONS_HTML : [];
+  if (lang === "py") return typeof LESSONS_PY !== "undefined" ? LESSONS_PY : [];
+  return typeof LESSONS_JS !== "undefined" ? LESSONS_JS : [];
+}
+
 function getLessonDisplayLabel(lang, lessonId) {
   const project = getProjectDefinition(lang, lessonId);
-  return project ? `PROJECT ${project.number}` : `LESSON ${lessonId}`;
+  if (project) return `PROJECT ${project.number}`;
+
+  const lesson = lessonsForLanguage(lang)
+    .find((item) => item.id === Number(lessonId));
+  const displayNumber = lesson?.displayNumber ?? lessonId;
+  return `LESSON ${displayNumber}`;
 }
 
 function isProjectLesson(lang, lessonId) {
   return !!getProjectDefinition(lang, lessonId);
 }
 
+function adjacentLessonId(id, offset = 1) {
+  const lessons = getLessons();
+  const index = lessons.findIndex((lesson) => lesson.id === Number(id));
+  if (index < 0) return null;
+  return lessons[index + offset]?.id ?? null;
+}
+
 // ========== LESSON LIST ==========
 function isUnlocked(id) {
   if (currentUser && currentUser.isAdmin) return true;
-  if (id === 1) return true;
 
-  const previousId = id - 1;
+  const previousId = adjacentLessonId(id, -1);
+  if (previousId === null) return true;
+
   return (
     getCompleted().has(previousId) ||
     getGiveups().has(previousId)
@@ -1607,7 +1626,7 @@ async function runCode() {
     updateAttemptStatus(lesson);
     renderLessonList();
 
-    const nextLessonExists = getLessons().some((item) => item.id === lesson.id + 1);
+    const nextLessonExists = adjacentLessonId(lesson.id, 1) !== null;
     $("#next-lesson-btn").textContent =
       !nextLessonExists && courseComplete
         ? "Certificateを見る →"
@@ -1690,9 +1709,9 @@ $("#reset-btn").addEventListener("click", () => {
 });
 
 $("#next-lesson-btn").addEventListener("click", () => {
-  const nextId = currentLessonId + 1;
+  const nextId = adjacentLessonId(currentLessonId, 1);
 
-  if (getLessons().find((lesson) => lesson.id === nextId)) {
+  if (nextId !== null) {
     openLesson(nextId);
     return;
   }

@@ -395,15 +395,23 @@ function completedForLanguage() {
 
 function lessonUnlocked(id, completed) {
   if (!landingUser) return true;
-  if (landingUser.isAdmin || id === 1) return true;
-  return completed.has(id - 1);
+  if (landingUser.isAdmin) return true;
+
+  const lessons = lessonSource();
+  const index = lessons.findIndex(lesson => lesson.id === Number(id));
+  if (index <= 0) return true;
+
+  return completed.has(lessons[index - 1].id);
 }
 
 
 function landingLessonLabel(lang, lessonId) {
   if (lang === "html" && Number(lessonId) === 6) return "PROJECT 1";
-  if (lang === "html" && Number(lessonId) === 12) return "PROJECT 2";
-  return `LESSON ${lessonId}`;
+  if (lang === "html" && Number(lessonId) === 25) return "PROJECT 2";
+
+  const lesson = lessonSource().find(item => item.id === Number(lessonId));
+  const displayNumber = lesson?.displayNumber ?? lessonId;
+  return `LESSON ${displayNumber}`;
 }
 
 function renderLandingLessons() {
