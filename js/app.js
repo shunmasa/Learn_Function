@@ -7,12 +7,14 @@ let htmlPreviewMode = "work"; // "work" | "example"
 
 /*
  * GIVE UP MODE
- * 3 failed judged runs unlock the answer and allow moving forward.
+ * Normal lessons: 3 failed judged runs.
+ * Projects: 5 failed judged runs.
  *
  * Give-up lessons are intentionally NOT counted as completed lessons.
  * They are stored separately so Progress / Level still represent real clears.
  */
 const MAX_FAILED_ATTEMPTS = 3;
+const PROJECT_MAX_FAILED_ATTEMPTS = 5;
 let giveupByLang = { html: new Set(), js: new Set(), py: new Set() };
 const failedAttemptsByLesson = new Map();
 
@@ -33,6 +35,14 @@ function getGiveups() {
   return giveupByLang[currentLang];
 }
 
+function getMaxFailedAttempts(lesson = null) {
+  const activeLesson = lesson || getLessons().find((l) => l.id === currentLessonId);
+  if (!activeLesson) return MAX_FAILED_ATTEMPTS;
+  return isProjectLesson(currentLang, activeLesson.id)
+    ? PROJECT_MAX_FAILED_ATTEMPTS
+    : MAX_FAILED_ATTEMPTS;
+}
+
 function lessonAttemptKey(lang = currentLang, id = currentLessonId) {
   return `${lang}:${id}`;
 }
@@ -44,7 +54,9 @@ function getFailedAttempts(id = currentLessonId) {
 
 function setFailedAttempts(id, count) {
   if (id == null) return;
-  const safeCount = Math.max(0, Math.min(MAX_FAILED_ATTEMPTS, Number(count) || 0));
+  const lesson = getLessons().find((item) => item.id === Number(id));
+  const maxAttempts = getMaxFailedAttempts(lesson);
+  const safeCount = Math.max(0, Math.min(maxAttempts, Number(count) || 0));
   failedAttemptsByLesson.set(lessonAttemptKey(currentLang, id), safeCount);
 }
 
@@ -1349,8 +1361,9 @@ function updateAttemptStatus(lesson = null) {
   }
 
   const attempts = getFailedAttempts(activeLesson.id);
-  el.textContent = `TRY ${attempts} / ${MAX_FAILED_ATTEMPTS}`;
-  el.className = attempts >= 2
+  const maxAttempts = getMaxFailedAttempts(activeLesson);
+  el.textContent = `TRY ${attempts} / ${maxAttempts}`;
+  el.className = attempts >= Math.max(2, maxAttempts - 1)
     ? "attempt-status warning"
     : "attempt-status";
 }
@@ -1358,12 +1371,14 @@ function updateAttemptStatus(lesson = null) {
 function recordFailedAttempt(lesson) {
   if (!lesson) return 0;
 
+  const maxAttempts = getMaxFailedAttempts(lesson);
+
   if (getGiveups().has(lesson.id)) {
-    return MAX_FAILED_ATTEMPTS;
+    return maxAttempts;
   }
 
   const nextCount = Math.min(
-    MAX_FAILED_ATTEMPTS,
+    maxAttempts,
     getFailedAttempts(lesson.id) + 1
   );
 
@@ -1391,8 +1406,9 @@ function appendGiveUpAnswer(lesson) {
 
   const note = document.createElement("p");
   note.className = "giveup-note";
+  const maxAttempts = getMaxFailedAttempts(lesson);
   note.textContent =
-    "3回トライしました。ここでは合格扱いにはせず、回答を学んで次のレッスンへ進めます。";
+    `${maxAttempts}回トライしました。ここでは合格扱いにはせず、回答を学んで次のレッスンへ進めます。`;
 
   const label = document.createElement("div");
   label.className = "giveup-answer-label";
@@ -1455,8 +1471,10 @@ function activateGiveUpMode(
 ) {
   if (!lesson) return;
 
+  const maxAttempts = getMaxFailedAttempts(lesson);
+
   getGiveups().add(lesson.id);
-  setFailedAttempts(lesson.id, MAX_FAILED_ATTEMPTS);
+  setFailedAttempts(lesson.id, maxAttempts);
 
   if (persist) {
     saveGiveupProgress();
@@ -1465,7 +1483,7 @@ function activateGiveUpMode(
   const resultMsg = $("#result-message");
   resultMsg.textContent = restored
     ? "GIVE UP MODE：回答を確認して、次のレッスンへ進めます。"
-    : "3回トライしました。GIVE UP MODEで回答を確認して次へ進めます。";
+    : `${maxAttempts}回トライしました。GIVE UP MODEで回答を確認して次へ進めます。`;
   resultMsg.className = "giveup";
 
   $("#next-lesson-btn").classList.remove("hidden");
@@ -1519,13 +1537,14 @@ async function runCode() {
       consoleEl.innerHTML += `<div class="error">${escapeHtml(error)}</div>`;
 
       const failedAttempts = recordFailedAttempt(lesson);
+      const maxAttempts = getMaxFailedAttempts(lesson);
 
-      if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
+      if (failedAttempts >= maxAttempts) {
         activateGiveUpMode(lesson);
       } else {
-        const remaining = MAX_FAILED_ATTEMPTS - failedAttempts;
+        const remaining = maxAttempts - failedAttempts;
         resultMsg.textContent =
-          `実行エラーがあります。TRY ${failedAttempts} / ${MAX_FAILED_ATTEMPTS} — あと${remaining}回トライできます。`;
+          `実行エラーがあります。TRY ${failedAttempts} / ${maxAttempts} — あと${remaining}回トライできます。`;
         resultMsg.className = "error";
         $("#next-lesson-btn").classList.add("hidden");
         switchEditorTab("console");
@@ -1641,21 +1660,22 @@ async function runCode() {
     }
   } else {
     const failedAttempts = recordFailedAttempt(lesson);
+    const maxAttempts = getMaxFailedAttempts(lesson);
 
-    if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
+    if (failedAttempts >= maxAttempts) {
       activateGiveUpMode(lesson);
       return;
     }
 
-    const remaining = MAX_FAILED_ATTEMPTS - failedAttempts;
+    const remaining = maxAttempts - failedAttempts;
 
     if (passCount > 0) {
       resultMsg.textContent =
-        `✨ ${passCount} / ${lesson.tests.length} テスト通過！ TRY ${failedAttempts} / ${MAX_FAILED_ATTEMPTS} — あと${remaining}回。`;
+        `✨ ${passCount} / ${lesson.tests.length} テスト通過！ TRY ${failedAttempts} / ${maxAttempts} — あと${remaining}回。`;
       resultMsg.className = "success";
     } else {
       resultMsg.textContent =
-        `まだ条件をクリアしていません。TRY ${failedAttempts} / ${MAX_FAILED_ATTEMPTS} — あと${remaining}回トライできます。`;
+        `まだ条件をクリアしていません。TRY ${failedAttempts} / ${maxAttempts} — あと${remaining}回トライできます。`;
       resultMsg.className = "error";
     }
 

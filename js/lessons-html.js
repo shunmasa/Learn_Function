@@ -902,13 +902,14 @@ const LESSONS_HTML = [
     title: "いちばん小さいフォーム（名前だけ）",
     description: "form・label・input・buttonの基本",
     content: `
-      <p><strong>まず見本:</strong> 名前を1つ入力して送信する、いちばん小さいフォームです。</p>
+      <p><strong>まず見本:</strong> 「ニックネーム」を1つ入力して登録する、小さなフォームです。</p>
+      <p>見本は練習問題とは<strong>別の内容</strong>です。タグの形を参考にしてください。</p>
 
       <pre>&lt;form&gt;
-  &lt;label for="student"&gt;名前&lt;/label&gt;
-  &lt;input type="text" id="student"&gt;
+  &lt;label for="nickname"&gt;ニックネーム&lt;/label&gt;
+  &lt;input type="text" id="nickname"&gt;
 
-  &lt;button type="submit"&gt;申し込む&lt;/button&gt;
+  &lt;button type="submit"&gt;登録する&lt;/button&gt;
 &lt;/form&gt;</pre>
 
       <p>
@@ -924,7 +925,7 @@ const LESSONS_HTML = [
         <li><code>button type="submit"</code> … 送信するボタン</li>
       </ul>
 
-      <p><code>label</code> の <code>for="student"</code> と、<code>input</code> の <code>id="student"</code> を同じ名前にすると、2つが1組になります。</p>
+      <p>見本では <code>for="nickname"</code> と <code>id="nickname"</code> を同じ名前にしています。このように <code>for</code> と <code>id</code> をそろえると、labelと入力欄が1組になります。</p>
 
       <p><strong>練習課題:</strong> 見本と同じ「名前だけのフォーム」を作ってください。</p>
 
@@ -944,7 +945,7 @@ const LESSONS_HTML = [
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>名前フォーム</title>
+  <title>ニックネームフォーム</title>
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; padding: 28px; font-family: sans-serif; background: #f3f7fb; color: #1f2937; }
@@ -956,10 +957,10 @@ const LESSONS_HTML = [
 </head>
 <body>
   <form>
-    <label for="student">名前</label>
-    <input type="text" id="student">
+    <label for="nickname">ニックネーム</label>
+    <input type="text" id="nickname">
 
-    <button type="submit">申し込む</button>
+    <button type="submit">登録する</button>
   </form>
 </body>
 </html>`,
@@ -1008,18 +1009,18 @@ const LESSONS_HTML = [
     title: "メールをつけたす",
     description: "名前フォームにemail入力を1つ追加する",
     content: `
-      <p><strong>Lesson 10から1つだけ増やします:</strong> 名前フォームに「メール」を追加します。</p>
+      <p><strong>Lesson 9から1つだけ増やします:</strong> text入力に加えて、メール入力も使います。</p>
+      <p>見本は「保護者名＋連絡先メール」です。練習問題とは別の名前・idを使っています。</p>
 
       <pre>&lt;form&gt;
-  &lt;label for="student"&gt;名前&lt;/label&gt;
-  &lt;input type="text" id="student"&gt;
+  &lt;label for="parent"&gt;保護者名&lt;/label&gt;
+  &lt;input type="text" id="parent"&gt;
 
-  &lt;!-- ここからつけたす --&gt;
-  &lt;label for="email-example"&gt;メール&lt;/label&gt;
-  &lt;input type="email" id="email-example"&gt;
-  &lt;!-- ここまで --&gt;
+  &lt;!-- メールをつけたす --&gt;
+  &lt;label for="contact-email"&gt;連絡先メール&lt;/label&gt;
+  &lt;input type="email" id="contact-email"&gt;
 
-  &lt;button type="submit"&gt;申し込む&lt;/button&gt;
+  &lt;button type="submit"&gt;登録する&lt;/button&gt;
 &lt;/form&gt;</pre>
 
       <p>
@@ -1030,30 +1031,30 @@ const LESSONS_HTML = [
       <h3>今回の新しいところ</h3>
       <p><code>type="email"</code> はメールアドレスを入力するためのinputです。</p>
 
-      <pre>&lt;label for="email-example"&gt;メール&lt;/label&gt;
-&lt;input type="email" id="email-example"&gt;</pre>
+      <pre>&lt;label for="contact-email"&gt;連絡先メール&lt;/label&gt;
+&lt;input type="email" id="contact-email"&gt;</pre>
 
-      <p>ここでも <code>for="email-example"</code> と <code>id="email-example"</code> を同じにします。</p>
+      <p>ここでも <code>for="contact-email"</code> と <code>id="contact-email"</code> を同じにします。</p>
 
-      <p><strong>練習課題:</strong> Lesson 10のフォームにメール入力をつけ足してください。</p>
+      <p><strong>練習課題:</strong> Lesson 9の「名前だけのフォーム」に、今度は「メール」入力をつけ足してください。</p>
 
       <h3>合格条件</h3>
       <ul class="lesson-requirements">
         <li>名前の <code>label</code> と <code>input type="text"</code> がある</li>
-        <li>メールの <code>label</code> と <code>input type="email"</code> がある</li>
-        <li>名前とメールの <code>for</code> / <code>id</code> がそれぞれ同じ</li>
+        <li>メールは <code>label for="email-example"</code> と <code>input type="email" id="email-example"</code> を使う</li>
+        <li><code>for="email-example"</code> と <code>id="email-example"</code> を同じにする</li>
         <li>「申し込む」送信ボタンがある</li>
       </ul>
 
       <div class="challenge-box">
-        Lesson 10の形はそのままです。今回はメールの2行だけを追加します。
+        Lesson 9で覚えた形はそのままです。今回はメールの2行だけを追加します。
       </div>
     `,
     exampleCode: `<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>名前とメール</title>
+  <title>保護者連絡フォーム</title>
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; padding: 28px; font-family: sans-serif; background: #f3f7fb; color: #1f2937; }
@@ -1066,13 +1067,13 @@ const LESSONS_HTML = [
 </head>
 <body>
   <form>
-    <label for="student">名前</label>
-    <input type="text" id="student">
+    <label for="parent">保護者名</label>
+    <input type="text" id="parent">
 
-    <label for="email-example">メール</label>
-    <input type="email" id="email-example">
+    <label for="contact-email">連絡先メール</label>
+    <input type="email" id="contact-email">
 
-    <button type="submit">申し込む</button>
+    <button type="submit">登録する</button>
   </form>
 </body>
 </html>`,
@@ -1121,7 +1122,7 @@ const LESSONS_HTML = [
       }
     ],
     hints: [
-      "Lesson 10のコードは消さずに使う",
+      "Lesson 9のコードを参考にする",
       "メールは input type=\"email\"",
       "for と id を email-example でそろえる"
     ]
@@ -1133,12 +1134,13 @@ const LESSONS_HTML = [
     title: "1行だけのテーブル",
     description: "table・tr・tdのいちばん基本",
     content: `
-      <p><strong>まず見本:</strong> 1行だけの小さな表です。</p>
+      <p><strong>まず見本:</strong> 「理科 / 95」の1行だけの小さな表です。</p>
+      <p>練習問題では別の教科と点数を使います。</p>
 
       <pre>&lt;table&gt;
   &lt;tr&gt;
-    &lt;td&gt;国語&lt;/td&gt;
-    &lt;td&gt;80&lt;/td&gt;
+    &lt;td&gt;理科&lt;/td&gt;
+    &lt;td&gt;95&lt;/td&gt;
   &lt;/tr&gt;
 &lt;/table&gt;</pre>
 
@@ -1174,7 +1176,7 @@ const LESSONS_HTML = [
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>1行の表</title>
+  <title>理科の1行表</title>
   <style>
     body { padding: 28px; font-family: sans-serif; background: #f5f7fb; color: #1f2937; }
     table { border-collapse: collapse; background: white; }
@@ -1184,8 +1186,8 @@ const LESSONS_HTML = [
 <body>
   <table>
     <tr>
-      <td>国語</td>
-      <td>80</td>
+      <td>理科</td>
+      <td>95</td>
     </tr>
   </table>
 </body>
@@ -1226,19 +1228,20 @@ const LESSONS_HTML = [
     title: "見出し ＋ 1行 ＋ bgcolor",
     description: "th・tdとbgcolorで表に色をつける",
     content: `
-      <p><strong>Lesson 12から2つ増やします:</strong> 見出しの <code>th</code> と、行に色をつける <code>bgcolor</code> を使います。</p>
+      <p><strong>Lesson 11から2つ増やします:</strong> 見出しの <code>th</code> と、行に色をつける <code>bgcolor</code> を使います。</p>
+      <p>見本では「商品 / 値段」の表を使います。練習問題は別の内容です。</p>
 
       <pre>&lt;table&gt;
   &lt;!-- 見出しの行を灰色にする --&gt;
   &lt;tr bgcolor="grey"&gt;
-    &lt;th&gt;教科&lt;/th&gt;
-    &lt;th&gt;点数&lt;/th&gt;
+    &lt;th&gt;商品&lt;/th&gt;
+    &lt;th&gt;値段&lt;/th&gt;
   &lt;/tr&gt;
 
   &lt;!-- データの行を薄い灰色にする --&gt;
   &lt;tr bgcolor="lightgrey"&gt;
-    &lt;td&gt;国語&lt;/td&gt;
-    &lt;td&gt;80&lt;/td&gt;
+    &lt;td&gt;パン&lt;/td&gt;
+    &lt;td&gt;150&lt;/td&gt;
   &lt;/tr&gt;
 &lt;/table&gt;</pre>
 
@@ -1252,14 +1255,14 @@ const LESSONS_HTML = [
       <p><code>grey</code> は灰色、<code>lightgrey</code> は薄い灰色です。</p>
       <p><small>※ <code>bgcolor</code> は古いHTMLの書き方です。今のWeb制作では通常CSSを使いますが、このレッスンでは表の仕組みを分かりやすく練習するために使います。</small></p>
 
-      <p><strong>練習課題:</strong> 「教科 / 点数」の見出しと「国語 / 80」の1行を作り、2つの行に色をつけてください。</p>
+      <p><strong>練習課題:</strong> 「教科 / 点数」の見出しと「国語 / 80」の1行を作ります。見本とは色を変えて、見出し行を <code>lightblue</code>、データ行を <code>lightyellow</code> にしてください。</p>
 
       <h3>合格条件</h3>
       <ul class="lesson-requirements">
         <li><code>tr</code> が2行ある</li>
-        <li>1行目は <code>bgcolor="grey"</code></li>
+        <li>1行目は <code>bgcolor="lightblue"</code></li>
         <li>1行目は <code>th</code> で「教科」「点数」</li>
-        <li>2行目は <code>bgcolor="lightgrey"</code></li>
+        <li>2行目は <code>bgcolor="lightyellow"</code></li>
         <li>2行目は <code>td</code> で「国語」「80」</li>
       </ul>
 
@@ -1271,7 +1274,7 @@ const LESSONS_HTML = [
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>bgcolor の表</title>
+  <title>商品の表</title>
   <style>
     body { padding: 28px; font-family: sans-serif; background: #f5f7fb; color: #1f2937; }
     table { border-collapse: collapse; background: white; }
@@ -1281,30 +1284,30 @@ const LESSONS_HTML = [
 <body>
   <table>
     <tr bgcolor="grey">
-      <th>教科</th>
-      <th>点数</th>
+      <th>商品</th>
+      <th>値段</th>
     </tr>
     <tr bgcolor="lightgrey">
-      <td>国語</td>
-      <td>80</td>
+      <td>パン</td>
+      <td>150</td>
     </tr>
   </table>
 </body>
 </html>`,
     starterCode: `<table>
-  <!-- 見出しの行：grey -->
+  <!-- 見出し：lightblue -->の行：grey -->
 
 
   <!-- 国語の行：lightgrey -->
 
 </table>`,
     solution: `<table>
-  <tr bgcolor="grey">
+  <tr bgcolor="lightblue">
     <th>教科</th>
     <th>点数</th>
   </tr>
 
-  <tr bgcolor="lightgrey">
+  <tr bgcolor="lightyellow">
     <td>国語</td>
     <td>80</td>
   </tr>
@@ -1319,7 +1322,7 @@ const LESSONS_HTML = [
         description: "1行目が bgcolor=grey",
         run: code => {
           const row = htmlLessonDocument(code).querySelectorAll("table tr")[0];
-          return String(row?.getAttribute("bgcolor") || "").toLowerCase() === "grey";
+          return String(row?.getAttribute("bgcolor") || "").toLowerCase() === "lightblue";
         }
       },
       {
@@ -1334,7 +1337,7 @@ const LESSONS_HTML = [
         description: "2行目が bgcolor=lightgrey",
         run: code => {
           const row = htmlLessonDocument(code).querySelectorAll("table tr")[1];
-          return String(row?.getAttribute("bgcolor") || "").toLowerCase() === "lightgrey";
+          return String(row?.getAttribute("bgcolor") || "").toLowerCase() === "lightyellow";
         }
       },
       {
@@ -1360,29 +1363,30 @@ const LESSONS_HTML = [
     title: "営業時間の表を作ろう",
     description: "曜日の見出しと営業時間を2行の表にする",
     content: `
-      <p><strong>Lesson 13の応用:</strong> 今度は横にマスを増やして、曜日と営業時間の表を作ります。</p>
+      <p><strong>Lesson 12の応用:</strong> 今度は横にマスを増やして、曜日と時間の表を作ります。</p>
+      <p>見本は「図書館の開館時間」です。練習問題では英語の曜日と別の時間を使います。</p>
 
       <pre>&lt;table&gt;
   &lt;!-- 曜日の見出し --&gt;
   &lt;tr bgcolor="grey"&gt;
-    &lt;th&gt;Sunday&lt;/th&gt;
-    &lt;th&gt;Monday&lt;/th&gt;
-    &lt;th&gt;Tuesday&lt;/th&gt;
-    &lt;th&gt;Wednesday&lt;/th&gt;
-    &lt;th&gt;Thursday&lt;/th&gt;
-    &lt;th&gt;Friday&lt;/th&gt;
-    &lt;th&gt;Saturday&lt;/th&gt;
+    &lt;th&gt;日曜日&lt;/th&gt;
+    &lt;th&gt;月曜日&lt;/th&gt;
+    &lt;th&gt;火曜日&lt;/th&gt;
+    &lt;th&gt;水曜日&lt;/th&gt;
+    &lt;th&gt;木曜日&lt;/th&gt;
+    &lt;th&gt;金曜日&lt;/th&gt;
+    &lt;th&gt;土曜日&lt;/th&gt;
   &lt;/tr&gt;
 
-  &lt;!-- 営業時間 --&gt;
+  &lt;!-- 開館時間 --&gt;
   &lt;tr bgcolor="lightgrey"&gt;
-    &lt;td&gt;Closed&lt;/td&gt;
-    &lt;td&gt;9-5&lt;/td&gt;
-    &lt;td&gt;9-5&lt;/td&gt;
-    &lt;td&gt;9-5&lt;/td&gt;
-    &lt;td&gt;9-5&lt;/td&gt;
-    &lt;td&gt;9-5&lt;/td&gt;
-    &lt;td&gt;Closed&lt;/td&gt;
+    &lt;td&gt;休館&lt;/td&gt;
+    &lt;td&gt;10-4&lt;/td&gt;
+    &lt;td&gt;10-4&lt;/td&gt;
+    &lt;td&gt;10-4&lt;/td&gt;
+    &lt;td&gt;10-4&lt;/td&gt;
+    &lt;td&gt;10-4&lt;/td&gt;
+    &lt;td&gt;休館&lt;/td&gt;
   &lt;/tr&gt;
 &lt;/table&gt;</pre>
 
@@ -1423,7 +1427,7 @@ const LESSONS_HTML = [
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Store Hours</title>
+  <title>図書館の開館時間</title>
   <style>
     body { padding: 28px; font-family: sans-serif; background: #f5f7fb; color: #1f2937; }
     .wrap { overflow-x: auto; }
@@ -1432,26 +1436,26 @@ const LESSONS_HTML = [
   </style>
 </head>
 <body>
-  <h1>Store Hours</h1>
+  <h1>図書館の開館時間</h1>
   <div class="wrap">
     <table>
       <tr bgcolor="grey">
-        <th>Sunday</th>
-        <th>Monday</th>
-        <th>Tuesday</th>
-        <th>Wednesday</th>
-        <th>Thursday</th>
-        <th>Friday</th>
-        <th>Saturday</th>
+        <th>日曜日</th>
+        <th>月曜日</th>
+        <th>火曜日</th>
+        <th>水曜日</th>
+        <th>木曜日</th>
+        <th>金曜日</th>
+        <th>土曜日</th>
       </tr>
       <tr bgcolor="lightgrey">
-        <td>Closed</td>
-        <td>9-5</td>
-        <td>9-5</td>
-        <td>9-5</td>
-        <td>9-5</td>
-        <td>9-5</td>
-        <td>Closed</td>
+        <td>休館</td>
+        <td>10-4</td>
+        <td>10-4</td>
+        <td>10-4</td>
+        <td>10-4</td>
+        <td>10-4</td>
+        <td>休館</td>
       </tr>
     </table>
   </div>
