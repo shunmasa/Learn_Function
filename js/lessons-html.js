@@ -906,8 +906,8 @@ const LESSONS_HTML = [
       <p>見本は練習問題とは<strong>別の内容</strong>です。タグの形を参考にしてください。</p>
 
       <pre>&lt;form&gt;
-  &lt;label for="nickname"&gt;ニックネーム&lt;/label&gt;
-  &lt;input type="text" id="nickname"&gt;
+  &lt;label&gt;ニックネーム&lt;/label&gt;
+  &lt;input type="text"&gt;
 
   &lt;button type="submit"&gt;登録する&lt;/button&gt;
 &lt;/form&gt;</pre>
@@ -925,15 +925,15 @@ const LESSONS_HTML = [
         <li><code>button type="submit"</code> … 送信するボタン</li>
       </ul>
 
-      <p>見本では <code>for="nickname"</code> と <code>id="nickname"</code> を同じ名前にしています。このように <code>for</code> と <code>id</code> をそろえると、labelと入力欄が1組になります。</p>
+      <p><code>label</code> に入力欄の名前を書き、その下に <code>input</code> を置きます。</p>
 
       <p><strong>練習課題:</strong> 見本と同じ「名前だけのフォーム」を作ってください。</p>
 
       <h3>合格条件</h3>
       <ul class="lesson-requirements">
         <li><code>form</code> がある</li>
-        <li><code>label for="student"</code> の文字が「名前」</li>
-        <li><code>input type="text" id="student"</code> がある</li>
+        <li><code>label</code> の文字が「名前」</li>
+        <li><code>input type="text"</code> がある</li>
         <li><code>button type="submit"</code> の文字が「申し込む」</li>
       </ul>
 
@@ -957,8 +957,8 @@ const LESSONS_HTML = [
 </head>
 <body>
   <form>
-    <label for="nickname">ニックネーム</label>
-    <input type="text" id="nickname">
+    <label>ニックネーム</label>
+    <input type="text">
 
     <button type="submit">登録する</button>
   </form>
@@ -972,20 +972,20 @@ const LESSONS_HTML = [
 
 </form>`,
     solution: `<form>
-  <label for="student">名前</label>
-  <input type="text" id="student">
+  <label>名前</label>
+  <input type="text">
 
   <button type="submit">申し込む</button>
 </form>`,
-    explanation: `<p><code>form</code> の中に入力欄を入れます。<code>label</code> は入力欄の名前、<code>input type="text"</code> は文字を入力する場所です。<code>for</code> と <code>id</code> は同じ名前にします。</p>`,
+    explanation: `<p><code>form</code> の中に入力欄を入れます。<code>label</code> は入力欄の名前、<code>input type="text"</code> は文字を入力する場所です。</p>`,
     tests: [
       { description: "form がある", run: code => !!htmlLessonDocument(code).querySelector("form") },
       {
-        description: "名前の label と input がつながっている",
+        description: "名前の label と text入力がある",
         run: code => {
           const doc = htmlLessonDocument(code);
-          return normalizedText(doc.querySelector('label[for="student"]')?.textContent) === "名前" &&
-            !!doc.querySelector('input#student[type="text"]');
+          const labels = [...doc.querySelectorAll("form label")].map(x => normalizedText(x.textContent));
+          return labels.includes("名前") && !!doc.querySelector('form input[type="text"]');
         }
       },
       {
@@ -997,8 +997,8 @@ const LESSONS_HTML = [
       }
     ],
     hints: [
-      "label の for は student",
-      "input の id も student",
+      "label に「名前」と書く",
+      "その下に input type=\"text\" を書く",
       "最後に button type=submit を書く"
     ]
   },
@@ -1010,15 +1010,15 @@ const LESSONS_HTML = [
     description: "名前フォームにemail入力を1つ追加する",
     content: `
       <p><strong>Lesson 9から1つだけ増やします:</strong> text入力に加えて、メール入力も使います。</p>
-      <p>見本は「保護者名＋連絡先メール」です。練習問題とは別の名前・idを使っています。</p>
+      <p>見本は「保護者名＋連絡先メール」です。練習問題とは別の内容を使っています。</p>
 
       <pre>&lt;form&gt;
-  &lt;label for="parent"&gt;保護者名&lt;/label&gt;
-  &lt;input type="text" id="parent"&gt;
+  &lt;label&gt;保護者名&lt;/label&gt;
+  &lt;input type="text"&gt;
 
   &lt;!-- メールをつけたす --&gt;
-  &lt;label for="contact-email"&gt;連絡先メール&lt;/label&gt;
-  &lt;input type="email" id="contact-email"&gt;
+  &lt;label&gt;連絡先メール&lt;/label&gt;
+  &lt;input type="email"&gt;
 
   &lt;button type="submit"&gt;登録する&lt;/button&gt;
 &lt;/form&gt;</pre>
@@ -1031,19 +1031,18 @@ const LESSONS_HTML = [
       <h3>今回の新しいところ</h3>
       <p><code>type="email"</code> はメールアドレスを入力するためのinputです。</p>
 
-      <pre>&lt;label for="contact-email"&gt;連絡先メール&lt;/label&gt;
-&lt;input type="email" id="contact-email"&gt;</pre>
+      <pre>&lt;label&gt;連絡先メール&lt;/label&gt;
+&lt;input type="email"&gt;</pre>
 
-      <p>ここでも <code>for="contact-email"</code> と <code>id="contact-email"</code> を同じにします。</p>
+      <p><code>label</code> の下に <code>input type="email"</code> を置きます。</p>
 
       <p><strong>練習課題:</strong> Lesson 9の「名前だけのフォーム」に、今度は「メール」入力をつけ足してください。</p>
 
       <h3>合格条件</h3>
       <ul class="lesson-requirements">
         <li>名前の <code>label</code> と <code>input type="text"</code> がある</li>
-        <li>メールは <code>label for="email-example"</code> と <code>input type="email" id="email-example"</code> を使う</li>
-        <li><code>for="email-example"</code> と <code>id="email-example"</code> を同じにする</li>
-        <li>「申し込む」送信ボタンがある</li>
+        <li>メールは <code>label</code> と <code>input type="email"</code> を使う</li>
+                <li>「申し込む」送信ボタンがある</li>
       </ul>
 
       <div class="challenge-box">
@@ -1067,19 +1066,19 @@ const LESSONS_HTML = [
 </head>
 <body>
   <form>
-    <label for="parent">保護者名</label>
-    <input type="text" id="parent">
+    <label>保護者名</label>
+    <input type="text">
 
-    <label for="contact-email">連絡先メール</label>
-    <input type="email" id="contact-email">
+    <label>連絡先メール</label>
+    <input type="email">
 
     <button type="submit">登録する</button>
   </form>
 </body>
 </html>`,
     starterCode: `<form>
-  <label for="student">名前</label>
-  <input type="text" id="student">
+  <label>名前</label>
+  <input type="text">
 
   <!-- ここにメールをつけたす -->
 
@@ -1087,30 +1086,30 @@ const LESSONS_HTML = [
   <button type="submit">申し込む</button>
 </form>`,
     solution: `<form>
-  <label for="student">名前</label>
-  <input type="text" id="student">
+  <label>名前</label>
+  <input type="text">
 
-  <label for="email-example">メール</label>
-  <input type="email" id="email-example">
+  <label>メール</label>
+  <input type="email">
 
   <button type="submit">申し込む</button>
 </form>`,
     explanation: `<p><code>input</code> は <code>type</code> を変えると役割が変わります。今回は <code>type="text"</code> に加えて <code>type="email"</code> を1つ追加しました。</p>`,
     tests: [
       {
-        description: "名前入力がある",
+        description: "名前の label と text入力がある",
         run: code => {
           const doc = htmlLessonDocument(code);
-          return normalizedText(doc.querySelector('label[for="student"]')?.textContent) === "名前" &&
-            !!doc.querySelector('input#student[type="text"]');
+          const labels = [...doc.querySelectorAll("form label")].map(x => normalizedText(x.textContent));
+          return labels.includes("名前") && !!doc.querySelector('form input[type="text"]');
         }
       },
       {
-        description: "メール入力がある",
+        description: "メールの label と email入力がある",
         run: code => {
           const doc = htmlLessonDocument(code);
-          return normalizedText(doc.querySelector('label[for="email-example"]')?.textContent) === "メール" &&
-            !!doc.querySelector('input#email-example[type="email"]');
+          const labels = [...doc.querySelectorAll("form label")].map(x => normalizedText(x.textContent));
+          return labels.includes("メール") && !!doc.querySelector('form input[type="email"]');
         }
       },
       {
@@ -1124,13 +1123,142 @@ const LESSONS_HTML = [
     hints: [
       "Lesson 9のコードを参考にする",
       "メールは input type=\"email\"",
-      "for と id を email-example でそろえる"
+      "label の下に input type=\"email\" を追加する"
+    ]
+  },
+
+  {
+    id: 26,
+    displayNumber: 11,
+    title: "optionを使おう",
+    description: "selectの中にoptionを並べて選択肢を作る",
+    content: `
+      <p><strong>今回は <code>option</code> を覚えます。</strong></p>
+      <p><code>select</code> の中に <code>option</code> を書くと、選べる項目を増やせます。</p>
+
+      <p><strong>まず見本:</strong> 車を選ぶメニューです。</p>
+
+      <pre>&lt;label&gt;車を選んでください:&lt;/label&gt;
+&lt;select name="cars"&gt;
+  &lt;option value=""&gt;--選択してください--&lt;/option&gt;
+  &lt;option value="volvo"&gt;ボルボ&lt;/option&gt;
+  &lt;option value="saab" selected&gt;サーブ&lt;/option&gt;
+  &lt;option value="mercedes" disabled&gt;メルセデス（選択不可）&lt;/option&gt;
+  &lt;option value="audi"&gt;アウディ&lt;/option&gt;
+&lt;/select&gt;</pre>
+
+      <p>
+        <button type="button" class="btn primary small" data-view-example>▶ EXAMPLEをVIEWで見る</button>
+        <button type="button" class="btn ghost small" data-view-work>↩ 自分のVIEWへ戻る</button>
+      </p>
+
+      <h3>optionとは？</h3>
+      <ul>
+        <li><code>option</code> … メニューの中の<strong>1つの選択肢</strong></li>
+        <li><code>selected</code> … 最初から選ばれている項目</li>
+        <li><code>disabled</code> … 選べない項目</li>
+      </ul>
+
+      <p><code>value</code> は今回は覚えなくてOKです。</p>
+
+      <p><strong>練習課題:</strong> 見本とは違う内容で「好きな飲み物」を選ぶメニューを作ってください。</p>
+
+      <h3>合格条件</h3>
+      <ul class="lesson-requirements">
+        <li><code>select</code> がある</li>
+        <li><code>option</code> を4つ使う</li>
+        <li>選択肢は「--選択してください--」「水」「お茶」「ジュース」</li>
+        <li>「お茶」に <code>selected</code> をつける</li>
+        <li>「ジュース」に <code>disabled</code> をつける</li>
+      </ul>
+
+      <div class="challenge-box">
+        optionを1つずつ追加して、選択肢を作りましょう。今回はvalueは判定しません。
+      </div>
+    `,
+    exampleCode: `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>車を選ぶ</title>
+  <style>
+    body { margin: 0; padding: 28px; font-family: sans-serif; background: #f3f7fb; color: #1f2937; }
+    .box { max-width: 420px; margin: auto; padding: 22px; background: white; border: 1px solid #d9e2ef; border-radius: 12px; }
+    label { display: block; margin-bottom: 8px; font-weight: bold; }
+    select { width: 100%; padding: 10px; border: 1px solid #b8c5d8; border-radius: 8px; font: inherit; background: white; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <label>車を選んでください:</label>
+    <select name="cars">
+      <option value="">--選択してください--</option>
+      <option value="volvo">ボルボ</option>
+      <option value="saab" selected>サーブ</option>
+      <option value="mercedes" disabled>メルセデス（選択不可）</option>
+      <option value="audi">アウディ</option>
+    </select>
+  </div>
+</body>
+</html>`,
+    starterCode: `<label>好きな飲み物:</label>
+<select>
+  <!-- optionを4つ書こう -->
+
+</select>`,
+    solution: `<label>好きな飲み物:</label>
+<select>
+  <option>--選択してください--</option>
+  <option>水</option>
+  <option selected>お茶</option>
+  <option disabled>ジュース</option>
+</select>`,
+    explanation: `<p><code>option</code> は、<code>select</code> の中に入れる1つの選択肢です。<code>selected</code> をつけると最初から選ばれ、<code>disabled</code> をつけると選べなくなります。今回は <code>value</code> は使わなくても合格できます。</p>`,
+    tests: [
+      {
+        description: "select がある",
+        run: code => !!htmlLessonDocument(code).querySelector("select")
+      },
+      {
+        description: "option が4つある",
+        run: code => htmlLessonDocument(code).querySelectorAll("select option").length === 4
+      },
+      {
+        description: "4つの選択肢が正しい",
+        run: code => {
+          const vals = [...htmlLessonDocument(code).querySelectorAll("select option")]
+            .map(x => normalizedText(x.textContent));
+          return JSON.stringify(vals) === JSON.stringify(["--選択してください--", "水", "お茶", "ジュース"]);
+        }
+      },
+      {
+        description: "お茶が selected",
+        run: code => {
+          const option = [...htmlLessonDocument(code).querySelectorAll("select option")]
+            .find(x => normalizedText(x.textContent) === "お茶");
+          return !!option && option.hasAttribute("selected");
+        }
+      },
+      {
+        description: "ジュースが disabled",
+        run: code => {
+          const option = [...htmlLessonDocument(code).querySelectorAll("select option")]
+            .find(x => normalizedText(x.textContent) === "ジュース");
+          return !!option && option.hasAttribute("disabled");
+        }
+      }
+    ],
+    hints: [
+      "select の中に option を4つ書く",
+      "お茶は <option selected>お茶</option>",
+      "ジュースは <option disabled>ジュース</option>",
+      "value は今回は書かなくてもOK"
     ]
   },
 
   {
     id: 22,
-    displayNumber: 11,
+    displayNumber: 12,
     title: "1行だけのテーブル",
     description: "table・tr・tdのいちばん基本",
     content: `
@@ -1224,11 +1352,11 @@ const LESSONS_HTML = [
 
   {
     id: 23,
-    displayNumber: 12,
+    displayNumber: 13,
     title: "見出し ＋ 1行 ＋ bgcolor",
     description: "th・tdとbgcolorで表に色をつける",
     content: `
-      <p><strong>Lesson 11から2つ増やします:</strong> 見出しの <code>th</code> と、行に色をつける <code>bgcolor</code> を使います。</p>
+      <p><strong>Lesson 12から2つ増やします:</strong> 見出しの <code>th</code> と、行に色をつける <code>bgcolor</code> を使います。</p>
       <p>見本では「商品 / 値段」の表を使います。練習問題は別の内容です。</p>
 
       <pre>&lt;table&gt;
@@ -1359,11 +1487,11 @@ const LESSONS_HTML = [
 
   {
     id: 24,
-    displayNumber: 13,
+    displayNumber: 14,
     title: "営業時間の表を作ろう",
     description: "曜日の見出しと営業時間を2行の表にする",
     content: `
-      <p><strong>Lesson 12の応用:</strong> 今度は横にマスを増やして、曜日と時間の表を作ります。</p>
+      <p><strong>Lesson 13の応用:</strong> 今度は横にマスを増やして、曜日と時間の表を作ります。</p>
       <p>見本は「図書館の開館時間」です。練習問題では英語の曜日と別の時間を使います。</p>
 
       <pre>&lt;table&gt;
@@ -1577,10 +1705,10 @@ const LESSONS_HTML = [
 &lt;/table&gt;</pre>
 
       <h3>ポイント2：お問い合わせフォーム</h3>
-      <p><code>label</code> の <code>for</code> と、対応する <code>input</code> の <code>id</code> を同じ名前にします。</p>
+      <p><code>label</code> で項目名を書き、その下に対応する <code>input</code> を置きます。</p>
 
-      <pre>&lt;label for="name"&gt;名前&lt;/label&gt;
-&lt;input type="text" id="name"&gt;</pre>
+      <pre>&lt;label&gt;名前&lt;/label&gt;
+&lt;input type="text"&gt;</pre>
 
       <p><strong>練習課題:</strong> 「CMCSスクール お問い合わせ」ページを完成させてください。</p>
 
@@ -1596,7 +1724,6 @@ const LESSONS_HTML = [
         <li>名前: <code>label</code> + <code>input type="text"</code></li>
         <li>メール: <code>label</code> + <code>input type="email"</code></li>
         <li>お問い合わせ内容: <code>label</code> + <code>input type="text"</code></li>
-        <li><code>label</code> の <code>for</code> と各 <code>input</code> の <code>id</code> を合わせる</li>
         <li><code>button type="submit"</code> の文字は「送信する」</li>
         <li><code>footer</code> は「© 2026 CMCS School」</li>
       </ul>
@@ -1718,14 +1845,14 @@ const LESSONS_HTML = [
 
     <h2>お問い合わせフォーム</h2>
     <form>
-      <label for="example-name">名前</label>
-      <input type="text" id="example-name">
+      <label>名前</label>
+      <input type="text">
 
-      <label for="example-email">メール</label>
-      <input type="email" id="example-email">
+      <label>メール</label>
+      <input type="email">
 
-      <label for="example-message">お問い合わせ内容</label>
-      <input type="text" id="example-message">
+      <label>お問い合わせ内容</label>
+      <input type="text">
 
       <button type="submit">送信する</button>
     </form>
@@ -1777,14 +1904,14 @@ const LESSONS_HTML = [
   </table>
 
   <form>
-    <label for="name">名前</label>
-    <input type="text" id="name">
+    <label>名前</label>
+    <input type="text">
 
-    <label for="email">メール</label>
-    <input type="email" id="email">
+    <label>メール</label>
+    <input type="email">
 
-    <label for="message">お問い合わせ内容</label>
-    <input type="text" id="message">
+    <label>お問い合わせ内容</label>
+    <input type="text">
 
     <button type="submit">送信する</button>
   </form>
@@ -1792,7 +1919,7 @@ const LESSONS_HTML = [
   <footer>© 2026 CMCS School</footer>
 </body>
 </html>`,
-    explanation: `<p>このプロジェクトでは、Lesson 10・11で練習したフォームと、Lesson 12〜14で練習した表を1つのページにまとめます。<code>label</code> の <code>for</code> と <code>input</code> の <code>id</code>、表の <code>tr / th / td</code>、そして <code>bgcolor</code> を確認しながら作りましょう。</p>`,
+    explanation: `<p>このプロジェクトでは、フォームと表を1つのページにまとめます。<code>label</code>、<code>input</code>、表の <code>tr / th / td</code>、そして <code>bgcolor</code> を確認しながら作りましょう。</p>`,
     tests: [
       {
         description: "DOCTYPE / lang=ja / UTF-8 が正しい",
@@ -1848,27 +1975,28 @@ const LESSONS_HTML = [
         }
       },
       {
-        description: "名前の label と input が対応",
+        description: "名前の label と text入力がある",
         run: code => {
           const doc = htmlLessonDocument(code);
-          return normalizedText(doc.querySelector('label[for="name"]')?.textContent) === "名前" &&
-            !!doc.querySelector('input#name[type="text"]');
+          const labels = [...doc.querySelectorAll("form label")].map(x => normalizedText(x.textContent));
+          return labels.includes("名前") && !!doc.querySelector('form input[type="text"]');
         }
       },
       {
-        description: "メールの label と input が対応",
+        description: "メールの label と email入力がある",
         run: code => {
           const doc = htmlLessonDocument(code);
-          return normalizedText(doc.querySelector('label[for="email"]')?.textContent) === "メール" &&
-            !!doc.querySelector('input#email[type="email"]');
+          const labels = [...doc.querySelectorAll("form label")].map(x => normalizedText(x.textContent));
+          return labels.includes("メール") && !!doc.querySelector('form input[type="email"]');
         }
       },
       {
-        description: "お問い合わせ内容の label と input が対応",
+        description: "お問い合わせ内容の label と text入力がある",
         run: code => {
           const doc = htmlLessonDocument(code);
-          return normalizedText(doc.querySelector('label[for="message"]')?.textContent) === "お問い合わせ内容" &&
-            !!doc.querySelector('input#message[type="text"]');
+          const labels = [...doc.querySelectorAll("form label")].map(x => normalizedText(x.textContent));
+          const textInputs = doc.querySelectorAll('form input[type="text"]');
+          return labels.includes("お問い合わせ内容") && textInputs.length >= 2;
         }
       },
       {
@@ -1887,7 +2015,6 @@ const LESSONS_HTML = [
       "まず title と h1 に CMCSスクール お問い合わせ と書く",
       "表は Lesson 13・14 と同じように tr の中へ th / td を入れる",
       "見出し行は bgcolor=\"grey\"、データ行は bgcolor=\"lightgrey\"",
-      "label の for と input の id を同じ名前にする",
       "最後に送信するボタンと footer を書く"
     ]
   }
