@@ -672,7 +672,10 @@ const PROJECTS_BY_LANG = {
     { id: 6, number: 1, title: "Project 1" },
     { id: 25, number: 2, title: "Project 2" },
   ],
-  js: [],
+  js: [
+    { id: 305, number: 1, title: "Project 1" },
+    { id: 306, number: 2, title: "Project 2" },
+  ],
   py: [],
 };
 
@@ -1766,7 +1769,9 @@ document.addEventListener("keydown", (e) => {
  * Current projects:
  *   HTML Project 1 = lesson id 6
  *   HTML Project 2 = lesson id 12
- *   JavaScript / Python = no projects yet
+ *   JavaScript Project 1 = lesson id 305
+ *   JavaScript Project 2 = lesson id 306
+ *   Python = no projects yet
  */
 const COURSE_META = {
   html: {

@@ -65,26 +65,486 @@ const LESSONS_JS = [
   },
   {
     id: 3,
+    displayNumber: "3-1",
     title: "【レクチャー】変数（Variables）",
-    description: "let と const — var は使わない",
-    content: "<p><strong>変数</strong>は、データを入れておく「箱」に名前を付けたものです。あとからその名前で値を使えます（W3Schools: containers for storing data）。</p>\n<h3>現代の書き方（これが基本）</h3>\n<pre>const price = 100;  // あとから変えられない（基本はこれ）\nlet count = 0;      // あとから変えられる\ncount = 1;          // OK</pre>\n<p><strong>迷ったら const</strong>。本当に値が変わるときだけ let にします。</p>\n<h3>推奨ルール（W3Schools など）</h3>\n<ol>\n<li>変数は使う前に必ず宣言する</li>\n<li>変えない値は <code>const</code></li>\n<li>変える値だけ <code>let</code></li>\n<li><code>var</code> は新しいコードでは使わない</li>\n</ol>\n<h3>var とは何か</h3>\n<p><code>var</code> は 2015年（ES6）より前の古い宣言方法です。今でも動きますが、W3Schools でも <strong>Not Recommended（非推奨）</strong> と書かれています。</p>\n<div class=\"bad-example\">\n<strong>なぜ var を使わないか — スコープ（見える範囲）が広すぎる</strong>\n<pre>if (true) {\n  var x = 10;\n}\nconsole.log(x); // 10 と表示される（ブロックの外なのに見える）</pre>\n<p><code>if (true) { ... }</code> の中で作ったのに、外の <code>console.log(x)</code> から見えてしまいます。</p>\n<p>多くの人は「{ } の中だけ見えるはず」と考えます。ところが <code>var</code> は <strong>ブロック（if や for の { }）を無視</strong>し、<strong>関数全体（またはスクリプト全体）</strong>で共有されます。これを「関数スコープ」と呼びます。</p>\n<p>たとえば for ループで <code>var i</code> を使うと、ループの外でも <code>i</code> が残ることがあり、「ループ変数が外に漏れる」バグの典型です。</p>\n</div>\n<div class=\"good-example\">\n<strong>let / const なら（ブロックスコープ）</strong>\n<pre>if (true) {\n  let y = 10;\n  const z = 20;\n}\n// console.log(y);  // ReferenceError（外からは見えない）\n// console.log(z);  // 同じくエラー</pre>\n<p><code>let</code> と <code>const</code> は <strong>書いた { } の中だけ</strong>有効です。意図しない場所から使われる事故が減ります。</p>\n</div>\n<h3>ほかにも var がややこしい点</h3>\n<ul>\n<li><strong>同じ名前で何度でも宣言できる</strong> … ミスに気づきにくい</li>\n<li><strong>巻き上げ（hoisting）</strong> … 宣言より上の行で触ると <code>undefined</code> になり、原因が分かりにくい</li>\n<li><strong>let / const</strong> は同じスコープで二重宣言するとエラーになり、間違いを早く見つけられる</li>\n</ul>\n<p><strong>まとめ：新しいコードでは let と const だけ使う。var はもう使わない。</strong>古い教材やコードに var が出てきたら「昔の書き方」と理解すれば十分です。</p>\n<div class=\"challenge-box\"><strong>問1</strong> const appName = \"LearnFP\" を宣言して log<br>\n<strong>問2</strong> let n = 1 のあと n = 2 にして log</div>",
-    starterCode: "// 問1\n\n// 問2\n",
-    solution: "const appName = \"LearnFP\";\nconsole.log(appName);\nlet n = 1;\nn = 2;\nconsole.log(n);\n",
-    explanation: "<p><strong>解説</strong></p><p>const は再代入できません。let はできます。var は新規コードで使いません。</p>",
+    description: "変数とは — データを入れる「箱」",
+    content: `
+      <div class="challenge-box">
+        <strong>問1</strong> <code>const greeting = "Hello"</code> を宣言して <code>console.log(greeting)</code><br>
+        <strong>問2</strong> <code>console.log(greeting)</code> と <code>console.log("greeting")</code> の結果の違いを確認
+      </div>
+
+      <section class="js-study-card js-study-card-blue">
+        <div class="js-study-kicker">VARIABLES</div>
+        <h3>変数とは — データを入れる「箱」</h3>
+        <p>変数は、データを入れておく「箱」に名前を付けたものです。あとから、その名前で値を取り出して使えます。</p>
+        <pre><code>const message = "Hello";
+console.log(message);   // Hello</code></pre>
+      </section>
+
+      <section class="js-study-card">
+        <h3>宣言と代入</h3>
+        <div class="js-definition-grid">
+          <div><strong>宣言</strong><p>箱を作って名前を付けること</p><code>const message</code></div>
+          <div><strong>代入</strong><p>箱に値を入れること</p><code>= "Hello"</code></div>
+        </div>
+      </section>
+
+      <section class="js-study-card">
+        <h3>変数名のルール</h3>
+        <ol class="js-rule-list">
+          <li>英字・数字・<code>_</code>・<code>$</code> が使える。数字から始めるのはNG。</li>
+          <li>大文字と小文字は区別される。<code>name</code> と <code>Name</code> は別物。</li>
+          <li>意味が分かる名前にする。<code>x</code> より <code>price</code> の方が分かりやすい。</li>
+        </ol>
+      </section>
+
+      <aside class="js-note js-note-info"><strong>宣言のキーワードは3種類</strong><p><code>var</code>、<code>let</code>、<code>const</code> の3つがあります。次のレッスンで、まず「スコープ」を学びます。</p></aside>
+      <aside class="js-summary"><strong>まとめ</strong><span>変数 = 名前付きの箱。使う前に必ず宣言する。</span></aside>
+    `,
+    starterCode: `// 問1
+const greeting = "Hello";
+console.log(greeting);
+
+// 問2
+console.log("greeting");
+`,
+    solution: `const greeting = "Hello";
+console.log(greeting);
+console.log("greeting");`,
+    explanation: `<p><strong>解説:</strong> <code>greeting</code> は変数の中身を読みます。<code>"greeting"</code> は引用符で囲まれているので、ただの文字列です。</p>`,
+    tests: [
+      { description: "問1: greeting に Hello が入っている", run: function(code) { try { var fn = new Function(code + "; return greeting;"); return fn() === "Hello"; } catch (e) { return false; } } },
+      { description: "問2: Hello と greeting の両方を出力", run: function(code) { var values=[]; var old=console.log; console.log=function(v){values.push(String(v));}; try{new Function(code)();}catch(e){} console.log=old; return values.indexOf("Hello")!==-1 && values.indexOf("greeting")!==-1; } }
+    ],
+    hints: [`const greeting = "Hello";`, `console.log(greeting); は中身、console.log("greeting"); は文字そのもの`]
+  },
+
+  {
+    id: 301,
+    displayNumber: "3-2",
+    title: "【レクチャー】変数（Variables）",
+    description: "スコープ — 変数が「見える範囲」",
+    content: `
+      <div class="challenge-box">
+        <strong>問1</strong> <code>function test() { const a = 1; console.log(a); }</code> を作って呼び出す<br>
+        <strong>問2</strong> 関数の外の <code>console.log(a)</code> を一度試して、ReferenceErrorを確認する
+      </div>
+
+      <section class="js-study-card js-study-card-blue">
+        <div class="js-study-kicker">SCOPE</div>
+        <h3>スコープ — 変数が「見える範囲」</h3>
+        <p>スコープとは、その変数を使える範囲のことです。箱が置いてある「部屋」のようなものです。部屋の外からは、中の箱は見えません。</p>
+      </section>
+
+      <section class="js-study-card">
+        <h3>スコープの種類</h3>
+        <div class="js-scope-list">
+          <div><strong>1. グローバルスコープ</strong><span>一番外側。広い範囲から見える。</span></div>
+          <div><strong>2. 関数スコープ</strong><span>関数の <code>{ }</code> の中で見える。</span></div>
+          <div><strong>3. ブロックスコープ</strong><span><code>if</code> や <code>for</code> の <code>{ }</code> の中で見える。</span></div>
+        </div>
+        <pre><code>const global = "どこからでも見える";
+
+function test() {
+  const local = "関数の中だけ";
+  console.log(global); // OK
+  console.log(local);  // OK
+}
+
+test();
+// console.log(local); // ReferenceError</code></pre>
+      </section>
+
+      <aside class="js-note js-note-good"><strong>内側から外は見える。外から内は見えない。</strong><pre><code>if (true) {
+  const inner = "ブロックの中だけ";
+}
+// console.log(inner); // ReferenceError</code></pre></aside>
+
+      <section class="js-study-card"><h3>なぜ大事？</h3><ul class="js-rule-list"><li>範囲が狭いほど、意図しない場所から変更される事故が減る。</li><li>同じ名前を別の場所で使っても、ぶつかりにくい。</li></ul></section>
+
+      <aside class="js-note js-note-warning"><strong>エラーを確認するとき</strong><p>外側の <code>console.log(a)</code> を一度だけコメント解除して実行するとReferenceErrorを確認できます。<strong>「実行して判定」の前にはコメントへ戻してください。</strong></p></aside>
+      <aside class="js-summary"><strong>まとめ</strong><span>ブロックスコープの変数は、宣言した <code>{ }</code> の内側で使う。</span></aside>
+    `,
+    starterCode: `function test() {
+  const a = 1;
+  console.log(a);
+}
+
+test();
+
+// エラーを確認したい時だけ // を外す
+// console.log(a);
+`,
+    solution: `function test() {
+  const a = 1;
+  console.log(a);
+}
+
+test();
+
+// console.log(a);`,
+    explanation: `<p><strong>解説:</strong> <code>a</code> は関数の中で宣言されているので、関数の外から直接読むことはできません。</p>`,
+    tests: [
+      { description: "問1: test関数の中で a = 1 を出力", run: function(code) { var values=[]; var old=console.log; console.log=function(v){values.push(v);}; try{new Function(code)();}catch(e){} console.log=old; return values.indexOf(1)!==-1; } },
+      { description: "問1: 関数内で const a = 1 を宣言", run: function(code) { return /function\s+test\s*\([^)]*\)\s*\{[\s\S]*?const\s+a\s*=\s*1\s*;?[\s\S]*?\}/.test(code); } }
+    ],
+    hints: ["a は test() の中に置く", "判定するときは関数の外の console.log(a) をコメントに戻す"]
+  },
+
+  {
+    id: 302,
+    displayNumber: "3-3",
+    title: "【レクチャー】変数（Variables）",
+    description: "var — 古い宣言方法（使わない理由を知る）",
+    content: `
+      <div class="challenge-box"><strong>問1</strong> <code>var a = 1</code> を宣言して log<br><strong>問2</strong> <code>if (true) { var x = 10; }</code> のあと、外で <code>console.log(x)</code> して結果を確認</div>
+
+      <section class="js-study-card js-study-card-blue"><div class="js-study-kicker">VAR</div><h3>var — 古い宣言方法</h3><p><code>var</code> は2015年（ES6）より前から使われている宣言方法です。今でも動きますが、新しいコードでは基本的に使いません。</p><pre><code>var name = "Masa";
+console.log(name);</code></pre></section>
+
+      <aside class="js-note js-note-warning"><strong>なぜ使わないのか ① スコープが広すぎる</strong><pre><code>if (true) {
+  var x = 10;
+}
+console.log(x); // 10</code></pre><p><code>var</code> はブロック <code>{ }</code> を無視して関数スコープになります。</p></aside>
+
+      <section class="js-study-card"><h3>ほかにも注意点</h3><ol class="js-rule-list"><li>同じ名前で何度でも宣言できるので、ミスに気づきにくい。</li><li>巻き上げ（hoisting）により、宣言より上で触ると <code>undefined</code> になることがある。</li><li><code>for</code> の <code>var i</code> がループの外まで見えることがある。</li></ol></section>
+      <aside class="js-summary js-summary-red"><strong>まとめ</strong><span><code>var</code> は「読めればOK」。新しいコードでは自分から使わない。</span></aside>
+    `,
+    starterCode: `// 問1
+var a = 1;
+console.log(a);
+
+// 問2
+if (true) {
+  var x = 10;
+}
+console.log(x);
+`,
+    solution: `var a = 1;
+console.log(a);
+
+if (true) {
+  var x = 10;
+}
+console.log(x);`,
+    explanation: `<p><strong>解説:</strong> <code>var</code> はブロックを無視するため、<code>if</code> の外からも <code>x</code> を読めます。これが新しいコードで避ける理由の1つです。</p>`,
+    tests: [
+      { description: "問1: var a = 1 がある", run: function(code) { return /\bvar\s+a\s*=\s*1\s*;?/.test(code); } },
+      { description: "問2: ifの外から x = 10 を読める", run: function(code) { try { var fn=new Function(code+"; return x;"); return fn()===10; } catch(e){ return false; } } }
+    ],
+    hints: ["var x は if の中に書く", "var では if の外でも x が見えてしまうことを確認する"]
+  },
+
+  {
+    id: 303,
+    displayNumber: "3-4",
+    title: "【レクチャー】変数（Variables）",
+    description: "let — あとから変えられる変数",
+    content: `
+      <div class="challenge-box"><strong>問1</strong> <code>let n = 1</code> のあと <code>n = 2</code> にして log<br><strong>問2</strong> <code>if (true) { let y = 10; }</code> の外で <code>console.log(y)</code> を試し、エラーを確認</div>
+
+      <section class="js-study-card js-study-card-blue"><div class="js-study-kicker">LET</div><h3>let — あとから変えられる変数</h3><pre><code>let count = 0;
+count = 1;   // OK</code></pre><p><code>let</code> は、あとから値を変える必要があるときに使います。</p></section>
+
+      <aside class="js-note js-note-good"><strong>let はブロックスコープ</strong><pre><code>if (true) {
+  let y = 10;
+}
+// console.log(y); // ReferenceError</code></pre><p><code>{ }</code> の外からは <code>y</code> を使えません。</p></aside>
+
+      <section class="js-study-card"><h3>使いどころ</h3><p>本当に値が変わるときだけ使います。たとえばカウンターやループ変数です。</p></section>
+      <aside class="js-note js-note-warning"><strong>エラーを確認するとき</strong><p><code>console.log(y)</code> のコメントを一度外してReferenceErrorを確認できます。判定前にはコメントへ戻してください。</p></aside>
+      <aside class="js-summary"><strong>まとめ</strong><span>値をあとから変える必要があるときだけ <code>let</code>。</span></aside>
+    `,
+    starterCode: `// 問1
+let n = 1;
+n = 2;
+console.log(n);
+
+// 問2
+if (true) {
+  let y = 10;
+}
+
+// エラーを確認したい時だけ // を外す
+// console.log(y);
+`,
+    solution: `let n = 1;
+n = 2;
+console.log(n);
+
+if (true) {
+  let y = 10;
+}
+
+// console.log(y);`,
+    explanation: `<p><strong>解説:</strong> <code>let</code> は再代入できますが、ブロックスコープなので <code>{ }</code> の外へは漏れません。</p>`,
+    tests: [
+      { description: "問1: n を 1 から 2 に変更", run: function(code) { try { var fn=new Function(code+"; return n;"); return fn()===2; } catch(e){ return false; } } },
+      { description: "問2: ifの中で let y = 10 を宣言", run: function(code) { return /if\s*\(\s*true\s*\)\s*\{[\s\S]*?let\s+y\s*=\s*10\s*;?[\s\S]*?\}/.test(code); } }
+    ],
+    hints: ["let n = 1; のあと n = 2;", "y は if の中だけで使う"]
+  },
+
+  {
+    id: 304,
+    displayNumber: "3-5",
+    title: "【レクチャー】変数（Variables）",
+    description: "const — 基本はこれ",
+    content: `
+      <div class="challenge-box"><strong>問1</strong> <code>const appName = "LearnFP"</code> を宣言して log<br><strong>問2</strong> <code>appName = "X"</code> を一度試して、再代入エラーを確認</div>
+
+      <section class="js-study-card js-study-card-blue"><div class="js-study-kicker">CONST</div><h3>const — 基本はこれ</h3><pre><code>const price = 100;
+// price = 200; // TypeError</code></pre><p><code>const</code> は、あとから別の値を入れ直せない変数です。</p></section>
+
+      <aside class="js-note js-note-good"><strong>const もブロックスコープ</strong><p><code>let</code> と同じように、宣言した <code>{ }</code> の範囲を守ります。違いは「再代入できない」ことです。</p></aside>
+      <section class="js-study-card"><h3>迷ったら const</h3><p>最初は <code>const</code> を使い、あとで値を変える必要があると分かったときだけ <code>let</code> を使うと安全です。</p></section>
+      <aside class="js-note js-note-warning"><strong>再代入エラーを確認するとき</strong><p><code>appName = "X"</code> のコメントを一度外して実行するとエラーを確認できます。判定前にはコメントへ戻してください。</p></aside>
+      <aside class="js-summary"><strong>まとめ</strong><span>基本は <code>const</code>。値を変える必要があるときだけ <code>let</code>。</span></aside>
+    `,
+    starterCode: `// 問1
+const appName = "LearnFP";
+console.log(appName);
+
+// 問2: エラーを確認したい時だけ // を外す
+// appName = "X";
+`,
+    solution: `const appName = "LearnFP";
+console.log(appName);
+
+// appName = "X";`,
+    explanation: `<p><strong>解説:</strong> <code>const</code> は同じ変数へ別の値を再代入できません。新しいコードでは、まず <code>const</code> を選ぶのが基本です。</p>`,
+    tests: [
+      { description: "問1: const appName = LearnFP", run: function(code) { try { var fn=new Function(code+"; return appName;"); return fn()==="LearnFP"; } catch(e){ return false; } } },
+      { description: "問1: appName を出力", run: function(code) { var values=[]; var old=console.log; console.log=function(v){values.push(String(v));}; try{new Function(code)();}catch(e){} console.log=old; return values.indexOf("LearnFP")!==-1; } }
+    ],
+    hints: [`const appName = "LearnFP";`, "再代入の行はエラー確認後、判定前にコメントへ戻す"]
+  },
+
+  {
+    id: 305,
+    title: "PROJECT 1　買い物レシートを作ろう",
+    description: "const と let を使って合計金額を出す",
+    content: `
+      <div class="challenge-box">
+        <strong>1.</strong> <code>price</code> に <code>100</code> を入れる（変わらないので <code>const</code>）<br>
+        <strong>2.</strong> <code>qty</code> を <code>1</code> で作り、<code>3</code> に変える（変わるので <code>let</code>）<br>
+        <strong>3.</strong> <code>price * qty</code> の答えを <code>console.log()</code> する
+      </div>
+
+      <section class="js-study-card js-study-card-blue">
+        <div class="js-study-kicker">PROJECT 1</div>
+        <h3>買い物レシートを作ろう</h3>
+        <p><strong>使うもの:</strong> <code>const</code>、<code>let</code>（Lesson 3-1・3-4・3-5）</p>
+        <p><strong>ゴール:</strong> ノートの値段と個数から、合計金額を出します。</p>
+      </section>
+
+      <section class="js-study-card">
+        <h3>見本：えんぴつの場合</h3>
+        <p>えんぴつが50円で、2本買う場合です。課題とは数字が違います。</p>
+        <pre><code>const price = 50;
+
+let qty = 1;
+qty = 2;
+
+console.log(price * qty);</code></pre>
+        <p>出力は <code>100</code> です。</p>
+      </section>
+
+      <aside class="js-note js-note-good">
+        <strong>大事なポイント</strong>
+        <p><code>qty = 3;</code> のときは、2回目なので <code>let</code> を付けません。</p>
+      </aside>
+
+      <aside class="js-summary">
+        <strong>PROJECT GOAL</strong>
+        <span><code>const</code> と <code>let</code> を使い分けて、最後に <code>300</code> を出力できればクリアです。</span>
+      </aside>
+    `,
+    starterCode: `// 1. price に 100 を入れる（const）
+
+// 2. qty を 1 で作り、3 に変える（let）
+
+// 3. price * qty を log する
+`,
+    solution: `const price = 100;
+
+let qty = 1;
+qty = 3;
+
+console.log(price * qty);`,
+    explanation: `<p><strong>解説:</strong> 値段の <code>price</code> は変わらないので <code>const</code>、個数の <code>qty</code> は1から3へ変わるので <code>let</code> を使います。<code>100 × 3 = 300</code> です。</p>`,
     tests: [
       {
-        description: "問1: appName",
-        run: function(code) {var fn = new Function(code + "; return typeof appName !== \"undefined\" && appName === \"LearnFP\";"); return fn() === true;
+        description: "price は const で 100",
+        run: function(code) {
+          return /\bconst\s+price\s*=\s*100\s*;?/.test(code);
         }
       },
       {
-        description: "問2: n === 2",
-        run: function(code) {var fn = new Function(code + "; return n === 2;"); return fn() === true;
+        description: "qty は let で 1 から始める",
+        run: function(code) {
+          return /\blet\s+qty\s*=\s*1\s*;?/.test(code);
+        }
+      },
+      {
+        description: "qty を 3 に変更する（2回目に let を付けない）",
+        run: function(code) {
+          const hasAssignment = /(?:^|[;\n]\s*)qty\s*=\s*3\s*;?/m.test(code);
+          const redeclared = /\blet\s+qty\s*=\s*3\b/.test(code) || /\bconst\s+qty\s*=\s*3\b/.test(code) || /\bvar\s+qty\s*=\s*3\b/.test(code);
+          return hasAssignment && !redeclared;
+        }
+      },
+      {
+        description: "price * qty の結果 300 を出力",
+        run: function(code) {
+          var values = [];
+          var old = console.log;
+          console.log = function(v) { values.push(v); };
+          try { new Function(code)(); } catch (e) {}
+          console.log = old;
+          return values.indexOf(300) !== -1;
         }
       }
     ],
-    hints: ["const appName = \"LearnFP\";", "let n = 1; n = 2;"]
+    hints: [
+      `const price = 100;`,
+      `let qty = 1; のあと qty = 3;`,
+      `console.log(price * qty);`
+    ]
   },
+
+
+  {
+    id: 306,
+    title: "PROJECT 2　ゲームのスコアを作ろう",
+    description: "const と let だけでスコアを2回増やす",
+    content: `
+      <div class="challenge-box">
+        <strong>1.</strong> <code>playerName</code> に <code>"Masa"</code> を入れる（変わらないので <code>const</code>）<br>
+        <strong>2.</strong> <code>score</code> を <code>0</code> で作る（増えるので <code>let</code>）<br>
+        <strong>3.</strong> <code>score = 10</code>、そのあと <code>score = 20</code> に変える<br>
+        <strong>4.</strong> <code>playerName</code> と <code>score</code> を1行ずつ <code>console.log()</code> する
+      </div>
+
+      <section class="js-study-card js-study-card-blue">
+        <div class="js-study-kicker">PROJECT 2</div>
+        <h3>ゲームのスコアを作ろう</h3>
+        <p><strong>使うもの:</strong> <code>const</code>、<code>let</code>（Lesson 3-1・3-4・3-5）</p>
+        <p><strong>ゴール:</strong> スコアを2回増やして、プレイヤー名と最後のスコアを表示します。</p>
+      </section>
+
+      <section class="js-study-card">
+        <h3>見本：ペットのレベルの場合</h3>
+        <p>課題とは変数名と値が違います。</p>
+        <pre><code>const petName = "Pochi";
+
+let level = 1;
+level = 2;
+level = 3;
+
+console.log(petName);
+console.log(level);</code></pre>
+        <p>出力は <code>Pochi</code> と <code>3</code> です。</p>
+      </section>
+
+      <aside class="js-note js-note-good">
+        <strong>大事なポイント</strong>
+        <p>2回目・3回目の代入では <code>let</code> を付けません。<code>score = 10;</code>、<code>score = 20;</code> と書きます。</p>
+      </aside>
+
+      <aside class="js-note js-note-warning">
+        <strong>チャレンジ：const は再代入できる？</strong>
+        <p>完成したあと、下のコメントを一度だけ外して実行してみましょう。</p>
+        <pre><code>// playerName = "Taro";</code></pre>
+        <p><code>TypeError</code> が出ればOKです。確認したら、もう一度コメントに戻してから判定してください。</p>
+      </aside>
+
+      <aside class="js-summary">
+        <strong>PROJECT GOAL</strong>
+        <span><code>Masa</code> と <code>20</code> が1行ずつ出力されればクリアです。</span>
+      </aside>
+    `,
+    starterCode: `// 1. playerName に "Masa" を入れる（const）
+
+// 2. score を 0 で作る（let）
+
+// 3. score を 10、20 の順に変える
+
+// 4. playerName と score を1行ずつ log する
+
+// チャレンジ：完成後に一度だけコメントを外してTypeErrorを確認
+// playerName = "Taro";
+`,
+    solution: `const playerName = "Masa";
+
+let score = 0;
+score = 10;
+score = 20;
+
+console.log(playerName);
+console.log(score);
+
+// playerName = "Taro";`,
+    explanation: `<p><strong>解説:</strong> <code>playerName</code> は変わらないので <code>const</code>、<code>score</code> は0→10→20と変わるので <code>let</code> を使います。最後に入れた値 <code>20</code> が表示されます。</p>`,
+    tests: [
+      {
+        description: "playerName は const で Masa",
+        run: function(code) {
+          return /\bconst\s+playerName\s*=\s*["']Masa["']\s*;?/.test(code);
+        }
+      },
+      {
+        description: "score は let で 0 から始める",
+        run: function(code) {
+          return /\blet\s+score\s*=\s*0\s*;?/.test(code);
+        }
+      },
+      {
+        description: "score を 10 に変更する",
+        run: function(code) {
+          const ok = /(?:^|[;\n]\s*)score\s*=\s*10\s*;?/m.test(code);
+          const redeclared = /\b(?:let|const|var)\s+score\s*=\s*10\b/.test(code);
+          return ok && !redeclared;
+        }
+      },
+      {
+        description: "score を 20 に変更する",
+        run: function(code) {
+          const ok = /(?:^|[;\n]\s*)score\s*=\s*20\s*;?/m.test(code);
+          const redeclared = /\b(?:let|const|var)\s+score\s*=\s*20\b/.test(code);
+          return ok && !redeclared;
+        }
+      },
+      {
+        description: "var を使っていない",
+        run: function(code) {
+          const withoutComments = code
+            .replace(/\/\*[\s\S]*?\*\//g, "")
+            .replace(/\/\/.*$/gm, "");
+          return !/\bvar\b/.test(withoutComments);
+        }
+      },
+      {
+        description: "Masa と 20 を1行ずつ出力",
+        run: function(code) {
+          var values = [];
+          var old = console.log;
+          console.log = function(v) { values.push(v); };
+          try { new Function(code)(); } catch (e) {}
+          console.log = old;
+          return values.length >= 2 && String(values[0]) === "Masa" && values[1] === 20;
+        }
+      }
+    ],
+    hints: [
+      `const playerName = "Masa";`,
+      `let score = 0; のあと score = 10; → score = 20;`,
+      `console.log(playerName); と console.log(score);`,
+      `2回目以降の score に let は付けない`
+    ]
+  },
+
   {
     id: 4,
     title: "【レクチャー】データ型",
